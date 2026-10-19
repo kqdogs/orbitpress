@@ -1,0 +1,101 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+
+.ele-tour {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: elVar('index', 'popper');
+  display: none;
+
+  &.is-open {
+    display: block;
+  }
+}
+
+/* 带高亮的遮罩 */
+.ele-tour-box {
+  position: absolute;
+  border: 2px solid elVar('color-primary');
+  border-radius: elVar('border-radius', 'base');
+  transition: (
+    left $transition-base,
+    top $transition-base,
+    width $transition-base,
+    height $transition-base
+  );
+}
+
+.ele-tour.show-mask > .ele-tour-box {
+  border: none;
+  box-shadow: 0 0 0 1000vw elVar('overlay-color', 'lighter');
+}
+
+/* 气泡定位元素 */
+.ele-tour-reference {
+  position: absolute;
+  box-sizing: border-box;
+}
+
+/* 标题 */
+.ele-tour-title {
+  font-weight: 500;
+  color: elVar('text-color', 'primary');
+  margin-bottom: 8px;
+}
+
+/* 内容 */
+.ele-tour-text {
+  font-size: elVar('font-size', 'small');
+}
+
+/* 底部 */
+.ele-tour-footer {
+  display: flex;
+  align-items: center;
+  margin-top: 16px;
+}
+
+/* 指示器 */
+.ele-tour-counter {
+  color: elVar('text-color', 'secondary');
+  font-size: elVar('font-size', 'extra-small');
+}
+
+/* 操作按钮 */
+.ele-tour-action {
+  flex: 1;
+  text-align: right;
+
+  .el-button {
+    padding-left: 8px;
+    padding-right: 8px;
+
+    & + .el-button {
+      margin-left: 8px;
+    }
+  }
+}
+
+.ele-tour-popover > .ele-popover-body {
+  padding: 12px 16px;
+}
+
+/* 气泡弹窗效果 */
+.ele-tour-popover.ele-tour-modal {
+  margin: 0 auto;
+  left: 0 !important;
+  top: 50% !important;
+  right: 0 !important;
+  bottom: auto !important;
+  transform: translateY(-50.1%) !important;
+  transform-origin: center !important;
+  max-width: calc(100% - 32px);
+  box-sizing: border-box;
+
+  & > .el-popper__arrow {
+    display: none;
+  }
+}

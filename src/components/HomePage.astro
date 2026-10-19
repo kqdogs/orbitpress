@@ -1,0 +1,7 @@
+---
+import type { Settings } from '../lib/schema';
+import { initialPageLayout } from '../lib/page-layouts';
+import ContentLayout from './page-layout/ContentLayout.astro';
+const {settings,builder=false}=Astro.props as {settings:Settings;builder?:boolean};
+---
+<ContentLayout layout={initialPageLayout(settings,'home')} settings={settings} builder={builder} home/>

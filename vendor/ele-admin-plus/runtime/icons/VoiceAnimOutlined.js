@@ -1,0 +1,51 @@
+import { defineComponent, openBlock, createElementBlock, Fragment, renderList, createElementVNode } from "vue";
+const _hoisted_1 = {
+  viewBox: "0 0 48 48",
+  fill: "currentColor"
+};
+const _hoisted_2 = ["x"];
+const _hoisted_3 = ["dur"];
+const _hoisted_4 = ["dur"];
+const _sfc_main = /* @__PURE__ */ defineComponent({
+  ...{ name: "VoiceAnimOutlined" },
+  __name: "VoiceAnimOutlined",
+  setup(__props) {
+    const bars = [
+      { x: 4, dur: "1.8s" },
+      { x: 13, dur: "1.4s" },
+      { x: 22, dur: "0.8s" },
+      { x: 31, dur: "2.2s" },
+      { x: 40, dur: "1.2s" }
+    ];
+    return (_ctx, _cache) => {
+      return openBlock(), createElementBlock("svg", _hoisted_1, [
+        (openBlock(), createElementBlock(Fragment, null, renderList(bars, (item) => {
+          return createElementVNode("rect", {
+            key: item.x,
+            x: item.x,
+            y: "19",
+            width: "4",
+            height: "10",
+            rx: "2"
+          }, [
+            createElementVNode("animate", {
+              attributeName: "height",
+              values: "16;10;14;10;16;20;10;16;10;30;10",
+              dur: item.dur,
+              repeatCount: "indefinite"
+            }, null, 8, _hoisted_3),
+            createElementVNode("animate", {
+              attributeName: "y",
+              values: "16;19;17;19;16;14;19;16;19;9;19",
+              dur: item.dur,
+              repeatCount: "indefinite"
+            }, null, 8, _hoisted_4)
+          ], 8, _hoisted_2);
+        }), 64))
+      ]);
+    };
+  }
+});
+export {
+  _sfc_main as default
+};

@@ -1,0 +1,97 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-loading-var($ele);
+
+.ele-loading {
+  box-sizing: border-box;
+}
+
+.ele-loading-show {
+  position: relative;
+}
+
+.ele-loading-spinner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: eleVar('loading', 'bg');
+  z-index: eleVar('loading', 'index');
+  transition: eleVar('loading', 'transition');
+
+  &:not(.ele-loading-spinner-show) {
+    pointer-events: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+}
+
+/* 模糊背景 */
+.ele-loading-blur.ele-loading-spinner-show {
+  backdrop-filter: blur(2px);
+}
+
+/* 文本 */
+.ele-loading-text {
+  color: elVar('color-primary');
+  font-size: elVar('font-size', 'base');
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* 圆点风格 */
+.ele-loading-dot {
+  width: eleVar('loading', 'size');
+  height: eleVar('loading', 'size');
+  display: grid;
+  grid-gap: eleVar('loading', 'space');
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  transform: rotate(45deg);
+  animation: eleloadingRotate 1.2s infinite linear;
+
+  & > i {
+    background: elVar('color-primary');
+    border-radius: 50%;
+
+    &:nth-child(2) {
+      background: elVar('color-primary', 'light-3');
+    }
+
+    &:nth-child(3) {
+      background: elVar('color-primary', 'light-7');
+    }
+
+    &:nth-child(4) {
+      background: elVar('color-primary', 'light-8');
+    }
+  }
+}
+
+@keyframes eleloadingRotate {
+  to {
+    transform: rotate(405deg);
+  }
+}
+
+/* 小型尺寸 */
+.ele-loading-small .ele-loading-dot {
+  width: eleVar('loading', 'sm-size');
+  height: eleVar('loading', 'sm-size');
+  grid-gap: eleVar('loading', 'sm-space');
+}
+
+/* 大型尺寸 */
+.ele-loading-large .ele-loading-dot {
+  width: eleVar('loading', 'lg-size');
+  height: eleVar('loading', 'lg-size');
+  grid-gap: eleVar('loading', 'lg-space');
+}

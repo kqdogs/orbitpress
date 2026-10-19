@@ -1,0 +1,8 @@
+@use '../../style/util.scss' as *;
+
+/* 文本主题变量 */
+@mixin set-text-var($var) {
+  .ele-text {
+    @include set-ele-var('text', $var);
+  }
+}

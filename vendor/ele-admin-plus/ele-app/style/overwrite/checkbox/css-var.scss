@@ -1,0 +1,8 @@
+@use '../../../../style/util.scss' as *;
+
+/* ElCheckbox 主题变量 */
+@mixin set-el-checkbox-var($var) {
+  .el-checkbox {
+    @include set-ele-var('checkbox', $var);
+  }
+}

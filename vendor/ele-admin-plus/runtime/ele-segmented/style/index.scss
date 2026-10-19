@@ -1,0 +1,158 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-segmented-var($ele);
+
+.ele-segmented.el-tabs {
+  .el-tabs__nav-wrap,
+  .el-tabs__nav-scroll {
+    margin: 0;
+    overflow: visible;
+  }
+
+  .el-tabs__nav {
+    float: none;
+    height: auto;
+  }
+
+  .el-tabs__nav-wrap::after,
+  .el-tabs__content {
+    display: none;
+  }
+
+  /* 背景 */
+  .el-tabs__header {
+    margin: 0;
+    box-sizing: border-box;
+    background: eleVar('segmented', 'bg');
+    border-radius: eleVar('segmented', 'radius');
+    padding: eleVar('segmented', 'padding');
+  }
+
+  /* item */
+  .el-tabs__item {
+    color: eleVar('segmented', 'color');
+    height: eleVar('segmented', 'height');
+    line-height: eleVar('segmented', 'height');
+    font-size: eleVar('segmented', 'font-size');
+    font-weight: eleVar('segmented', 'font-weight');
+    border-radius: eleVar('segmented', 'radius');
+    transition: (color $transition-base, background-color $transition-base);
+    background: none;
+    z-index: 2;
+
+    &:not(.is-disabled):hover {
+      color: eleVar('segmented', 'hover-color');
+      background: eleVar('segmented', 'hover-bg');
+    }
+
+    &:not(.is-disabled).is-active {
+      color: eleVar('segmented', 'active-color');
+      background: none;
+    }
+
+    &.is-disabled {
+      color: eleVar('segmented', 'disabled-color');
+    }
+
+    .ele-segmented-item-icon + .ele-segmented-item-label {
+      margin-left: 6px;
+    }
+  }
+
+  .el-tabs__header .el-tabs__nav .el-tabs__item {
+    padding: 0 eleVar('segmented', 'item-padding');
+  }
+
+  /* 选中背景 */
+  .el-tabs__active-bar {
+    $item-padding: eleVar('segmented', 'item-padding');
+    padding: 0 $item-padding;
+    margin-left: calc(#{$item-padding} * -1);
+    background: eleVar('segmented', 'active-bg');
+    border-radius: eleVar('segmented', 'radius');
+    box-shadow: eleVar('segmented', 'active-shadow');
+    transform: translateX(#{$item-padding});
+    transition: all $transition-base;
+    box-sizing: content-box;
+    height: auto;
+    bottom: 0;
+    top: 0;
+  }
+
+  &.is-empty .el-tabs__active-bar {
+    padding: 0;
+  }
+
+  /* 尺寸控制 */
+  &.is-large {
+    .el-tabs__header {
+      border-radius: eleVar('segmented-large', 'radius');
+      padding: eleVar('segmented-large', 'padding');
+    }
+
+    .el-tabs__item {
+      height: eleVar('segmented-large', 'height');
+      line-height: eleVar('segmented-large', 'height');
+      font-size: eleVar('segmented-large', 'font-size');
+      border-radius: eleVar('segmented-large', 'radius');
+    }
+
+    .el-tabs__header .el-tabs__nav .el-tabs__item {
+      padding: 0 eleVar('segmented-large', 'item-padding');
+    }
+
+    .el-tabs__active-bar {
+      $item-padding: eleVar('segmented-large', 'item-padding');
+      padding: 0 $item-padding;
+      margin-left: calc(#{$item-padding} * -1);
+      border-radius: eleVar('segmented-large', 'radius');
+      transform: translateX(#{$item-padding});
+    }
+  }
+
+  &.is-small {
+    .el-tabs__header {
+      border-radius: eleVar('segmented-small', 'radius');
+      padding: eleVar('segmented-small', 'padding');
+    }
+
+    .el-tabs__item {
+      height: eleVar('segmented-small', 'height');
+      line-height: eleVar('segmented-small', 'height');
+      font-size: eleVar('segmented-small', 'font-size');
+      border-radius: eleVar('segmented-small', 'radius');
+    }
+
+    .el-tabs__header .el-tabs__nav .el-tabs__item {
+      padding: 0 eleVar('segmented-small', 'item-padding');
+    }
+
+    .el-tabs__active-bar {
+      $item-padding: eleVar('segmented-small', 'item-padding');
+      padding: 0 $item-padding;
+      margin-left: calc(#{$item-padding} * -1);
+      border-radius: eleVar('segmented-small', 'radius');
+      transform: translateX(#{$item-padding});
+    }
+  }
+
+  /* 宽度撑满 */
+  &:not(.is-block) .el-tabs__header {
+    display: inline-block;
+    width: max-content;
+  }
+
+  &.is-block {
+    .el-tabs__header .el-tabs__nav .el-tabs__item {
+      padding: 0;
+    }
+
+    .el-tabs__active-bar {
+      padding: 0;
+      margin-left: 0;
+      transform: none;
+    }
+  }
+}

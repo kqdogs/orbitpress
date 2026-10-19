@@ -1,0 +1,30 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-tree-select-var($ele);
+
+.ele-tree-select-popper {
+  & > .ele-popover-body > .el-tree > .el-vl__wrapper {
+    padding: eleVar('tree-select', 'padding');
+  }
+
+  .el-tree {
+    background: none;
+  }
+
+  .el-tree-node__label.is-disabled {
+    color: eleVar('tree-select', 'item-disabled-color');
+    cursor: not-allowed;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 3;
+    }
+  }
+}

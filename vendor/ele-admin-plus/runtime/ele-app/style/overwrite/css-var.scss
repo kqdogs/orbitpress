@@ -1,0 +1,33 @@
+@use '../../../style/util.scss' as *;
+@use './autocomplete/css-var.scss' as *;
+@use './cascader/css-var.scss' as *;
+@use './checkbox/css-var.scss' as *;
+@use './date-picker/css-var.scss' as *;
+@use './descriptions/css-var.scss' as *;
+@use './input/css-var.scss' as *;
+@use './message-box/css-var.scss' as *;
+@use './notification/css-var.scss' as *;
+@use './popper/css-var.scss' as *;
+@use './radio/css-var.scss' as *;
+@use './select/css-var.scss' as *;
+@use './tag/css-var.scss' as *;
+@use './tree/css-var.scss' as *;
+@use './tree-select/css-var.scss' as *;
+
+/* El 样式重写主题变量 */
+@mixin set-overwrite-var($var) {
+  @include set-el-autocomplete-var($var);
+  @include set-el-cascader-var($var);
+  @include set-el-checkbox-var($var);
+  @include set-el-date-picker-var($var);
+  @include set-el-descriptions-var($var);
+  @include set-el-input-var($var);
+  @include set-el-message-box-var($var);
+  @include set-el-notification-var($var);
+  @include set-el-popper-var($var);
+  @include set-el-radio-var($var);
+  @include set-el-select-var($var);
+  @include set-el-tag-var($var);
+  @include set-el-tree-var($var);
+  @include set-el-tree-select-var($var);
+}

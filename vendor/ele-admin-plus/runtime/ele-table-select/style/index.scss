@@ -1,0 +1,22 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-table-select-var($ele);
+
+.ele-table-select-popper {
+  &.ele-popover .ele-pro-table > .ele-data-table,
+  &.ele-popover .ele-pro-table > .ele-virtual-table {
+    #{eleVarName('table', 'th-bg')}: eleVar('table-select', 'th-bg');
+    #{eleVarName('table', 'tr-bg')}: eleVar('table-select', 'tr-bg');
+    #{eleVarName('table', 'even-bg')}: eleVar('table-select', 'even-bg');
+  }
+
+  & > .ele-popover-body {
+    padding: eleVar('table-select', 'padding');
+  }
+
+  &.ele-popover.is-responsive {
+    max-width: calc(100vw - #{eleVar('table-select', 'mobile-space')} * 2);
+  }
+}

@@ -1,0 +1,12 @@
+import "element-plus/es/components/empty/style/index";
+import "element-plus/es/components/icon/style/index";
+import "element-plus/es/components/button/style/index";
+import "element-plus/es/components/input/style/index";
+import "element-plus/es/components/switch/style/index";
+import "../../ele-split-panel/style/index";
+import "../../ele-tab-bar/style/index";
+import "../../ele-pro-form/style/index";
+import "../../ele-pro-form-builder/style/index";
+import "../../ele-modal/style/index";
+import "../../ele-crud/style/index";
+import "./index.scss";

@@ -1,0 +1,8 @@
+@use '../../style/util.scss' as *;
+
+/* 弹窗主题变量 */
+@mixin set-modal-var($var) {
+  .ele-modal {
+    @include set-ele-var('modal', $var);
+  }
+}

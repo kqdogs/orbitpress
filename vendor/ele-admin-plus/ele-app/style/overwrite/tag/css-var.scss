@@ -1,0 +1,8 @@
+@use '../../../../style/util.scss' as *;
+
+/* ElTag 主题变量 */
+@mixin set-el-tag-var($var) {
+  .el-tag {
+    @include set-ele-var('tag', $var);
+  }
+}

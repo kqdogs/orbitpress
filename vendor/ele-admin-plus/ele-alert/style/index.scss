@@ -1,0 +1,172 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-alert-var($ele);
+
+.ele-alert {
+  display: flex;
+  align-items: center;
+  padding: eleVar('alert', 'padding');
+  border-radius: eleVar('alert', 'radius');
+  background: elVar('color-primary', 'light-9');
+  border: 1px solid elVar('color-primary', 'light-7');
+  transition: opacity 0.2s;
+  box-sizing: border-box;
+  position: relative;
+
+  .ele-alert-icon {
+    flex-shrink: 0;
+    color: elVar('color-primary');
+    font-size: eleVar('alert', 'icon-size');
+    margin: eleVar('alert', 'icon-margin');
+    display: flex;
+  }
+
+  .ele-alert-body {
+    flex: 1;
+    overflow: auto;
+  }
+
+  .ele-alert-title {
+    color: eleVar('alert', 'color');
+    font-size: eleVar('alert', 'title-size');
+    line-height: eleVar('alert', 'title-line-height');
+
+    & + .ele-alert-text {
+      margin-top: 4px;
+    }
+  }
+
+  .ele-alert-text {
+    color: eleVar('alert', 'color');
+    font-size: eleVar('alert', 'size');
+  }
+
+  .ele-alert-close {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: eleVar('alert', 'close-size');
+    height: eleVar('alert', 'close-size');
+    line-height: eleVar('alert', 'close-size');
+    border-radius: eleVar('alert', 'close-radius');
+    color: eleVar('alert', 'close-color');
+    font-size: eleVar('alert', 'close-font-size');
+    transition: (color $transition-base, background-color $transition-base);
+    margin: eleVar('alert', 'close-margin');
+    cursor: pointer;
+
+    &:hover {
+      color: eleVar('alert', 'close-hover-color');
+      background: eleVar('alert', 'close-hover-bg');
+    }
+  }
+
+  /* 含有描述 */
+  &.is-rich {
+    align-items: flex-start;
+    padding: eleVar('alert', 'rich-padding');
+
+    & > .ele-alert-icon {
+      font-size: eleVar('alert', 'rich-icon-size');
+    }
+
+    & > .ele-alert-body > .ele-alert-title {
+      color: eleVar('alert', 'title-color');
+    }
+  }
+
+  /* 类型 */
+  &.is-success {
+    background: elVar('color-success', 'light-9');
+    border-color: elVar('color-success', 'light-7');
+
+    & > .ele-alert-icon {
+      color: elVar('color-success');
+    }
+  }
+
+  &.is-warning {
+    background: elVar('color-warning', 'light-9');
+    border-color: elVar('color-warning', 'light-7');
+
+    & > .ele-alert-icon {
+      color: elVar('color-warning');
+    }
+  }
+
+  &.is-error {
+    background: elVar('color-error', 'light-9');
+    border-color: elVar('color-error', 'light-7');
+
+    & > .ele-alert-icon {
+      color: elVar('color-error');
+    }
+  }
+
+  /* 居中 */
+  &.is-center {
+    justify-content: center;
+
+    & > .ele-alert-body {
+      flex: initial;
+    }
+
+    & > .ele-alert-close {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
+  /* 主题 */
+  &.is-dark {
+    background: elVar('color-primary');
+    border-color: elVar('color-primary');
+
+    & > .ele-alert-icon {
+      color: eleVar('alert-dark', 'title-color');
+    }
+
+    & > .ele-alert-body > .ele-alert-title,
+    & > .ele-alert-body > .ele-alert-text {
+      color: eleVar('alert-dark', 'color');
+    }
+
+    & > .ele-alert-close {
+      color: eleVar('alert-dark', 'close-color');
+
+      &:hover {
+        color: eleVar('alert-dark', 'close-hover-color');
+        background: eleVar('alert-dark', 'close-hover-bg');
+      }
+    }
+
+    &.is-rich > .ele-alert-body > .ele-alert-title {
+      color: eleVar('alert-dark', 'title-color');
+    }
+
+    &.is-success {
+      background: elVar('color-success');
+      border-color: elVar('color-success');
+    }
+
+    &.is-warning {
+      background: elVar('color-warning');
+      border-color: elVar('color-warning');
+    }
+
+    &.is-error {
+      background: elVar('color-error');
+      border-color: elVar('color-error');
+    }
+  }
+}
+
+.ele-alert-fade-enter-from,
+.ele-alert-fade-leave-active {
+  opacity: 0;
+}

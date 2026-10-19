@@ -1,0 +1,8 @@
+@use '../../style/util.scss' as *;
+
+/* 下拉菜单主题变量 */
+@mixin set-dropdown-var($var) {
+  .ele-dropdown {
+    @include set-ele-var('dropdown', $var);
+  }
+}

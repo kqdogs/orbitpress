@@ -1,0 +1,8 @@
+@use '../../../../style/util.scss' as *;
+
+/* ElTreeSelect 主题变量 */
+@mixin set-el-tree-select-var($var) {
+  .el-tree-select__popper {
+    @include set-ele-var('tree-select', $var);
+  }
+}

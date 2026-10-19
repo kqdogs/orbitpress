@@ -1,0 +1,14 @@
+@use '../../../../style/util.scss' as *;
+
+/* Popper 主题变量 */
+@mixin set-el-popper-var($var) {
+  // Popper
+  .el-popper {
+    @include set-ele-var('popper', $var);
+  }
+
+  // Tooltip
+  .el-popper.is-dark {
+    @include set-ele-var('tooltip', $var);
+  }
+}

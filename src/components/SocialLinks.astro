@@ -1,0 +1,11 @@
+---
+import type { Settings } from '../lib/schema';
+import { socialLinks } from '../lib/branding';
+import Icon from './Icon.astro';
+interface Props { settings: Settings; variant: 'header' | 'footer' }
+const {settings,variant}=Astro.props;
+---
+<div class={variant==='header'?'social-row':'footer-socials'}>{socialLinks(settings).map(link=><a href={link.href} target="_blank" rel="noopener noreferrer" aria-label={variant==='header'?link.name:undefined}>
+ <Icon name={link.icon} size={variant==='header'?19:22}/>
+ {variant==='header'?(link.name==='X'&&<span class="social-x">𝕏</span>):<div><strong>{link.name}</strong><small>{settings.socialFollowText}</small></div>}
+</a>)}</div>

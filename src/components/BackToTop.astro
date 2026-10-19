@@ -1,0 +1,52 @@
+<button class="back-to-top" type="button" aria-label="返回顶部" title="返回顶部 · 阅读进度 0%" data-scroll-progress="0">
+ <svg class="reading-progress" viewBox="0 0 56 56" fill="none" aria-hidden="true">
+  <circle class="progress-track" cx="28" cy="28" r="23"/>
+  <circle class="progress-value" cx="28" cy="28" r="23" pathLength="100"/>
+ </svg>
+ <svg class="return-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7 9 5-5 5 5M12 4v13a3 3 0 0 1-3 3H7"/></svg>
+</button>
+
+<style>
+ .back-to-top{position:fixed;right:24px;bottom:24px;z-index:30;display:grid;place-items:center;width:56px;height:56px;padding:0;border:0;border-radius:50%;background:#fff;color:#1458df;box-shadow:0 3px 12px #123f982d;cursor:pointer;touch-action:manipulation}
+ .back-to-top:hover{background:#f7faff;box-shadow:0 4px 18px #1458df45}
+ .reading-progress{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg);pointer-events:none}
+ .progress-track{stroke:#dce7fb;stroke-width:7}
+ .progress-value{stroke:#1458df;stroke-width:7;stroke-dasharray:100;stroke-dashoffset:100}
+ .return-arrow{width:26px;height:26px;pointer-events:none}
+ @media(max-width:760px){.back-to-top{width:48px;height:48px;right:12px;bottom:16px}.return-arrow{width:23px;height:23px}}
+</style>
+
+<script>
+ const button=document.querySelector<HTMLButtonElement>('.back-to-top');
+ const ring=button?.querySelector<SVGCircleElement>('.progress-value');
+ if(button&&ring){
+  let frame=0,disposed=false;
+  function update(){
+   frame=0;
+   const root=document.documentElement;
+   const distance=Math.max(0,root.scrollHeight-root.clientHeight);
+   const progress=distance>0?Math.min(1,Math.max(0,window.scrollY/distance)):0;
+   const percent=Math.round(progress*100);
+   ring!.style.strokeDashoffset=String(100-progress*100);
+   button!.dataset.scrollProgress=String(percent);
+   button!.title=`返回顶部 · 阅读进度 ${percent}%`;
+  }
+  function schedule(){if(!disposed&&!frame)frame=requestAnimationFrame(update);}
+  button.addEventListener('click',()=>window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'}));
+  window.addEventListener('scroll',schedule,{passive:true});
+  window.addEventListener('resize',schedule);
+  window.addEventListener('pageshow',schedule);
+  const observer=new ResizeObserver(schedule);
+  observer.observe(document.documentElement);
+  observer.observe(document.body);
+  window.addEventListener('pagehide',event=>{
+   cancelAnimationFrame(frame);frame=0;
+   if(event.persisted)return;
+   disposed=true;observer.disconnect();
+   window.removeEventListener('scroll',schedule);
+   window.removeEventListener('resize',schedule);
+   window.removeEventListener('pageshow',schedule);
+  });
+  schedule();
+ }
+</script>

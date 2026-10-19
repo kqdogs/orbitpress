@@ -1,0 +1,140 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use '../../ele-pro-table/style/css-var.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-card-var($ele);
+
+.ele-card-body {
+  padding: eleVar('card', 'padding');
+  transition: (
+    max-height $transition-base,
+    padding-top $transition-base,
+    padding-bottom $transition-base
+  );
+  box-sizing: border-box;
+}
+
+.ele-card-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  color: eleVar('card', 'header-color');
+  font-size: eleVar('card', 'header-font-size');
+  font-weight: eleVar('card', 'header-font-weight');
+  line-height: eleVar('card', 'header-line-height');
+  padding: eleVar('card', 'header-padding');
+  border-bottom: eleVar('card', 'header-border');
+  box-sizing: border-box;
+}
+
+.ele-card-title {
+  flex: 1;
+}
+
+.ele-card-footer {
+  flex-shrink: 0;
+  padding: eleVar('card', 'footer-padding');
+  border-top: eleVar('card', 'footer-border');
+  box-sizing: border-box;
+}
+
+.ele-card-collapse-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: eleVar('card', 'collapse-size');
+  height: eleVar('card', 'collapse-size');
+  color: eleVar('card', 'collapse-color');
+  font-size: eleVar('card', 'collapse-font-size');
+  border-radius: eleVar('card', 'collapse-radius');
+  margin: eleVar('card', 'collapse-margin');
+  transition: all $transition-base;
+  box-sizing: border-box;
+  user-select: none;
+  cursor: pointer;
+
+  svg.ele-arrow-up path {
+    transition: d $transition-base;
+  }
+
+  &:hover {
+    color: eleVar('card', 'collapse-hover-color');
+    background: eleVar('card', 'collapse-hover-bg');
+  }
+}
+
+.ele-card {
+  box-sizing: border-box;
+  background: eleVar('card', 'bg');
+  border: eleVar('card', 'none-border');
+  box-shadow: eleVar('card', 'none-shadow');
+  border-radius: eleVar('card', 'radius');
+  transition: (
+    border-color $transition-base,
+    background-color $transition-base,
+    box-shadow $transition-base
+  );
+
+  &.is-border {
+    border: eleVar('card', 'border');
+  }
+
+  &.is-shadow {
+    box-shadow: eleVar('card', 'shadow');
+  }
+
+  &.is-hover-shadow:hover {
+    box-shadow: eleVar('card', 'hover-shadow');
+  }
+
+  /* 折叠状态 */
+  &.is-collapse > .ele-card-header {
+    border-bottom: none;
+
+    & > .ele-card-collapse-icon svg.ele-arrow-up path {
+      #{'d'}: path('M10 17 24 31 38 17');
+    }
+  }
+
+  /* 搜索表单 */
+  &.is-search-form > .ele-card-body {
+    overflow: hidden;
+    padding: eleVar('card', 'search-form-padding');
+
+    .el-form-item {
+      margin-bottom: eleVar('card', 'search-form-space');
+    }
+  }
+
+  /* 内部表格高度铺满 */
+  &.is-flex-table {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    & > .ele-card-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: auto;
+
+      @include flex-pro-table();
+    }
+  }
+
+  &.is-flex-auto-table {
+    flex: auto;
+    display: flex;
+    flex-direction: column;
+
+    & > .ele-card-body {
+      flex: auto;
+      display: flex;
+      flex-direction: column;
+
+      @include flex-auto-pro-table();
+    }
+  }
+}

@@ -1,0 +1,58 @@
+@use '../../style/util.scss' as *;
+
+/* 静态表格主题变量 */
+@mixin set-table-var($var) {
+  .ele-table {
+    @include set-ele-var('table', $var);
+  }
+}
+
+/* 静态表格圆角 */
+@mixin table-radius($radius) {
+  & > thead > tr:first-child > th:first-child,
+  & > thead > tr:first-child > td:first-child,
+  &.is-border:not(.has-header) > tr:first-child > td:first-child,
+  &.is-border:not(.has-header) > tr:first-child > th:first-child,
+  &.is-border:not(.has-header) > tbody > tr:first-child > td:first-child {
+    border-top-left-radius: $radius;
+  }
+
+  & > thead > tr:first-child > th:last-child,
+  & > thead > tr:first-child > td:last-child,
+  &.is-border:not(.has-header) > tr:first-child > td:last-child,
+  &.is-border:not(.has-header) > tr:first-child > th:last-child,
+  &.is-border:not(.has-header) > tbody > tr:first-child > td:last-child {
+    border-top-right-radius: $radius;
+  }
+
+  &.is-border:not(.has-footer) > tr:last-child > td:first-child,
+  &.is-border:not(.has-footer) > tr:last-child > th:first-child,
+  &.is-border:not(.has-footer) > tbody > tr:last-child > td:first-child,
+  & > tfoot > tr:last-child > td:first-child {
+    border-bottom-left-radius: $radius;
+  }
+
+  &.is-border:not(.has-footer) > tr:last-child > td:last-child,
+  &.is-border:not(.has-footer) > tr:last-child > th:last-child,
+  &.is-border:not(.has-footer) > tbody > tr:last-child > td:last-child,
+  & > tfoot > tr:last-child > td:last-child {
+    border-bottom-right-radius: $radius;
+  }
+
+  &.has-header {
+    border-top-left-radius: $radius;
+    border-top-right-radius: $radius;
+  }
+
+  &.has-footer {
+    border-bottom-left-radius: $radius;
+    border-bottom-right-radius: $radius;
+  }
+
+  &.is-border {
+    border-top-left-radius: $radius;
+    border-top-right-radius: $radius;
+    border-bottom-left-radius: $radius;
+    border-bottom-right-radius: $radius;
+  }
+}

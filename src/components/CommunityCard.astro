@@ -1,0 +1,13 @@
+---
+import type { Settings } from '../lib/schema';
+import { resolveCommunityCard } from '../lib/community-card';
+import Icon from './Icon.astro';
+interface Props { settings: Settings }
+const card = resolveCommunityCard(Astro.props.settings);
+---
+{card.enabled&&<a class="community-banner" href={card.href} rel="noopener noreferrer"><Icon name={card.icon} size={30}/><div><strong>{card.title}</strong>{card.description&&<span>{card.description}</span>}</div><b>{card.buttonLabel}</b></a>}
+<style>
+.community-banner>div{min-width:0;overflow-wrap:anywhere}
+.community-banner :global(svg){flex-shrink:0}
+.community-banner b{flex-shrink:0;max-width:35%;white-space:normal;overflow-wrap:anywhere;text-align:center}
+</style>

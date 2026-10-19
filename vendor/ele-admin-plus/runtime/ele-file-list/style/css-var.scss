@@ -1,0 +1,8 @@
+@use '../../style/util.scss' as *;
+
+/* 文件列表主题变量 */
+@mixin set-file-var($var) {
+  .ele-file-list-group {
+    @include set-ele-var('file', $var);
+  }
+}

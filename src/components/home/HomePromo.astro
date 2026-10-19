@@ -1,0 +1,7 @@
+---
+import type { HomeComponentProps } from '../../lib/home-components';
+import Icon from '../Icon.astro';
+const {settings,block}=Astro.props as HomeComponentProps;
+const config=settings.homeOptions;
+---
+{true&&<div class="container home-content"><a class="promo-banner" href={config.promoHref}><div><small>CardWiki · 虚拟卡百科</small><h2>{block.title}</h2><p>{block.text}</p></div><span>前往百科 <Icon name="arrow"/></span></a></div>}

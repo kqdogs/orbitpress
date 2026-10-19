@@ -1,0 +1,17 @@
+.article-banner.article-heading{position:relative;isolation:isolate;overflow:hidden;padding:30px 0 32px;background:radial-gradient(ellipse at 80% 15%,#182e5e80,transparent 65%),linear-gradient(110deg,#0b192e,#102342);color:#f8faff}
+.article-heading::before{content:"";position:absolute;z-index:-1;inset:-25px;pointer-events:none;opacity:.42;background-image:radial-gradient(circle,#b8d2f9 0 1px,transparent 1.6px),radial-gradient(circle,#799cce 0 .7px,transparent 1.3px);background-size:197px 89px,113px 137px;background-position:12px 3px,47px 68px;animation:article-star-drift 16s ease-in-out infinite alternate}
+.article-heading .breadcrumb{margin:0 0 14px;color:#9fb4d3;font-size:14px;gap:8px}
+.article-heading h1{margin:0 0 16px;font-size:clamp(26px,3vw,38px);line-height:1.35;letter-spacing:-.5px;overflow-wrap:anywhere}
+.article-highlights{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0 0 16px;padding:0}
+.article-highlights li{display:inline-block;max-width:100%;padding:6px 10px;background:#ffda751a;border:1px solid #ffda750b;border-radius:7px;color:#ffdc75;font-size:14px;line-height:1.5;font-weight:700;overflow-wrap:anywhere}
+.article-heading .article-meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px 11px;margin:0;color:#a5b7cf;font-size:13px;line-height:1.7}
+.article-heading .article-meta img{width:24px;height:24px;flex:none;border-radius:50%}
+.article-heading .article-meta a:hover{color:#fff}
+.article-reading-time{opacity:.78}
+.article-header-tags{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:10px;font-size:13px;line-height:1.5}
+.article-header-tags>span{margin-right:2px;color:#849ab8}
+.article-header-tags a{max-width:100%;padding:3px 10px;border:1px solid #b6c8e52b;border-radius:30px;background:#c5d9ff12;color:#b9c8dd;overflow-wrap:anywhere;transition:background .2s,border-color .2s,color .2s}
+.article-header-tags a:hover{color:#ffdf83;background:#ffda7512;border-color:#ffda7566}
+@keyframes article-star-drift{to{transform:translate(15px,-12px)}}
+@media(max-width:760px){.article-banner.article-heading{padding:24px 0}.article-heading .breadcrumb{font-size:12px;margin-bottom:12px}.article-heading h1{font-size:26px;letter-spacing:0}.article-highlights{gap:7px;margin-bottom:14px}.article-highlights li{font-size:12px;padding:5px 8px}.article-heading .article-meta{font-size:12px;gap:6px 9px}.article-header-tags{font-size:12px}.article-header-tags a{padding:3px 9px}}
+@media(prefers-reduced-motion:reduce){.article-heading::before{animation:none}.article-header-tags a{transition:none}}

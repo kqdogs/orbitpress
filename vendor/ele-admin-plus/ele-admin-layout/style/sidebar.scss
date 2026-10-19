@@ -1,0 +1,183 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+
+/* 侧栏容器 */
+.ele-admin-side {
+  flex-shrink: 0;
+  display: flex;
+  box-sizing: border-box;
+  z-index: calc(#{eleVar('layout', 'index')} + 3);
+  position: relative;
+}
+
+/* 侧栏 */
+.ele-admin-sidebar {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  width: eleVar('sidebar', 'width');
+  background: eleVar('sidebar', 'bg');
+  box-shadow: eleVar('sidebar', 'shadow');
+  z-index: calc(#{eleVar('layout', 'index')} + 3);
+  transition: all $transition-base;
+  box-sizing: border-box;
+  position: relative;
+
+  /* 侧栏菜单 */
+  .ele-admin-menus {
+    flex: 1;
+    overflow: hidden;
+
+    & > .el-scrollbar__wrap {
+      position: relative;
+      box-sizing: border-box;
+      overflow-x: hidden;
+      overflow-y: auto;
+
+      & > .el-scrollbar__view > .ele-menu {
+        width: 100%;
+        border: none;
+        background: none;
+        transition: none;
+      }
+    }
+  }
+
+  /* 暗色侧栏 */
+  &.is-dark {
+    background: eleVar('sidebar', 'dark-bg');
+    box-shadow: eleVar('sidebar', 'dark-shadow');
+  }
+
+  /* 双侧栏 */
+  &.is-mix {
+    width: eleVar('sidebar', 'mix-width');
+    z-index: calc(#{eleVar('layout', 'index')} + 2);
+  }
+
+  /* 模糊透明侧栏 */
+  &.is-ghost {
+    background: eleVar('sidebar', 'ghost-bg');
+  }
+
+  /* 折叠侧栏 */
+  &.is-collapse {
+    &:not(.is-mix) {
+      width: eleVar('sidebar', 'collapse-width');
+    }
+
+    &.is-mix {
+      margin-left: calc(#{eleVar('sidebar', 'mix-width')} * -1) !important;
+      visibility: hidden;
+    }
+  }
+}
+
+/* 双侧栏一级 */
+.ele-admin-sidebox {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  width: eleVar('sidebox', 'width');
+  background: eleVar('sidebar', 'bg');
+  box-shadow: eleVar('sidebar', 'shadow');
+  z-index: calc(#{eleVar('layout', 'index')} + 3);
+  transition: all $transition-base;
+  box-sizing: border-box;
+  position: relative;
+
+  /* 双侧栏一级菜单 */
+  .ele-admin-menus {
+    flex: 1;
+    overflow: hidden;
+
+    & > .el-scrollbar__wrap {
+      position: relative;
+      box-sizing: border-box;
+      overflow-x: hidden;
+      overflow-y: auto;
+
+      & > .el-scrollbar__view > .ele-menu {
+        border: none;
+        background: none;
+      }
+    }
+  }
+
+  /* 暗色双侧栏一级 */
+  &.is-dark {
+    background: eleVar('sidebar', 'dark-bg');
+    box-shadow: eleVar('sidebar', 'dark-shadow');
+  }
+
+  /* 模糊透明双侧栏一级 */
+  &.is-ghost {
+    background: eleVar('sidebar', 'ghost-bg');
+  }
+
+  /* 与侧栏分割线 */
+  &.show-divider {
+    box-shadow: eleVar('sidebar', 'divider-shadow');
+
+    &.is-dark {
+      box-shadow: eleVar('sidebar', 'dark-divider-shadow');
+    }
+  }
+
+  /* 折叠双侧栏一级 */
+  &.is-compact {
+    width: eleVar('sidebar', 'collapse-width');
+  }
+}
+
+/* 固定侧栏 */
+.ele-admin-side.is-fixed {
+  position: sticky;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  height: 100dvh;
+}
+
+.ele-admin-side.show-placeholder {
+  margin-top: calc(eleVar('header', 'height') * -1);
+
+  & > .ele-admin-sidebar,
+  & > .ele-admin-sidebox {
+    padding-top: eleVar('header', 'height');
+  }
+}
+
+/* 侧栏菜单滚动条 */
+.ele-admin-sidebar > .ele-admin-menus,
+.ele-admin-sidebox > .ele-admin-menus {
+  $size: eleVar('menu-thumb', 'size');
+  $padding: eleVar('menu-thumb', 'padding');
+  $hover-color: eleVar('menu-thumb', 'hover-color');
+  #{elVarName('scrollbar', 'opacity')}: 1;
+  #{elVarName('scrollbar', 'hover-opacity')}: 1;
+  #{elVarName('scrollbar', 'bg-color')}: eleVar('menu-thumb', 'color');
+  #{elVarName('scrollbar', 'hover-bg-color')}: #{$hover-color};
+
+  & > .el-scrollbar__bar.is-vertical {
+    width: calc(#{$size} - #{$padding} * 2);
+    border-radius: eleVar('menu-thumb', 'radius');
+    right: $padding;
+    z-index: 9;
+  }
+
+  & > .el-scrollbar__bar.is-horizontal {
+    height: calc(#{$size} - #{$padding} * 2);
+    border-radius: eleVar('menu-thumb', 'radius');
+    bottom: $padding;
+    z-index: 9;
+  }
+}
+
+/* 暗色侧栏菜单滚动条 */
+.ele-admin-sidebar.is-dark > .ele-admin-menus,
+.ele-admin-sidebox.is-dark > .ele-admin-menus {
+  $dark-hover-color: eleVar('menu-dark-thumb', 'hover-color');
+  #{elVarName('scrollbar', 'bg-color')}: eleVar('menu-dark-thumb', 'color');
+  #{elVarName('scrollbar', 'hover-bg-color')}: #{$dark-hover-color};
+}

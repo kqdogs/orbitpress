@@ -1,0 +1,282 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+
+.ele-cron-panel {
+  position: relative;
+}
+
+.ele-cron-panel-main > .ele-tabs {
+  #{eleVarName('tab', 'height')}: 32px;
+
+  .el-tabs__content {
+    padding: 0;
+  }
+
+  .el-tabs__new-tab {
+    flex-shrink: 0;
+    min-width: 36px;
+    width: max-content;
+    box-sizing: border-box;
+    margin: 0 6px 0 0;
+    padding: 0 4px;
+  }
+}
+
+/* 内容 */
+.ele-cron-panel-content {
+  height: 360px;
+  padding: 12px 20px 0 20px;
+  overflow: auto;
+  box-sizing: border-box;
+
+  .el-radio-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: min-content;
+    min-width: 100%;
+
+    & > .el-radio {
+      margin: 0;
+
+      & + .el-radio {
+        margin-top: 8px;
+      }
+    }
+  }
+
+  /* 指定选择项 */
+  .ele-cron-panel-options-wrapper {
+    padding: 4px 0 0 0;
+    align-items: flex-start;
+  }
+
+  .ele-cron-panel-options {
+    white-space: normal;
+    padding: 6px 0 0 2px;
+    box-sizing: border-box;
+
+    .el-checkbox {
+      margin: 0;
+      width: 66px;
+      height: 26px;
+    }
+  }
+
+  /* 范围输入项 */
+  .ele-cron-panel-item-wrapper {
+    height: auto;
+  }
+
+  .ele-cron-panel-item {
+    display: flex;
+    align-items: center;
+  }
+
+  .ele-cron-panel-item-input > .el-input-number {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .ele-cron-panel-item-input,
+  .ele-cron-panel-item-input.el-checkbox {
+    width: 98px;
+  }
+}
+
+/* 底栏 */
+.ele-cron-panel-extra {
+  border: 1px solid elVar('border-color', 'light');
+  border-top: none;
+  display: flex;
+}
+
+.ele-cron-panel-extra-item {
+  flex-shrink: 0;
+  box-sizing: border-box;
+
+  &:first-child {
+    flex: 1;
+    overflow: hidden;
+  }
+
+  & + .ele-cron-panel-extra-item {
+    min-width: 220px;
+    border-left: 1px solid elVar('border-color', 'light');
+  }
+}
+
+/* 结果 */
+.ele-cron-panel-result {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+  min-width: max-content;
+
+  & + .ele-cron-panel-result {
+    margin: 12px 0 8px 0;
+  }
+}
+
+.ele-cron-panel-result-item {
+  flex-shrink: 0;
+}
+
+.ele-cron-panel-result-title {
+  font-size: 12px;
+  text-align: center;
+  margin-bottom: 2px;
+}
+
+.ele-cron-panel-result-text {
+  font-size: 12px;
+  text-align: center;
+  min-width: 32px;
+  max-width: 100%;
+  height: 20px;
+  line-height: 20px;
+  padding: 0 4px;
+  border-radius: 4px;
+  border: 1px solid elVar('border-color');
+  box-sizing: border-box;
+}
+
+.ele-cron-panel-result-value {
+  min-width: 270px;
+}
+
+/* 最近运行时间 */
+.ele-cron-panel-extra-header {
+  height: 28px;
+  line-height: 28px;
+  font-size: 13px;
+  padding: 0 16px;
+  background: elVar('fill-color', 'lighter');
+  border-bottom: 1px solid elVar('border-color', 'light');
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.ele-cron-panel-extra-body {
+  padding: 6px 12px;
+  box-sizing: border-box;
+  overflow: auto;
+
+  .ele-cron-panel-test {
+    padding: 0;
+    margin: 0 auto;
+    width: max-content;
+    box-sizing: border-box;
+    list-style: none;
+  }
+
+  .ele-cron-panel-test-item {
+    line-height: 22px;
+
+    &::before {
+      content: '';
+      width: 4px;
+      height: 4px;
+      margin: 0 6px 0 0;
+      vertical-align: 3px;
+      display: inline-block;
+      background: elVar('text-color', 'regular');
+      border-radius: 50%;
+    }
+  }
+}
+
+/* 常用列表 */
+.ele-cron-panel-list-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9;
+
+  &:not(.is-show) {
+    pointer-events: none;
+
+    .ele-cron-panel-list-wrapper {
+      opacity: 0;
+      transform: scale(0.6);
+      pointer-events: none;
+      visibility: hidden;
+    }
+  }
+}
+
+.ele-cron-panel-list-wrapper {
+  width: max-content;
+  max-height: calc(100% - 36px);
+  margin: 36px 0 0 auto;
+  padding: 8px;
+  border-radius: 6px;
+  background: elVar('bg-color', 'overlay');
+  box-shadow: elVar('box-shadow', 'light');
+  transition: all $transition-slow;
+  transform-origin: top right;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+.ele-cron-panel-list-item {
+  padding: 6px 8px 2px 8px;
+  border: 1px solid elVar('border-color');
+  border-radius: 4px;
+  transition: all $transition-base;
+  cursor: pointer;
+
+  & + .ele-cron-panel-list-item {
+    margin-top: 8px;
+  }
+
+  &:hover {
+    background: elVar('fill-color', 'lighter');
+  }
+}
+
+.ele-cron-panel-list-item-label {
+  font-size: 12px;
+  line-height: 18px;
+  margin-top: 2px;
+  opacity: 0.8;
+}
+
+.ele-cron-panel-list-item-value {
+  height: 18px;
+  line-height: 18px;
+  font-size: 12px;
+  border-radius: 4px;
+  padding: 0 6px;
+  width: max-content;
+  background: elVar('color-info', 'light-9');
+  border: 1px solid elVar('border-color');
+}
+
+/* 小屏幕 */
+@media screen and (max-width: #{$mobile-max-width}) {
+  .ele-cron-panel-content {
+    height: 220px;
+  }
+
+  .ele-cron-panel-extra {
+    flex-direction: column;
+
+    .ele-cron-panel-extra-item {
+      flex: none;
+
+      & + .ele-cron-panel-extra-item {
+        border-top: 1px solid elVar('border-color', 'light');
+        border-left: none;
+      }
+    }
+  }
+
+  .ele-cron-panel-result {
+    gap: 2px;
+  }
+}

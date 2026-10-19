@@ -1,0 +1,43 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+
+/* 折叠面板 */
+.ele-crud-split-panel.ele-split-panel {
+  height: 100%;
+
+  & > .ele-split-panel-wrap > .ele-split-panel-side {
+    border-width: 0 1px 0 0;
+  }
+}
+
+/* 侧栏搜索框 */
+.ele-crud-tree-search {
+  min-height: 32px;
+
+  &.el-input--small {
+    min-height: 24px;
+  }
+
+  &.el-input--large {
+    min-height: 40px;
+  }
+
+  .el-input__prefix-inner > .el-input__icon {
+    transform: translateY(-0.5px);
+  }
+}
+
+/* 侧栏树组件 */
+.ele-crud-tree-wrapper {
+  flex: 1 1 60px;
+  box-sizing: border-box;
+  overflow: auto;
+
+  & > .ele-crud-tree {
+    padding: 12px calc(eleVar('tree', 'item-radius') * 3);
+    #{eleVarName('tree', 'item-height')}: 34px;
+    #{eleVarName('tree', 'expand-margin')}: (
+      0 2px 0 calc(8px - #{eleVar('tree', 'item-radius')})
+    );
+  }
+}

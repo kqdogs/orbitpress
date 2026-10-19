@@ -1,0 +1,8 @@
+@use '../../style/util.scss' as *;
+
+/* 底部工具栏主题变量 */
+@mixin set-bottom-bar-var($var) {
+  .ele-bottom-bar {
+    @include set-ele-var('bottom-bar', $var);
+  }
+}

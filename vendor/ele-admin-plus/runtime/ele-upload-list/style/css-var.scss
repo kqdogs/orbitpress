@@ -1,0 +1,8 @@
+@use '../../style/util.scss' as *;
+
+/* 文件上传主题变量 */
+@mixin set-upload-list-var($var) {
+  .ele-upload-list {
+    @include set-ele-var('upload-list', $var);
+  }
+}

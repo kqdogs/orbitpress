@@ -1,0 +1,66 @@
+/* 打印容器 */
+#ele-printer-container {
+  pointer-events: none;
+  display: none;
+}
+
+/* 页眉页脚 */
+.ele-printer {
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+  table-layout: fixed;
+
+  & > thead > tr > td,
+  & > tbody > tr > td,
+  & > tfoot > tr > td {
+    padding: 0;
+    border: none;
+  }
+
+  &:not(.is-open):not(.is-static) {
+    display: none;
+  }
+
+  .ele-printer-header,
+  .ele-printer-footer {
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+  }
+
+  &:not(.is-open) .ele-printer-header,
+  &:not(.is-open) .ele-printer-footer {
+    display: none;
+  }
+
+  .ele-printer-body {
+    box-sizing: border-box;
+  }
+}
+
+/* 打印状态 */
+html.ele-printing,
+html.ele-printing > body {
+  color: #000 !important;
+  background: #fff !important;
+  height: auto !important;
+  min-height: auto !important;
+  max-height: none !important;
+  width: auto !important;
+  min-width: auto !important;
+  max-width: none !important;
+  overflow: visible !important;
+}
+
+html.ele-printing > body > * {
+  display: none !important;
+}
+
+html.ele-printing #ele-printer-container {
+  display: block !important;
+
+  * {
+    pointer-events: none !important;
+  }
+}

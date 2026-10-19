@@ -1,0 +1,55 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-viewer-var($ele);
+
+.ele-viewer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  position: relative;
+  user-select: none;
+  background: eleVar('viewer', 'bg');
+  overflow: hidden;
+}
+
+.ele-viewer-body,
+.ele-viewer-main,
+.ele-viewer-content {
+  flex-shrink: 0;
+  width: max-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* 内容 */
+.ele-viewer-content {
+  cursor: grab;
+
+  &.is-moving {
+    cursor: grabbing;
+  }
+
+  & > .ele-viewer-image {
+    flex-shrink: 0;
+    pointer-events: none;
+  }
+
+  /* 标记点 */
+  & > .ele-viewer-marker {
+    flex-shrink: 0;
+    position: absolute;
+    pointer-events: none;
+
+    & > .ele-viewer-marker-content {
+      position: relative;
+    }
+  }
+}

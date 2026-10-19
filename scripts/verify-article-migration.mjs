@@ -1,0 +1,21 @@
+import assert from 'node:assert/strict';
+import {DatabaseSync} from 'node:sqlite';
+import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
+const db=new DatabaseSync(':memory:');
+db.exec(readFileSync('.local-backups/before-article-metadata-20261020.sql','utf8'));
+const before=db.prepare('SELECT COUNT(*) count FROM posts').get().count;
+const sample=db.prepare('SELECT id,title,excerpt,tags,version FROM posts ORDER BY id LIMIT 1').get();assert(sample);
+db.exec(readFileSync('migrations/0006_article_highlights.sql','utf8'));
+assert.equal(db.prepare('SELECT COUNT(*) count FROM posts WHERE highlights IS NULL').get().count,before);
+assert.deepEqual(db.prepare('SELECT id,title,excerpt,tags,version FROM posts WHERE id=?').get(sample.id),sample);
+for(const value of ['[]','["测试亮点"]'])assert.equal(db.prepare('UPDATE posts SET highlights=? WHERE id=?').run(value,sample.id).changes,1);
+for(const value of ['invalid','{}','"text"',JSON.stringify(Array(7).fill('x'))])assert.throws(()=>db.prepare('UPDATE posts SET highlights=? WHERE id=?').run(value,sample.id));
+// A fresh import of the verified backup restores the old schema and every old row.
+const restored=new DatabaseSync(':memory:');restored.exec(readFileSync('.local-backups/before-article-metadata-20261020.sql','utf8'));
+assert.equal(restored.prepare('SELECT COUNT(*) count FROM posts').get().count,before);
+assert.deepEqual(restored.prepare('SELECT id,title,excerpt,tags,version FROM posts WHERE id=?').get(sample.id),sample);
+assert(!restored.prepare('PRAGMA table_info(posts)').all().some(row=>row.name==='highlights'));
+mkdirSync('test-results',{recursive:true});
+writeFileSync('test-results/article-migration.json',JSON.stringify({passed:true,rows:before,legacyRowsPreserved:true,arrayChecksPassed:true,backupRestoredInMemory:true},null,2));
+console.log('迁移模拟、旧数据校验、约束及备份恢复演练通过：'+before+' 篇文章');
+db.close();restored.close();

@@ -1,0 +1,37 @@
+---
+import { env } from 'cloudflare:workers';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import ArticleContent from '../../components/ArticleContent.astro';
+import AboutContent from '../../components/AboutContent.astro';
+import PageContent from '../../components/PageContent.astro';
+import HomePage from '../../components/HomePage.astro';
+import { pagePreviewInput } from '../../lib/schema';
+import { getPost, getPage, listPosts } from '../../lib/repository';
+import { ApiError, readBody } from '../../lib/http';
+import { authenticate } from '../../lib/security';
+if (Astro.request.method !== 'POST') return new Response('请从装修页面打开预览',{status:405,headers:{Allow:'POST','Cache-Control':'no-store','X-Robots-Tag':'noindex, nofollow'}});
+let body,post,page;
+try {
+  // Consume the bounded body before returning auth errors (workerd).
+  body=await readBody(Astro.request,pagePreviewInput,140000);
+  await authenticate(Astro.request,env.DB,'admin');
+  if(body.page==='article'){
+    post=body.postId?await getPost(env.DB,body.postId,false,true):(await listPosts(env.DB,{limit:1})).items[0];
+    if(!post)throw new ApiError(404,'NOT_FOUND','没有找到可预览的已发布文章，请重新选择');
+  }
+  if(body.page==='page'){
+    page=body.pageId?await getPage(env.DB,body.pageId):{title:'独立页面模板',excerpt:'所有未单独设置布局的独立页面将使用这个模板。',body:'## 页面正文\n\n这里展示页面编辑器中的正文。装修只调整布局，不会覆盖原文。\n\n## 自由组合组件\n\n在左侧组件库添加组件，或拖动组件调整位置。'};
+    if(!page||('status' in page&&page.status==='trash'))throw new ApiError(404,'NOT_FOUND','页面不存在或已移到回收站');
+  }
+} catch(error) {
+  const known=error instanceof ApiError;
+  return new Response(JSON.stringify({error:{code:known?error.code:'INTERNAL',message:known?error.message:'预览生成失败'}}),{status:known?error.status:500,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Robots-Tag':'noindex, nofollow'}});
+}
+Astro.response.headers.set('Cache-Control','no-store'); Astro.response.headers.set('X-Robots-Tag','noindex, nofollow');
+---
+<SiteLayout preview settingsOverride={body.settings} title={body.page==='home'?undefined:body.page==='article'?post?.title:body.page==='page'?page?.title:body.settings.aboutDesign.title}>
+ {body.page==='home'&&<HomePage settings={body.settings} builder={body.builder}/>}
+ {body.page==='article'&&post&&<ArticleContent post={post} settings={body.settings} builder={body.builder}/>} 
+ {body.page==='about'&&<AboutContent settings={body.settings} builder={body.builder}/>}
+ {body.page==='page'&&page&&<PageContent page={page} settings={body.settings} builder={body.builder}/>}
+</SiteLayout>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <title>YaChin · 连接世界的 Y 航标</title>
+  <defs>
+    <linearGradient id="bg" x1="18" y1="8" x2="112" y2="126" gradientUnits="userSpaceOnUse"><stop stop-color="#143657"/><stop offset="1" stop-color="#060F20"/></linearGradient>
+    <linearGradient id="y" x1="37" y1="31" x2="87" y2="98" gradientUnits="userSpaceOnUse"><stop stop-color="#A9F4F1"/><stop offset=".5" stop-color="#51B9FA"/><stop offset="1" stop-color="#4E6BFF"/></linearGradient>
+    <linearGradient id="orbit" x1="18" y1="84" x2="113" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#73E5DF" stop-opacity=".15"/><stop offset=".6" stop-color="#7CDCEB"/><stop offset="1" stop-color="#ADC8FF"/></linearGradient>
+  </defs>
+  <rect x="2" y="2" width="124" height="124" rx="32" fill="url(#bg)"/>
+  <rect x="2.5" y="2.5" width="123" height="123" rx="31.5" stroke="#8CC8F4" stroke-opacity=".2"/>
+  <circle cx="64" cy="64" r="46" stroke="#5996C4" stroke-opacity=".13"/>
+  <path d="M39 35 63 63 87 35M63 63V96" stroke="#081526" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M39 35 63 63 87 35M63 63V96" stroke="url(#y)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M24 79C12 95 39 99 72 84c32-14 48-34 34-36-5-1-11 0-17 2" stroke="url(#orbit)" stroke-width="3.5" stroke-linecap="round"/>
+  <circle cx="104" cy="49" r="5" fill="#F9D989"/>
+  <circle cx="27" cy="87" r="2.5" fill="#68CFE6"/>
+</svg>

@@ -1,0 +1,31 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+
+.ele-breadcrumb {
+  white-space: nowrap;
+  font-size: inherit;
+
+  &::after,
+  &::before {
+    display: none;
+  }
+
+  .el-breadcrumb__item {
+    float: none;
+    display: inline;
+    vertical-align: 1px;
+
+    .el-breadcrumb__inner {
+      color: elVar('text-color', 'secondary');
+      font-weight: normal;
+
+      &.is-link:hover {
+        color: elVar('color-primary');
+      }
+    }
+
+    &:last-child .el-breadcrumb__inner {
+      color: elVar('text-color', 'regular');
+    }
+  }
+}

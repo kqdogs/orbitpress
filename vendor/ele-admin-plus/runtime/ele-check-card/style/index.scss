@@ -1,0 +1,72 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-check-card-var($ele);
+
+.ele-check-card {
+  box-sizing: border-box;
+  transition: (
+    color $transition-base,
+    border-color $transition-base,
+    border-width $transition-base,
+    box-shadow $transition-base
+  );
+  position: relative;
+  cursor: pointer;
+
+  /* 选中箭头 */
+  .ele-check-card-arrow {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 0;
+    height: 0;
+    border: eleVar('check-card', 'arrow-size') solid transparent;
+    border-top-color: eleVar('check-card', 'arrow-color');
+    border-right-color: eleVar('check-card', 'arrow-color');
+    border-top-right-radius: eleVar('check-card', 'arrow-radius');
+    box-sizing: border-box;
+    display: none;
+  }
+
+  /* 边框 */
+  &.is-bordered {
+    border: 1px solid eleVar('check-card', 'border-color');
+    border-radius: eleVar('check-card', 'radius');
+
+    &:not(.is-disabled):not(.is-checked):hover {
+      border-color: eleVar('check-card', 'hover-border-color');
+      background: eleVar('check-card', 'hover-bg');
+    }
+
+    &.is-checked {
+      border-color: eleVar('check-card', 'active-border-color');
+    }
+  }
+
+  /* 选中 */
+  &.is-checked {
+    background: eleVar('check-card', 'active-bg');
+
+    & > .ele-check-card-arrow {
+      display: block;
+    }
+  }
+
+  /* 禁用 */
+  &.is-disabled {
+    background: eleVar('check-card', 'disabled-bg');
+    opacity: eleVar('check-card', 'disabled-opacity');
+    cursor: not-allowed;
+
+    &.is-bordered.is-checked {
+      border-color: eleVar('check-card', 'disabled-border-color');
+    }
+
+    &.is-checked > .ele-check-card-arrow {
+      border-top-color: eleVar('check-card', 'arrow-disabled-color');
+      border-right-color: eleVar('check-card', 'arrow-disabled-color');
+    }
+  }
+}

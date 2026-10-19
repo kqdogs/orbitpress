@@ -1,0 +1,41 @@
+---
+import { env } from 'cloudflare:workers';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import Icon from '../components/Icon.astro';
+import { listPosts,categories,resolvePagePath,resolvePostPath,siteSettings } from '../lib/repository';
+import PageContent from '../components/PageContent.astro';
+import StudioDocument from '../components/StudioDocument.astro';
+import ArticleContent from '../components/ArticleContent.astro';
+import AboutContent from '../components/AboutContent.astro';
+import { postPath,canonicalPostLocation } from '../lib/permalinks';
+const path=Astro.params.path||'';const parts=path.split('/').filter(Boolean);
+const {value:settings}=await siteSettings(env.DB);const studio=Astro.url.pathname.replace(/\/$/,'')===settings.adminPath;if(studio){Astro.response.headers.set('Cache-Control','no-store');Astro.response.headers.set('X-Robots-Tag','noindex, nofollow');}const cats=await categories(env.DB);const category=parts[0]==='category'&&parts.length===2?cats.find(c=>c.slug===parts[1]):null;
+const listing=parts.length===1&&['videos','tutorials'].includes(parts[0])||!!category;
+const about=path==='about';
+const post=!listing&&!about?await resolvePostPath(env.DB,Astro.url.pathname,settings):null;
+const articleLocation=post?canonicalPostLocation(Astro.url,post,settings):null;
+if(!studio&&articleLocation)return Astro.redirect(articleLocation,301);
+const page=!listing&&!about&&!post?await resolvePagePath(env.DB,Astro.url.pathname):null;
+const is404=!studio&&!listing&&!about&&!post&&!page;if(is404)Astro.response.status=404;
+const filter=Astro.url.searchParams.get('type')||'all';
+const catFilters=[...new Set(Astro.url.searchParams.getAll('category'))].filter(slug=>cats.some(cat=>cat.slug===slug)).slice(0,12);
+const kind=parts[0]==='videos'?'video':parts[0]==='tutorials'?'article':filter==='video'?'video':filter==='article'?'article':undefined;
+let data={items:[] as import('../lib/schema').Post[],nextCursor:null as string|null};
+try{if(listing)data=await listPosts(env.DB,{category:category?.slug,categories:category?undefined:catFilters,kind,limit:12,cursor:Astro.url.searchParams.get('cursor')||undefined});}catch{Astro.response.status=400;}
+const title=category?.name||(listing?(parts[0]==='videos'?'最新视频':'教程文章'):about?settings.aboutDesign.title:post?.title||page?.title||'页面未找到');
+const nextQuery=new URLSearchParams(Astro.url.searchParams);if(data.nextCursor)nextQuery.set('cursor',data.nextCursor);
+---
+{studio?<StudioDocument/>:<SiteLayout title={title} description={post?.excerpt||page?.excerpt||category?.description}>
+ {post&&<link slot="head" rel="canonical" href={new URL(postPath(post,settings),Astro.url.origin).href}/>}
+ {page&&<link slot="head" rel="canonical" href={new URL(`/${page.slug}/`,Astro.url.origin).href}/>}
+ {listing&&<div class="container listing"><div class="breadcrumb"><a href="/">首页</a><span>›</span><span>{title}</span></div><div class="listing-heading"><span class="eyebrow">{parts[0]==='videos'?'LATEST VIDEOS':category?'EXPLORE TOPICS':'TUTORIALS & GUIDES'}</span><h1>{title}</h1><p>{category?.description||(parts[0]==='videos'?'视频讲解 + 图文教程，每一步都清楚明白。':'详细的操作步骤、实测经验与实用工具，持续更新。')}</p></div>{category?<nav class="filter-tabs" aria-label="内容筛选">{[['all','全部内容'],['video','视频教程'],['article','图文教程']].map(([type,label])=><a class:list={[{selected:filter===type}]} href={`?type=${type}`}>{label}</a>)}</nav>:<form class="filter-tabs category-filter" aria-label="分类多选筛选" method="get"><a class:list={[{selected:catFilters.length===0}]} href={Astro.url.pathname}>全部分类</a>{cats.map(cat=><label class:list={[{selected:catFilters.includes(cat.slug)}]}><input type="checkbox" name="category" value={cat.slug} checked={catFilters.includes(cat.slug)}/>{cat.name}<small>{cat.count}</small></label>)}<button type="submit" class="button filter-submit">筛选</button></form>}<div class="results-label">探索最新内容 <span>视频与文章，统一整理</span></div><div class="post-grid">{data.items.map(p=><PostCard post={p} author={settings.title} settings={settings}/>)}</div>{!data.items.length&&<div class="empty-state"><Icon name="globe" size={42}/><h2>内容准备中</h2><p>新的实用教程即将发布，先看看其他分类。</p><a class="button" href="/tutorials/">浏览全部教程</a></div>}{data.nextCursor&&<a class="button load-more" href={`?${nextQuery}`}>加载更多内容 ↓</a>}</div>}
+ {post&&<ArticleContent post={post} settings={settings}/>}
+ {page&&<PageContent page={page} settings={settings}/>}
+ {about&&<AboutContent settings={settings}/>}
+ {is404&&<div class="container empty-state error-page"><span class="error-code">404</span><h1>这个页面暂时找不到</h1><p>链接可能已更改，试着搜索你需要的教程。</p><a class="button primary" href="/">回到首页</a></div>}
+</SiteLayout>}
+
+<script>
+ document.querySelector<HTMLFormElement>('.category-filter')?.addEventListener('change',event=>{(event.currentTarget as HTMLFormElement).requestSubmit();});
+</script>

@@ -1,0 +1,17 @@
+---
+import {env} from 'cloudflare:workers';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import PageContent from '../../components/PageContent.astro';
+import {contentPreviewInput} from '../../lib/schema';
+import {ApiError,readBody} from '../../lib/http';
+import {authenticate} from '../../lib/security';
+import {siteSettings,getPage} from '../../lib/repository';
+if(Astro.request.method!=='POST')return new Response('请从页面编辑器打开预览',{status:405,headers:{Allow:'POST','Cache-Control':'no-store'}});
+let page;
+try{page=await readBody(Astro.request,contentPreviewInput);await authenticate(Astro.request,env.DB,'admin');if(page.pageId&&!await getPage(env.DB,page.pageId))throw new ApiError(404,'NOT_FOUND','页面不存在');}
+catch(error){const known=error instanceof ApiError;return new Response(JSON.stringify({error:{code:known?error.code:'INTERNAL',message:known?error.message:'预览暂时不可用'}}),{status:known?error.status:500,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'}});}
+Astro.response.headers.set('Cache-Control','no-store');Astro.response.headers.set('X-Robots-Tag','noindex, nofollow');
+page.title ||= '未命名页面';
+const {value:settings}=await siteSettings(env.DB);
+---
+<SiteLayout title={page.title} description={page.excerpt} preview settingsOverride={settings}><PageContent page={{...page,id:page.pageId}} settings={settings}/></SiteLayout>

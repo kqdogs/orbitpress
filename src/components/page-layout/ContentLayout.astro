@@ -1,0 +1,30 @@
+---
+import { env } from 'cloudflare:workers';
+import type { PageLayout, Settings, Category, Post } from '../../lib/schema';
+import { categories, listPosts } from '../../lib/repository';
+import { blockName } from '../../lib/page-layouts';
+import LayoutBlock from './LayoutBlock.astro';
+import HomeSection from '../home/HomeSection.astro';
+import {loadHomeComponentData} from '../../lib/home-components';
+import '../../styles/page-layout.css';
+interface Props {layout?:PageLayout;settings:Settings;toc?:{id:string;text:string;level:number}[];builder?:boolean;home?:boolean}
+const {layout,settings,toc=[],builder=false,home=false}=Astro.props;
+const blocks=layout?[...layout.main,...layout.left,...layout.right].filter(block=>block.enabled):[];
+const [cats,posts]=await Promise.all([
+ blocks.some(b=>b.type==='categories')?categories(env.DB):Promise.resolve([] as Category[]),
+ blocks.some(b=>b.type==='latest')?listPosts(env.DB,{limit:8}).then(value=>value.items):Promise.resolve([] as Post[]),
+]);
+const regions=layout?(['left','main','right'] as const).filter(region=>region==='main'||layout.sidebar==='both'||layout.sidebar===region):[];
+const homeTypes=new Set(blocks.filter(block=>block.type.startsWith('home-')).map(block=>block.type));
+const homeData=homeTypes.size?await loadHomeComponentData(env.DB,settings,homeTypes):undefined;
+---
+{layout?<div class:list={['container','content-layout',`content-layout-${layout.sidebar}`,{'content-layout-wide':layout.width==='wide','content-layout-builder':builder,'content-layout-home':home,'home-layout':home}]} style={`--home-columns:${settings.homeOptions.columns}`}>
+ {regions.map(region=><div class:list={['layout-region',`layout-region-${region}`]} data-layout-region={builder?region:undefined}>
+  {region==='right'&&<slot name="right-start"/>}
+  {layout[region].map(block=>(block.enabled||builder)&&<div class:list={['layout-block',{'layout-block-disabled':!block.enabled,'layout-block-home':block.type.startsWith('home-')}]} data-layout-block={builder?block.id:undefined} data-home-section={builder&&home&&block.type.startsWith('home-')?block.type.slice(5):undefined}>
+   {builder&&<button type="button" class="layout-edit-handle" data-layout-handle={block.id} data-home-handle={home&&block.type.startsWith('home-')?block.type.slice(5):undefined} aria-label={`拖动${blockName(block)}`}>⠿ <span>{blockName(block)}</span><small>{block.enabled?'点击编辑 · 拖动排序':'已隐藏'}</small></button>}
+   {block.enabled?(block.type==='content'?<slot/>:block.type.startsWith('home-')&&homeData?<HomeSection block={block} settings={settings} data={homeData}/>:<LayoutBlock block={block} settings={settings} categories={cats} posts={posts} toc={toc}/>):<p class="layout-widget-empty">此组件已隐藏</p>}
+  </div>)}
+  {builder&&!layout[region].length&&<p class="layout-empty-region">将组件拖到这里，或在组件库中添加</p>}
+ </div>)}
+</div>:<slot/>}

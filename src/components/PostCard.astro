@@ -1,0 +1,14 @@
+---
+import type {Post, Settings} from '../lib/schema';
+import { postPath } from '../lib/permalinks';
+import {tagHref} from '../lib/article-metadata';
+const {post,settings,search}=Astro.props as {post:Post;author:string;settings:Settings;search?:boolean};
+const href = postPath(post,settings);
+---
+<article class:list={['post-card',{'video-card':!!post.videoId,'search-card':!!search}]}>
+ <a href={href} class="card-image" aria-label={post.title}>
+  <img src={post.cover||'/images/ai-cover.svg'} alt={post.title} width="640" height="360" loading="lazy"/>
+  {post.videoId&&<span class="play-badge">{post.categoryName}</span>}
+ </a>
+ <div class="card-content">{!post.videoId&&<div class="card-kicker"><a class="category-label" href={`/category/${post.categorySlug}/`}>{post.categoryName}</a><time>{post.publishedAt?.slice(0,10)}</time></div>}<h3><a href={href}>{post.title}</a></h3>{search?<><time class="search-date">{post.publishedAt?.slice(0,10).replaceAll('-','/')}</time><div class="search-terms"><a href={`/category/${post.categorySlug}/`}>{post.categoryName}</a>{post.tags.slice(0,3).map(tag=><a rel="tag" href={tagHref(tag)}>{tag}</a>)}</div></>:<p>{post.excerpt}</p>}{post.videoId&&!search&&<div class="card-meta"><time>{post.publishedAt?.slice(0,10)}</time></div>}</div>
+</article>

@@ -1,0 +1,325 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use './css-var.scss' as *;
+@use './tabs.scss';
+@use './header.scss';
+@use './sidebar.scss';
+
+@include set-layout-var($ele);
+
+.ele-admin-layout {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  background: eleVar('layout', 'bg');
+  box-sizing: border-box;
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+
+  & > .ele-admin-header {
+    z-index: calc(#{eleVar('layout', 'index')} + 4);
+  }
+}
+
+.ele-admin-main,
+.ele-admin-body,
+.ele-admin-wrapper,
+.ele-admin-content {
+  flex: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.ele-admin-layout.is-row-direction,
+.ele-admin-main.is-row-direction {
+  flex-direction: row;
+}
+
+.ele-admin-wrapper {
+  position: relative;
+
+  & > .ele-backtop {
+    z-index: calc(#{eleVar('layout', 'index')} + 1);
+  }
+}
+
+/* 主体宽度 */
+.ele-admin-layout.is-row-direction > .ele-admin-main,
+.ele-admin-main.is-row-direction > .ele-admin-body {
+  flex: 0 1 auto;
+  transition: width $transition-base;
+  width: 100%;
+}
+
+.ele-admin-layout > .ele-admin-side + .ele-admin-main,
+.ele-admin-main > .ele-admin-side + .ele-admin-body {
+  width: calc(100% - #{eleVar('sidebar', 'width')});
+}
+
+.ele-admin-side.is-collapse + .ele-admin-main,
+.ele-admin-side.is-collapse + .ele-admin-body {
+  width: calc(100% - #{eleVar('sidebar', 'collapse-width')});
+}
+
+.ele-admin-side.is-mix + .ele-admin-main,
+.ele-admin-side.is-mix + .ele-admin-body {
+  $box-width: eleVar('sidebox', 'width');
+  width: calc(100% - #{eleVar('sidebar', 'mix-width')} - #{$box-width});
+}
+
+.ele-admin-side.is-mix.is-collapse + .ele-admin-main,
+.ele-admin-side.is-mix.is-collapse + .ele-admin-body {
+  width: calc(100% - #{eleVar('sidebox', 'width')});
+}
+
+.ele-admin-side.is-compact + .ele-admin-main,
+.ele-admin-side.is-compact + .ele-admin-body {
+  $box-width: eleVar('sidebar', 'collapse-width');
+  width: calc(100% - #{eleVar('sidebar', 'mix-width')} - #{$box-width});
+}
+
+.ele-admin-side.is-compact.is-collapse + .ele-admin-main,
+.ele-admin-side.is-compact.is-collapse + .ele-admin-body {
+  width: calc(100% - #{eleVar('sidebar', 'collapse-width')});
+}
+
+.ele-admin-side.is-box + .ele-admin-main,
+.ele-admin-side.is-box + .ele-admin-body {
+  width: calc(100% - #{eleVar('sidebox', 'width')});
+}
+
+.ele-admin-side.is-box.is-compact + .ele-admin-main,
+.ele-admin-side.is-box.is-compact + .ele-admin-body {
+  width: calc(100% - #{eleVar('sidebar', 'collapse-width')});
+}
+
+.ele-admin-layout.is-row-direction.is-mobile > .ele-admin-main,
+.ele-admin-layout.is-row-direction.is-fixed-body > .ele-admin-main,
+.ele-admin-layout.is-fixed-body > .ele-admin-main > .ele-admin-body,
+.ele-admin-layout.is-row-direction.is-maximized > .ele-admin-main,
+.ele-admin-layout.is-maximized > .ele-admin-main > .ele-admin-body {
+  width: 100%;
+}
+
+.ele-admin-layout {
+  /* 固定主体 */
+  &.is-fixed-body {
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  &.is-fixed-body > .ele-admin-main,
+  &.is-fixed-body > .ele-admin-main > .ele-admin-body,
+  &.is-fixed-body > .ele-admin-main > .ele-admin-side,
+  &.is-fixed-body > .ele-admin-side {
+    height: 100%;
+  }
+
+  &.is-fixed-body > .ele-admin-main,
+  &.is-fixed-body > .ele-admin-main > .ele-admin-body,
+  &.is-fixed-body > .ele-admin-main > .ele-admin-body > .ele-admin-wrapper {
+    overflow: auto;
+  }
+
+  &.is-fixed-body > .ele-admin-main > .ele-admin-body > .ele-admin-wrapper {
+    & > .ele-admin-content {
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    & > .ele-backtop {
+      z-index: eleVar('layout', 'index');
+    }
+  }
+
+  /* 内容全屏 */
+  &.is-maximized > .ele-admin-header,
+  &.is-maximized > .ele-admin-main > .ele-admin-header,
+  &.is-maximized > .ele-admin-main > .ele-admin-side,
+  &.is-maximized > .ele-admin-side,
+  &.is-expanded > .ele-admin-main > .ele-admin-body > .ele-admin-tabs {
+    display: none;
+  }
+
+  /* 移动端风格 */
+  &.is-mobile > .ele-admin-side {
+    width: 0;
+    z-index: calc(#{eleVar('layout', 'mask-index')} + 1);
+    clip-path: none !important;
+
+    & > .ele-admin-sidebar:not(.is-dark),
+    & > .ele-admin-sidebox:not(.is-dark) {
+      background: eleVar('sidebar', 'mobile-bg');
+      backdrop-filter: eleVar('sidebar', 'mobile-backdrop-filter');
+    }
+
+    & > .ele-admin-sidebar.is-dark,
+    & > .ele-admin-sidebox.is-dark {
+      background: eleVar('sidebar', 'mobile-dark-bg');
+      backdrop-filter: eleVar('sidebar', 'mobile-dark-backdrop-filter');
+    }
+  }
+
+  &.is-collapse > .ele-admin-side {
+    & > .ele-admin-sidebar,
+    & > .ele-admin-sidebox {
+      visibility: hidden;
+    }
+
+    & > .ele-admin-sidebar {
+      transform: translateX(-100%);
+    }
+
+    & > .ele-admin-sidebar.is-mix,
+    & > .ele-admin-sidebox {
+      $mix-width: eleVar('sidebar', 'mix-width');
+      $box-width: eleVar('sidebox', 'width');
+      transform: translateX(calc(#{$box-width} * -1 - #{$mix-width}));
+    }
+  }
+
+  &.is-collapse > .ele-admin-mask,
+  &:not(.is-mobile) > .ele-admin-mask {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  /* 禁用过渡效果 */
+  &.is-transition-disabled {
+    & > .ele-admin-header,
+    & > .ele-admin-main > .ele-admin-header,
+    & > .ele-admin-main > .ele-admin-side > .ele-admin-sidebar,
+    & > .ele-admin-main > .ele-admin-side > .ele-admin-sidebox,
+    & > .ele-admin-side > .ele-admin-sidebar,
+    & > .ele-admin-side > .ele-admin-sidebox,
+    & > .ele-admin-main,
+    & > .ele-admin-main > .ele-admin-body {
+      transition: none !important;
+    }
+  }
+}
+
+/* logo */
+.ele-admin-logo,
+.ele-admin-logo-title {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: eleVar('logo', 'color');
+  font-size: eleVar('logo', 'size');
+  font-family: eleVar('logo', 'family');
+  height: eleVar('header', 'height');
+  position: relative;
+  overflow: hidden;
+
+  h1 {
+    margin: 0;
+    font-weight: 500;
+    font-size: inherit;
+    word-break: break-all;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+}
+
+.ele-admin-logo > img {
+  width: 30px;
+  height: 30px;
+
+  & + h1 {
+    margin-left: 8px;
+  }
+}
+
+.ele-admin-sidebar.is-collapse > .ele-admin-logo > img + h1 {
+  display: none;
+}
+
+.ele-admin-header > .ele-admin-logo {
+  $tool-padding: eleVar('header', 'tool-padding');
+  margin-left: calc(#{eleVar('header', 'tools-padding')} + #{$tool-padding});
+}
+
+.ele-admin-header.is-dark > .ele-admin-logo,
+.ele-admin-header.is-primary > .ele-admin-logo,
+.ele-admin-sidebar.is-dark > .ele-admin-logo,
+.ele-admin-sidebar.is-dark > .ele-admin-logo-title,
+.ele-admin-sidebox.is-dark > .ele-admin-logo {
+  color: eleVar('logo', 'dark-color');
+}
+
+/* 操作按钮 */
+.ele-admin-tool {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: eleVar('header', 'tool-height');
+  padding: 0 eleVar('header', 'tool-padding');
+  border-radius: eleVar('header', 'tool-radius');
+  transition: (color $transition-base, background-color $transition-base);
+  box-sizing: border-box;
+  cursor: pointer;
+
+  &:hover {
+    background: eleVar('header', 'tool-hover-bg');
+  }
+
+  & > .el-dropdown {
+    color: inherit;
+    cursor: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    align-items: center;
+    height: 100%;
+  }
+}
+
+.ele-admin-header.is-dark .ele-admin-tool:hover,
+.ele-admin-header.is-primary .ele-admin-tool:hover,
+.ele-admin-sidebar.is-dark .ele-admin-tool:hover,
+.ele-admin-sidebox.is-dark .ele-admin-tool:hover {
+  background: eleVar('header', 'dark-tool-hover-bg');
+}
+
+.ele-admin-sidebar .ele-admin-tool,
+.ele-admin-sidebox .ele-admin-tool {
+  height: eleVar('sidebar', 'tool-height');
+  padding: 0;
+}
+
+.ele-admin-sidebar.is-dark .ele-admin-tool,
+.ele-admin-sidebox.is-dark .ele-admin-tool {
+  color: eleVar('header', 'dark-color');
+}
+
+/* 模态框容器 */
+.ele-admin-modals {
+  flex-shrink: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: eleVar('layout', 'index');
+}
+
+/* 遮罩 */
+.ele-admin-mask {
+  flex-shrink: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: eleVar('layout', 'mask-index');
+  background: elVar('overlay-color', 'lighter');
+  transition: all $transition-base;
+}

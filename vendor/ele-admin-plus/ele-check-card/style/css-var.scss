@@ -1,0 +1,8 @@
+@use '../../style/util.scss' as *;
+
+/* 可选卡片主题变量 */
+@mixin set-check-card-var($var) {
+  .ele-check-card {
+    @include set-ele-var('check-card', $var);
+  }
+}

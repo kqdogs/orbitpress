@@ -1,0 +1,8 @@
+@use '../../../../style/themes/default.scss' as *;
+@use '../../../../style/util.scss' as *;
+
+/* Backtop */
+body .el-backtop {
+  box-shadow: elVar('box-shadow', 'light');
+  transition: (color $transition-base, background-color $transition-base);
+}

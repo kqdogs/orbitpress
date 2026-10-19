@@ -1,0 +1,273 @@
+@use '../../../style/themes/default.scss' as *;
+@use '../../../style/util.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-message-var($ele);
+
+.ele-message.el-message {
+  gap: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: none;
+  width: max-content;
+  pointer-events: auto;
+  align-items: flex-start;
+  margin: 0 auto eleVar('message', 'space') auto;
+  transition: margin-bottom 0.2s;
+  position: static !important;
+  left: auto !important;
+  top: auto !important;
+  transform: none;
+  opacity: 1;
+
+  & > .el-message__content {
+    display: none;
+  }
+
+  /* 徽章 */
+  & > .el-message__badge {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: 0;
+    height: 0;
+    overflow: visible;
+    order: 2;
+    z-index: calc(#{eleVar('message', 'index')} + 2);
+    transition: (
+      margin-top 0.4s,
+      transform elVar('transition-duration'),
+      opacity elVar('transition-duration')
+    );
+
+    & > .el-badge__content {
+      position: absolute;
+      top: 8px;
+      right: -8px;
+      transform: translateY(-100%);
+    }
+  }
+
+  /* 主体 */
+  & > .el-message__icon {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    line-height: normal;
+    font-style: normal;
+    display: flex;
+    flex-shrink: 0;
+    color: eleVar('message', 'color');
+    font-size: eleVar('message', 'size');
+    padding: eleVar('message', 'padding');
+    box-shadow: eleVar('message', 'shadow');
+    border-radius: eleVar('message', 'radius');
+    background: elVar('color-primary', 'light-9');
+    background:
+      linear-gradient(transparent 0, #{elVar('color-primary', 'light-9')} 0),
+      eleVar('message', 'bg');
+    border: 0 solid elVar('color-primary', 'light-8');
+    z-index: calc(#{eleVar('message', 'index')} + 1);
+    transition: (
+      margin-top 0.4s,
+      transform elVar('transition-duration'),
+      opacity elVar('transition-duration')
+    );
+    box-sizing: border-box;
+    position: relative;
+  }
+}
+
+.ele-message + .ele-message {
+  margin-top: 0 !important;
+}
+
+/* 图标 */
+.ele-message-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: elVar('color-primary');
+  font-size: eleVar('message', 'icon-size');
+  margin: eleVar('message', 'icon-margin');
+}
+
+/* 关闭按钮 */
+.ele-message-close {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: eleVar('message', 'close-size');
+  height: eleVar('message', 'close-size');
+  line-height: eleVar('message', 'close-size');
+  color: eleVar('message', 'close-color');
+  font-size: eleVar('message', 'close-font-size');
+  margin: eleVar('message', 'close-margin');
+  border-radius: eleVar('message', 'close-radius');
+  transition: (color $transition-base, background-color $transition-base);
+  cursor: pointer;
+
+  &:hover {
+    color: eleVar('message', 'close-hover-color');
+    background: eleVar('message', 'close-hover-bg');
+  }
+}
+
+/* 情景色类型 */
+.ele-message.el-message--success > .el-message__icon {
+  background: elVar('color-success', 'light-9');
+  background:
+    linear-gradient(transparent 0, #{elVar('color-success', 'light-9')} 0),
+    eleVar('message', 'bg');
+  border-color: elVar('color-success', 'light-7');
+
+  & > .ele-message-icon {
+    color: elVar('color-success');
+  }
+}
+
+.ele-message.el-message--warning > .el-message__icon {
+  background: elVar('color-warning', 'light-9');
+  background:
+    linear-gradient(transparent 0, #{elVar('color-warning', 'light-9')} 0),
+    eleVar('message', 'bg');
+  border-color: elVar('color-warning', 'light-7');
+
+  & > .ele-message-icon {
+    color: elVar('color-warning');
+  }
+}
+
+.ele-message.el-message--error > .el-message__icon {
+  background: elVar('color-error', 'light-9');
+  background:
+    linear-gradient(transparent 0, #{elVar('color-error', 'light-9')} 0),
+    eleVar('message', 'bg');
+  border-color: elVar('color-error', 'light-7');
+
+  & > .ele-message-icon {
+    color: elVar('color-error');
+  }
+}
+
+.ele-message.el-message--info > .el-message__badge > .el-badge__content,
+.ele-message.is-loading > .el-message__badge > .el-badge__content {
+  background: elVar('color-primary');
+}
+
+/* 简约风格 */
+.ele-message.is-plain.el-message {
+  background: none;
+  box-shadow: none;
+}
+
+.ele-message.is-plain > .el-message__icon,
+.ele-message.is-plain-alert > .el-message__icon {
+  background: eleVar('message', 'plain-bg');
+}
+
+/* 彩色风格 */
+.ele-message.is-alert > .el-message__icon {
+  color: elVar('color-primary');
+  padding: eleVar('message', 'alert-padding');
+  border-width: 1px;
+  box-shadow: none;
+}
+
+.ele-message.is-plain-alert > .el-message__icon {
+  color: elVar('color-primary');
+}
+
+.el-message--success.is-alert > .el-message__icon,
+.el-message--success.is-plain-alert > .el-message__icon {
+  color: elVar('color-success');
+}
+
+.el-message--warning.is-alert > .el-message__icon,
+.el-message--warning.is-plain-alert > .el-message__icon {
+  color: elVar('color-warning');
+}
+
+.el-message--error.is-alert > .el-message__icon,
+.el-message--error.is-plain-alert > .el-message__icon {
+  color: elVar('color-error');
+}
+
+/* 加载框 */
+.ele-message.is-loading::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: opacity elVar('transition-duration');
+  z-index: eleVar('message', 'index');
+}
+
+/* 遮罩 */
+.ele-message.is-show-mask::before {
+  background: eleVar('message', 'mask-color');
+}
+
+/* 居中 */
+.ele-message.is-centered {
+  margin: 0 !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  align-items: center;
+  justify-content: center;
+
+  &.el-message-fade-enter-from > .el-message__icon,
+  &.el-message-fade-leave-to > .el-message__icon {
+    transform: scale(0.6);
+    margin-top: 0;
+  }
+}
+
+/* 进入和关闭动画 */
+.ele-message.el-message-fade-enter-from,
+.ele-message.el-message-fade-leave-to {
+  margin-bottom: 0;
+
+  & > .el-message__icon,
+  & > .el-message__badge {
+    opacity: 0;
+    margin-top: -88px;
+  }
+
+  &::before {
+    opacity: 0;
+  }
+}
+
+/* 容器 */
+.ele-message-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  pointer-events: none;
+  overflow: hidden;
+
+  & > .ele-message:first-child {
+    margin-top: eleVar('message', 'space');
+  }
+
+  &.is-hide {
+    display: none;
+  }
+}

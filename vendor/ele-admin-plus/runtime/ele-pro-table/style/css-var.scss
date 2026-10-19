@@ -1,0 +1,42 @@
+@use '../../style/util.scss' as *;
+
+/* 高级表格主题变量 */
+@mixin set-pro-table-var($var) {
+  .ele-pro-table {
+    @include set-ele-var('pro-table', $var);
+  }
+
+  .ele-tool-column {
+    @include set-ele-var('tool-column', $var);
+  }
+}
+
+/* 高级表格高度铺满 */
+@mixin flex-pro-table() {
+  & > .ele-pro-table {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    & > .ele-pro-table-view {
+      flex: 1;
+      height: 100%;
+      overflow: hidden;
+    }
+  }
+}
+
+@mixin flex-auto-pro-table() {
+  & > .ele-pro-table {
+    flex: auto;
+    display: flex;
+    flex-direction: column;
+
+    & > .ele-pro-table-view {
+      flex: eleVar('pro-table', 'flex');
+      height: eleVar('pro-table', 'min-height');
+      overflow: hidden;
+    }
+  }
+}

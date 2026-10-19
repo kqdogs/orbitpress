@@ -1,0 +1,235 @@
+/** 简约主题暗黑(css-var 模式) */
+@use 'sass:map';
+@use 'element-plus/theme-chalk/src/mixins/_var.scss' as el;
+@use 'ele-admin-plus/es/style/util.scss' as *;
+@use 'ele-admin-plus/es/style/themes/theme-util.scss' as *;
+$theme-simple-dark-selector: 'html.ele-theme-simple-dark' !default;
+
+$ele-simple-dark: () !default;
+$ele-simple-dark: map.deep-merge(
+  (
+    'card': (
+      'radius': 12px
+    ),
+    'modal': (
+      'bg': elVar('bg-color', 'overlay'),
+      'radius': 12px
+    ),
+    'drawer': (
+      'bg': elVar('bg-color', 'overlay')
+    ),
+    'table-select': (
+      'tr-bg': #101622
+    ),
+    'upload-list': (
+      'tool-bg': hsla(228deg, 16%, 32%, 0.8),
+      'tool-hover-bg': hsla(228deg, 16%, 32%, 0.8),
+      'progress-tool-bg': hsla(228deg, 16%, 32%, 0.4),
+      'progress-tool-hover-bg': hsla(228deg, 16%, 32%, 0.8)
+    ),
+    'chat': (
+      'side-bg': elVar('bg-color', 'page'),
+      'file-tool-border': none,
+      'file-tool-hover-bg': elVar('bg-color', 'overlay'),
+      'file-tool-hover-border': none,
+      'backbottom-border': none,
+      'backbottom-hover-bg': elVar('bg-color', 'overlay')
+    ),
+    'segmented': (
+      'bg': elVar('border-color', 'lighter')
+    ),
+    'image-viewer': (
+      'tool-bg': hsla(228deg, 16%, 32%, 0.6),
+      'tool-hover-bg': hsla(228deg, 16%, 32%, 0.8),
+      'tool-action-hover-bg': hsla(228deg, 16%, 32%, 0.4)
+    ),
+    'viewer': (
+      'bg': radial-gradient(#3c4e6c 8%, #101622 8%) center / 16px 16px repeat
+    ),
+    'popper': (
+      'bg': elVar('bg-color', 'overlay'),
+      'arrow-bg': transparent,
+      'arrow-shadow': none
+    ),
+    'tooltip': (
+      'padding': 4px 12px,
+      'bg': elVar('bg-color', 'overlay'),
+      'shadow': (
+        0 0 12px 18px rgba(0, 0, 0, 0.08),
+        0 0 0 1px #282c42
+      ),
+      'arrow-bg': transparent,
+      'arrow-shadow': none
+    ),
+    'tooltip-light': (
+      'shadow': (
+        0 0 12px 18px rgba(0, 0, 0, 0.08),
+        0 0 0 1px #282c42
+      ),
+      'arrow-bg': transparent,
+      'arrow-shadow': none
+    ),
+    'scrollbar': (
+      'color': #2d313a,
+      'hover-color': #41444a
+    ),
+    'menu-thumb': (
+      'color': #2d313a,
+      'hover-color': #41444a
+    )
+  ),
+  $ele-simple-dark
+);
+
+@include set-theme-var($theme-simple-dark-selector, $ele-simple-dark);
+
+#{$theme-simple-dark-selector} {
+  & {
+    @include el.set-css-color-type(
+      (
+        'info': (
+          'base': #336fc3,
+          'light-3': #2a548f,
+          'light-5': #24426c,
+          'light-7': #1d2f49,
+          'light-8': #1a2637,
+          'light-9': #171d26,
+          'dark-2': #5c8ccf
+        )
+      ),
+      'info'
+    );
+
+    @include el.set-component-css-var(
+      'border-color',
+      (
+        'darker': #3f4f67,
+        'dark': #36465e,
+        '': #2e3c51,
+        'light': #2b3749,
+        'lighter': #282c42,
+        'extra-light': #171b29
+      )
+    );
+
+    @include el.set-component-css-var(
+      'fill-color',
+      (
+        'darker': #3f4461,
+        'dark': #32364f,
+        '': #282c42,
+        'light': #1f2533,
+        'lighter': #181f2f,
+        'extra-light': #171b29
+      )
+    );
+
+    @include el.set-component-css-var(
+      'bg-color',
+      (
+        '': #101622,
+        'page': #06080d,
+        'overlay': linear-gradient(180deg, #171b29, #101622)
+      )
+    );
+
+    @include el.set-component-css-var(
+      'box-shadow',
+      (
+        '': (
+          0 0 12px 18px rgba(0, 0, 0, 0.08),
+          0 0 0 1px #282c42
+        ),
+        'light': (
+          0 0 12px 18px rgba(0, 0, 0, 0.08),
+          0 0 0 1px #282c42
+        ),
+        'lighter': (
+          0 0 12px 18px rgba(0, 0, 0, 0.08),
+          0 0 0 1px #282c42
+        )
+      )
+    );
+  }
+
+  body {
+    background: linear-gradient(270deg, #06080d, #0d121c);
+  }
+
+  .ele-pro-layout {
+    #{eleVarName('layout', 'bg')}: transparent;
+    #{eleVarName('layout', 'button-tab-page-pt')}: 12px;
+    #{eleVarName('header', 'bg')}: transparent;
+    #{eleVarName('header', 'height')}: 52px;
+    #{eleVarName('header', 'line-color')}: transparent;
+    #{eleVarName('header', 'shadow')}: none;
+    #{eleVarName('header', 'ghost-bg')}: transparent;
+    #{eleVarName('sidebar', 'bg')}: transparent;
+    #{eleVarName('sidebar', 'shadow')}: none;
+    #{eleVarName('sidebar', 'mobile-bg')}: #101622;
+    #{eleVarName('sidebar', 'ghost-bg')}: transparent;
+
+    & > .ele-admin-header,
+    & > .ele-admin-main > .ele-admin-header {
+      backdrop-filter: blur(48px);
+    }
+
+    & > .ele-admin-side,
+    & > .ele-admin-main > .ele-admin-side {
+      #{elVarName('fill-color', 'light')}: eleVar('header', 'tool-hover-bg');
+      #{eleVarName('header', 'line-color')}: #171b29;
+
+      & > .ele-admin-sidebar .ele-menu {
+        #{eleVarName('menu', 'child-bg')}: transparent;
+        #{eleVarName('menu', 'item-active-bg')}: linear-gradient(
+          160deg,
+          #{elVar('color-primary', 'light-7')} -8%,
+          #{elVar('color-primary', 'light-9')} 28%,
+          #101622 36%,
+          #{elVar('color-primary', 'light-9')} 66%,
+          #{elVar('color-primary', 'light-7')} 126%
+        );
+        #{eleVarName('menu', 'arrow-size')}: 12px;
+      }
+
+      & > .ele-admin-sidebox {
+        backdrop-filter: blur(80px);
+
+        .ele-menu {
+          #{eleVarName('menu', 'item-active-bg')}: linear-gradient(
+            160deg,
+            #{elVar('color-primary', 'light-7')} -8%,
+            #{elVar('color-primary', 'light-9')} 28%,
+            #101622 36%,
+            #{elVar('color-primary', 'light-9')} 66%,
+            #{elVar('color-primary', 'light-7')} 126%
+          );
+          #{eleVarName('menu', 'compact-item-padding')}: 10px 0;
+        }
+      }
+    }
+
+    & > .ele-admin-main > .ele-admin-body > .ele-admin-tabs {
+      backdrop-filter: blur(8px);
+      #{eleVarName('tab', 'height')}: 38px;
+      #{eleVarName('tab', 'button-padding')}: 4px;
+      #{eleVarName('tab', 'button-space')}: 12px;
+    }
+
+    & > .ele-admin-header > .ele-admin-tabs,
+    & > .ele-admin-main > .ele-admin-header > .ele-admin-tabs,
+    & > .ele-admin-main > .ele-admin-body > .ele-admin-tabs {
+      #{eleVarName('tab', 'button-bg')}: #101421;
+      #{eleVarName('tab', 'button-hover-bg')}: #101622;
+      #{eleVarName('tab', 'button-active-bg')}: #101622;
+      #{eleVarName('tab', 'button-active-shadow')}: 0 0 0 0.4px #282c42;
+    }
+
+    & > .ele-admin-header.is-ghost + .ele-admin-main > .ele-admin-body,
+    & > .ele-admin-main > .ele-admin-header.is-ghost + .ele-admin-body {
+      & > .ele-admin-wrapper > .ele-admin-content > .ele-page:first-child {
+        padding-top: 6px;
+      }
+    }
+  }
+}

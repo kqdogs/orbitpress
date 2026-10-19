@@ -1,0 +1,88 @@
+/** 透明主题(css-var 模式) */
+@use 'element-plus/theme-chalk/src/mixins/_var.scss' as el;
+@use './transparent.scss' as *;
+@use './theme-util.scss' as *;
+@use '../util.scss' as *;
+$transparent-selector: 'html.is-transparent' !default;
+
+@include set-theme-var($transparent-selector, $ele-transparent);
+
+#{$transparent-selector} {
+  @include set-ele-var('skin-bg', $ele-transparent);
+
+  & {
+    @include el.set-component-css-var(
+      'border-color',
+      (
+        'darker': rgba(0, 0, 0, 0.18),
+        'dark': rgba(0, 0, 0, 0.16),
+        '': rgba(0, 0, 0, 0.14),
+        'light': rgba(0, 0, 0, 0.12),
+        'lighter': rgba(0, 0, 0, 0.1),
+        'extra-light': rgba(0, 0, 0, 0.08)
+      )
+    );
+
+    @include el.set-component-css-var(
+      'fill-color',
+      (
+        'darker': hsla(0, 0%, 60%, 0.28),
+        'dark': hsla(0, 0%, 60%, 0.24),
+        '': hsla(0, 0%, 60%, 0.2),
+        'light': hsla(0, 0%, 60%, 0.16),
+        'lighter': hsla(0, 0%, 60%, 0.12),
+        'extra-light': hsla(0, 0%, 60%, 0.08),
+        'blank': $bg-transparent
+      )
+    );
+
+    @include el.set-component-css-var(
+      'bg-color',
+      (
+        '': hsla(0, 0%, 100%, 0.88),
+        'page': hsla(0, 0%, 60%, 0.12),
+        'overlay': eleVar('skin-bg', 'overlay')
+      )
+    );
+  }
+
+  body {
+    background: eleVar('skin-bg', 'wallpaper');
+  }
+}
+
+$transparent-dark-selector: 'html.is-transparent.dark' !default;
+
+@include set-theme-var($transparent-dark-selector, $ele-transparent-dark);
+
+#{$transparent-dark-selector} {
+  @include el.set-component-css-var(
+    'border-color',
+    (
+      'darker': rgba(255, 255, 255, 0.3),
+      'dark': rgba(255, 255, 255, 0.26),
+      '': rgba(255, 255, 255, 0.22),
+      'light': rgba(255, 255, 255, 0.18),
+      'lighter': rgba(255, 255, 255, 0.14),
+      'extra-light': rgba(255, 255, 255, 0.1)
+    )
+  );
+
+  @include el.set-component-css-var(
+    'bg-color',
+    (
+      '': hsla(0, 0%, 0%, 0.68)
+    )
+  );
+
+  @include el.set-component-css-var(
+    'text-color',
+    (
+      'primary': rgba(255, 255, 255, 0.9),
+      'regular': rgba(255, 255, 255, 0.85),
+      'secondary': rgba(255, 255, 255, 0.4),
+      'placeholder': rgba(255, 255, 255, 0.3),
+      'disabled': rgba(255, 255, 255, 0.28)
+    )
+  );
+}

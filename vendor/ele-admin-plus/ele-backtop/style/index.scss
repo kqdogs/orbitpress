@@ -1,0 +1,34 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-backtop-var($ele);
+
+.ele-backtop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  font-size: 18px;
+  color: eleVar('backtop', 'color');
+  background: eleVar('backtop', 'bg');
+  box-shadow: eleVar('backtop', 'shadow');
+  transition: (color $transition-base, background-color $transition-base);
+  position: fixed;
+  right: 40px;
+  bottom: 40px;
+  cursor: pointer;
+  z-index: 5;
+
+  &:hover {
+    color: eleVar('backtop', 'hover-color');
+  }
+}
+
+.ele-backtop-fade-enter-from,
+.ele-backtop-fade-leave-active {
+  opacity: 0;
+}

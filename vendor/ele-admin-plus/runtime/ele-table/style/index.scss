@@ -1,0 +1,222 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use '../../ele-data-table/style/css-var.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-table-var($ele);
+
+.ele-table {
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: separate;
+  border-width: 0;
+  border-style: solid;
+  border-color: eleVar('table', 'border-color');
+
+  /* 单元格样式 */
+  & > tr,
+  & > thead > tr,
+  & > tbody > tr,
+  & > tfoot > tr {
+    & > th,
+    & > td {
+      color: eleVar('table', 'color');
+      font-size: eleVar('table', 'font-size');
+      font-weight: normal;
+      line-height: eleVar('table', 'line-height');
+      padding: eleVar('table', 'padding');
+      transition: background-color $transition-base;
+      border-width: 0;
+      border-style: solid;
+      border-color: eleVar('table', 'border-color');
+      border-bottom-width: 1px;
+      vertical-align: middle;
+      box-sizing: border-box;
+      text-align: left;
+
+      /* 单元格对齐方式 */
+      &.is-align-left {
+        text-align: left;
+      }
+
+      &.is-align-center {
+        text-align: center;
+      }
+
+      &.is-align-right {
+        text-align: right;
+      }
+    }
+
+    & > td {
+      background: eleVar('table', 'tr-bg');
+    }
+
+    &:hover > td {
+      background: eleVar('table', 'tr-hover-bg');
+    }
+  }
+
+  /* 表头单元格 */
+  & > tr > th,
+  & > thead > tr > th,
+  & > tbody > tr > th,
+  & > tfoot > tr > th,
+  & > thead > tr > td {
+    color: eleVar('table', 'th-color');
+    font-weight: eleVar('table', 'th-font-weight');
+    background: eleVar('table', 'th-bg');
+  }
+
+  & > thead > tr > th {
+    position: relative;
+
+    &::after {
+      content: '';
+      width: 0;
+      height: 20px;
+      border-right: 1px solid eleVar('table', 'border-color');
+      position: absolute;
+      right: 0;
+      top: 50%;
+      margin-top: -10px;
+    }
+  }
+
+  & > thead > tr > th:last-child::after,
+  &.is-border > thead > tr > th::after {
+    display: none;
+  }
+
+  /* 表尾 */
+  & > tfoot > tr > td {
+    background: eleVar('table', 'th-bg');
+  }
+
+  &:not(.is-border) > tfoot > tr:last-child > td {
+    border-bottom-width: 0;
+  }
+
+  /* 圆角 */
+  @include table-radius(eleVar('table', 'radius'));
+
+  /* 斑马纹 */
+  &.is-stripe {
+    & > tr:nth-child(even),
+    & > tbody > tr:nth-child(even) {
+      & > td {
+        background: eleVar('table', 'even-bg');
+      }
+
+      &:hover > td {
+        background: eleVar('table', 'tr-hover-bg');
+      }
+    }
+  }
+
+  /* 行选中 */
+  & > tr.is-active,
+  & > tbody > tr.is-active,
+  &.is-stripe > tr.is-active,
+  &.is-stripe > tbody > tr.is-active {
+    & > td {
+      background: eleVar('table', 'tr-active-bg');
+    }
+
+    &:hover > td {
+      background: eleVar('table', 'tr-active-hover-bg');
+    }
+  }
+
+  /* 大型尺寸 */
+  &.is-large {
+    & > tr,
+    & > thead > tr,
+    & > tbody > tr,
+    & > tfoot > tr {
+      & > th,
+      & > td {
+        font-size: eleVar('table', 'lg-size');
+        padding: eleVar('table', 'lg-padding');
+      }
+    }
+
+    @include table-radius(eleVar('table', 'lg-radius'));
+  }
+
+  /* 小型尺寸 */
+  &.is-small {
+    & > tr,
+    & > thead > tr,
+    & > tbody > tr,
+    & > tfoot > tr {
+      & > th,
+      & > td {
+        font-size: eleVar('table', 'sm-size');
+        padding: eleVar('table', 'sm-padding');
+      }
+    }
+
+    @include table-radius(eleVar('table', 'sm-radius'));
+  }
+
+  /* 全边框 */
+  &.is-border {
+    border-top-width: 1px;
+    border-left-width: 1px;
+
+    & > tr,
+    & > thead > tr,
+    & > tbody > tr,
+    & > tfoot > tr {
+      & > th,
+      & > td {
+        border-right-width: 1px;
+      }
+    }
+  }
+
+  &:not(.has-header) {
+    border-top-width: 1px;
+  }
+
+  /* 表格内组件样式优化 */
+  @include table-common-style();
+
+  /* 打印风格的皮肤 */
+  &.is-print-skin {
+    table-layout: fixed;
+    border-collapse: collapse;
+    word-break: break-all;
+
+    &.is-border {
+      border-right-width: 2px;
+
+      & > tr,
+      & > thead > tr,
+      & > tbody > tr,
+      & > tfoot > tr {
+        & > th,
+        & > td {
+          border-right-width: 0;
+          border-left-width: 1px;
+        }
+      }
+    }
+  }
+}
+
+body table.ele-table.is-print-skin {
+  #{eleVarName('table', 'color')}: #000;
+  #{eleVarName('table', 'th-color')}: #000;
+  #{eleVarName('table', 'border-color')}: #000;
+  #{eleVarName('table', 'bg')}: transparent;
+  #{eleVarName('table', 'th-bg')}: transparent;
+  #{eleVarName('table', 'tr-bg')}: transparent;
+}
+
+table.ele-table.is-border.is-print-skin {
+  #{eleVarName('table', 'radius')}: 0;
+  #{eleVarName('table', 'sm-radius')}: 0;
+  #{eleVarName('table', 'lg-radius')}: 0;
+}

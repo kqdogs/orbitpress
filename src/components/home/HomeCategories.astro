@@ -1,0 +1,8 @@
+---
+import type { HomeComponentProps } from '../../lib/home-components';
+import Icon from '../Icon.astro';
+import HomeSectionHeading from '../HomeSectionHeading.astro';
+const {block,data}=Astro.props as HomeComponentProps;
+const visibleCats=data.categories;
+---
+{true&&<section class="container category-section"><HomeSectionHeading section={{title:block.title,subtitle:block.text}}/><div class="category-grid">{visibleCats.map(cat=><a class="category-card" href={`/category/${cat.slug}/`}><span class="category-icon"><Icon name={cat.icon} size={27}/></span><div class="category-copy"><strong>{cat.name}</strong><p>{cat.description}</p></div><small class="category-count">{cat.count} 篇</small></a>)}</div></section>}

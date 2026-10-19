@@ -1,0 +1,45 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+
+.ele-pro-layout {
+  /* logo */
+  & > .ele-admin-side {
+    & > .ele-admin-sidebox > .ele-admin-logo > img + h1 {
+      display: none;
+    }
+  }
+
+  /* 面包屑导航 */
+  &.is-mobile > .ele-admin-main > .ele-admin-header {
+    & > .ele-admin-breadcrumb {
+      display: none;
+    }
+
+    & > .ele-admin-tools:first-child {
+      padding-right: 0;
+    }
+  }
+}
+
+/* iframe */
+.ele-admin-iframe-wrap {
+  flex-shrink: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.ele-admin-iframe {
+  flex-shrink: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  box-sizing: border-box;
+  pointer-events: auto;
+}

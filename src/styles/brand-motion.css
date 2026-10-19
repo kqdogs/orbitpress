@@ -1,0 +1,50 @@
+/* One decorative system for every public page. All layers ignore pointer input. */
+.brand-backdrop{overflow:hidden;opacity:1;contain:paint}
+.brand-backdrop>div,.brand-starfield,.brand-orbits{position:absolute;pointer-events:none}
+.brand-starfield{inset:0;width:100%;height:100%}
+.brand-aurora{inset:-35% -12%;border-radius:50%;transform-origin:center;animation:aurora-drift 9s ease-in-out infinite alternate}
+.brand-aurora-blue{background:radial-gradient(ellipse at 64% 40%,#167ee866,transparent 52%),radial-gradient(ellipse at 20% 30%,#155ac252,transparent 44%)}
+.brand-aurora-violet{background:radial-gradient(ellipse at 80% 45%,#7664df47,transparent 42%);animation:aurora-return 12s ease-in-out infinite alternate}
+.brand-orbits{width:65%;height:250px;right:-5%;top:-60px;color:#71caff;opacity:.55}
+.orbit-track{stroke:currentColor;stroke-width:.7;opacity:.2}
+.orbit-trail{stroke:currentColor;stroke-width:1.4;stroke-dasharray:90 910;stroke-linecap:round;opacity:.7;animation:orbit-flow 11s linear infinite}
+.orbit-tip{stroke:#dcf6ff;stroke-width:2.6;stroke-dasharray:1 999;stroke-linecap:round;animation:orbit-flow 11s linear infinite}
+.orbit-secondary{color:#a696ff}
+.orbit-secondary .orbit-trail,.orbit-secondary .orbit-tip{animation-duration:16s;animation-delay:-7s;animation-direction:reverse}
+.brand-horizon{display:none}
+.brand-backdrop[data-motion-paused="true"] *{animation-play-state:paused!important}
+
+/* The footer gets its own horizon, broad light ribbons and two orbital paths. */
+.site-footer{background:#040c1c;padding-top:52px;min-height:252px;display:flex;flex-direction:column}
+.site-footer>.brand-backdrop{z-index:0;background:radial-gradient(ellipse at 68% 115%,#164572b3,transparent 65%),linear-gradient(110deg,#040b18,#0b1931 60%,#100f29)}
+.footer-container{position:relative;z-index:1;flex:1;display:flex;flex-direction:column}
+.footer-top{margin-bottom:24px}
+.site-footer::before{content:"";position:absolute;inset:0 0 auto;height:1px;background:linear-gradient(90deg,transparent,#408adc99 25%,#b9e6ff 50%,#7f6bd899 75%,transparent);z-index:2;pointer-events:none}
+.site-footer::after{content:none}
+.brand-backdrop-footer .brand-aurora{inset:-75% -20%;animation-duration:8s}
+.brand-backdrop-footer .brand-aurora-blue{background:radial-gradient(ellipse at 55% 66%,#187fba70,transparent 42%),radial-gradient(ellipse at 25% 25%,#245dd36b,transparent 48%)}
+.brand-backdrop-footer .brand-aurora-violet{background:radial-gradient(ellipse at 78% 48%,#7350c273,transparent 38%);animation-duration:11s}
+.brand-backdrop-footer .brand-orbits{width:88%;height:290px;right:-16%;top:-64px;opacity:.8}
+.brand-backdrop-footer .brand-horizon{display:block;inset:auto -20% -100px;height:190px;border-radius:50%;border-top:1px solid #79d5ff65;background:radial-gradient(ellipse at 50% 0,#2777c045,transparent 65%);box-shadow:0 -12px 70px #1f8ed833;animation:horizon-breathe 6s ease-in-out infinite alternate}
+.site-footer .copyright{margin-top:auto;padding-right:72px;border-color:#b5d9ff26;color:#a7b8d0;gap:16px}
+.site-footer .footer-brand p,.site-footer .footer-description{color:#b5c4db}
+.site-footer .footer-socials>a{background:#07122466;border:1px solid #b4ceff18}
+.site-footer .footer-socials>a:hover{background:#15345999;border-color:#83cfff66}
+
+@keyframes aurora-drift{0%{transform:translate3d(-8%,-3%,0) rotate(-8deg) scale(.94);opacity:.5}100%{transform:translate3d(9%,7%,0) rotate(9deg) scale(1.12);opacity:1}}
+@keyframes aurora-return{0%{transform:translate3d(6%,5%,0) rotate(8deg);opacity:.9}100%{transform:translate3d(-12%,-6%,0) rotate(-12deg) scale(1.2);opacity:.45}}
+@keyframes orbit-flow{from{stroke-dashoffset:0}to{stroke-dashoffset:-1000}}
+@keyframes horizon-breathe{from{transform:translate3d(-4%,12px,0) scaleX(.9);opacity:.5}to{transform:translate3d(4%,-8px,0) scaleX(1.08);opacity:1}}
+
+@media(max-width:760px){
+ .brand-orbits{width:100%;right:-26%;top:-40px;height:200px;opacity:.4}
+ .site-footer{padding-top:38px;min-height:275px}
+ .site-footer .copyright{padding-right:56px}
+ .brand-backdrop-footer .brand-orbits{width:145%;right:-65%;top:-10px;height:275px;opacity:.55}
+ .brand-backdrop-footer .brand-aurora{inset:-25% -45%}
+}
+@media(prefers-reduced-motion:reduce){
+ .brand-backdrop *{animation:none!important}
+ .brand-aurora{opacity:.6}
+ .orbit-trail,.orbit-tip{stroke-dashoffset:-140}
+}

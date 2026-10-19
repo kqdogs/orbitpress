@@ -1,0 +1,106 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-text-var($ele);
+
+.ele-text {
+  box-sizing: border-box;
+
+  /* 类型 */
+  &.is-heading {
+    color: elVar('text-color', 'primary');
+    font-weight: eleVar('text', 'heading-weight');
+  }
+
+  &.is-regular {
+    color: elVar('text-color', 'regular');
+  }
+
+  &.is-secondary {
+    color: elVar('text-color', 'secondary');
+  }
+
+  &.is-placeholder {
+    color: elVar('text-color', 'placeholder');
+  }
+
+  &.is-primary {
+    color: elVar('color-primary');
+  }
+
+  &.is-success {
+    color: elVar('color-success');
+  }
+
+  &.is-warning {
+    color: elVar('color-warning');
+  }
+
+  &.is-danger {
+    color: elVar('color-danger');
+  }
+
+  &.is-info {
+    color: elVar('color-info');
+  }
+
+  /* 尺寸 */
+  &.is-xs {
+    font-size: elVar('font-size', 'extra-small');
+  }
+
+  &.is-sm {
+    font-size: elVar('font-size', 'small');
+  }
+
+  &.is-base {
+    font-size: elVar('font-size', 'base');
+  }
+
+  &.is-md {
+    font-size: elVar('font-size', 'medium');
+  }
+
+  &.is-lg {
+    font-size: elVar('font-size', 'large');
+  }
+
+  &.is-xl {
+    font-size: elVar('font-size', 'extra-large');
+  }
+
+  &.is-xxl {
+    font-size: eleVar('text', 'xxl');
+  }
+
+  &.is-xxxl {
+    font-size: eleVar('text', 'xxxl');
+  }
+
+  /* 其它 */
+  &.is-delete {
+    text-decoration: line-through;
+  }
+
+  &.is-underline {
+    text-decoration: underline;
+
+    &.is-delete {
+      text-decoration: line-through underline;
+    }
+  }
+
+  &.is-strong {
+    font-weight: bold;
+  }
+
+  &.is-italic {
+    font-style: italic;
+  }
+
+  /* 图标 */
+  &.is-icon > .el-icon {
+    vertical-align: -2px;
+  }
+}

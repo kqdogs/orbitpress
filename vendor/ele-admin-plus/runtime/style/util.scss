@@ -1,0 +1,70 @@
+@use 'element-plus/theme-chalk/src/mixins/function.scss' as el;
+@use 'sass:map';
+
+/* 生成 css 变量名 */
+@function eleJoinVar($list) {
+  $name: '--ele';
+  @each $item in $list {
+    @if $item != '' {
+      $name: $name + '-' + $item;
+    }
+  }
+  @return $name;
+}
+
+/* 获取 css 变量值 */
+@function eleVar($arg1, $arg2: '', $arg3: '') {
+  $args: $arg1, $arg2;
+  @if $arg3 != '' {
+    @return var(#{eleJoinVar($args)}, $arg3);
+  } @else {
+    @return var(#{eleJoinVar($args)});
+  }
+}
+
+/* 获取 css 变量名 */
+@function eleVarName($args...) {
+  @return eleJoinVar($args);
+}
+
+/* 生成 css 变量 */
+@mixin set-ele-var-value($name, $attribute, $value) {
+  #{eleVarName($name, $attribute)}: #{$value};
+}
+
+/* 生成组件 css 变量 */
+@mixin set-ele-var($name, $variables) {
+  & {
+    @if map.has-key($variables, $name) {
+      @each $attribute, $value in map.get($variables, $name) {
+        @include set-ele-var-value($name, $attribute, $value);
+      }
+    }
+  }
+}
+
+/* 获取 element 的 css 变量值 */
+@function elVar($args...) {
+  @return el.getCssVar($args...);
+}
+
+/* 获取 element 的 css 变量值带默认值 */
+@function elVarDefault($args, $default) {
+  @return el.getCssVarWithDefault($args, $default);
+}
+
+/* 获取 element 的 css 变量名 */
+@function elVarName($args...) {
+  @return el.getCssVarName($args...);
+}
+
+/* 生成 not 选择器 */
+@function joinNotSelectors($list) {
+  $selector: '';
+  @each $item in $list {
+    @if $item != '' {
+      $selector: $selector + ':not(' + $item + ')';
+    }
+  }
+  @return $selector;
+}

@@ -1,0 +1,8 @@
+@use '../../style/util.scss' as *;
+
+/* 气泡确认框主题变量 */
+@mixin set-popconfirm-var($var) {
+  .ele-popconfirm {
+    @include set-ele-var('popconfirm', $var);
+  }
+}

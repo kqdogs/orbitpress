@@ -1,0 +1,8 @@
+@use '../../../../style/util.scss' as *;
+
+/* ElTree 主题变量 */
+@mixin set-el-tree-var($var) {
+  .el-tree {
+    @include set-ele-var('tree', $var);
+  }
+}

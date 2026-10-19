@@ -1,0 +1,8 @@
+@use '../../style/util.scss' as *;
+
+/* 表格下拉选择主题变量 */
+@mixin set-table-select-var($var) {
+  .ele-table-select-popper {
+    @include set-ele-var('table-select', $var);
+  }
+}

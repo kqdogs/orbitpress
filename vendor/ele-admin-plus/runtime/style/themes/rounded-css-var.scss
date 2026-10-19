@@ -1,0 +1,6 @@
+/** 圆角主题(css-var 模式) */
+@use './rounded.scss' as *;
+@use './theme-util.scss' as *;
+$rounded-selector: 'html.rounded' !default;
+
+@include set-theme-var($rounded-selector, $ele-rounded);

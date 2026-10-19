@@ -1,0 +1,6 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+
+.ele-cron-builder > .el-dialog__body > .ele-modal-body {
+  padding: 8px 12px 12px 12px;
+}

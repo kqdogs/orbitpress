@@ -1,0 +1,412 @@
+@use "ele-admin-plus/es/style/util.scss" as *;
+
+.ele-setting-wrapper {
+  flex: 1;
+  overflow: auto;
+  box-sizing: border-box;
+  padding: 10px 12px 18px 12px;
+  $header-primary-bg: linear-gradient(
+    12deg,
+    elVar("color-primary"),
+    elVar("color-primary", "light-3") 28%,
+    elVar("color-primary", "light-5") 46%,
+    elVar("color-primary", "light-3") 72%,
+    elVar("color-primary") 92%,
+    elVar("color-primary", "dark-2")
+  );
+
+  .ele-setting-title {
+    font-size: 13px;
+    padding: 0 6px;
+    margin-bottom: 8px;
+  }
+
+  /* 主题风格 */
+  .ele-setting-theme {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    padding: 0 6px;
+
+    .ele-setting-theme-item {
+      flex-shrink: 0;
+      width: 73px;
+      line-height: 1;
+      font-size: 13px;
+      margin-bottom: 16px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .ele-setting-theme-item-cover {
+      width: 52px;
+      height: 36px;
+      font-size: 16px;
+      margin-bottom: 12px;
+      padding: 14px 0 0 24px;
+      background: elVar("bg-color", "page");
+      box-shadow:
+        0 0 0 0.8px elVar("border-color", "light"),
+        0 0 4px 1px rgba(0, 0, 0, 0.04);
+      border-radius: elVar("border-radius", "base");
+      box-sizing: border-box;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+
+      * {
+        pointer-events: none;
+      }
+
+      &:hover {
+        box-shadow:
+          0 2px 6px elVar("border-color", "light"),
+          0 0 0 0.8px elVar("border-color", "dark");
+      }
+
+      &::before,
+      &::after {
+        content: "";
+        width: 100%;
+        height: 10px;
+        background: elVar("bg-color");
+        transition: background-color 0.2s;
+        position: absolute;
+        left: 0;
+        top: 0;
+        pointer-events: none;
+      }
+
+      &::after {
+        width: 14px;
+        height: 100%;
+      }
+
+      &.ele-setting-side-dark::after,
+      &.ele-setting-head-dark::before,
+      &.ele-setting-layout-mix::before,
+      &.ele-setting-layout-mix::after {
+        background: #262626;
+      }
+
+      &.ele-setting-head-light::before,
+      &.ele-setting-head-dark::before,
+      &.ele-setting-head-primary::before {
+        z-index: 1;
+      }
+
+      &.ele-setting-side-light::before,
+      &.ele-setting-side-dark:not(.ele-setting-layout-side)::before,
+      &.ele-setting-head-light::after,
+      &.ele-setting-head-dark::after,
+      &.ele-setting-head-primary::after {
+        opacity: 0.5;
+      }
+
+      &.ele-setting-head-primary::before {
+        background: $header-primary-bg !important;
+      }
+
+      &.ele-setting-layout-top {
+        padding-left: 18px;
+
+        &::after {
+          display: none;
+        }
+      }
+    }
+  }
+
+  /* 主题色选择 */
+  .ele-setting-colors {
+    padding: 0 6px;
+    margin-bottom: 18px;
+    box-sizing: border-box;
+    line-height: 0;
+  }
+
+  .ele-setting-color-item {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    border-radius: elVar("border-radius", "small");
+    margin: 8px 8px 0 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: top;
+    outline: 1px solid transparent;
+    outline-offset: 2px;
+    transition: all 0.2s;
+    position: relative;
+    text-align: center;
+    cursor: pointer;
+
+    &:hover {
+      outline-color: currentColor;
+    }
+
+    .el-icon {
+      color: #fff;
+    }
+  }
+
+  .ele-setting-colors .ele-setting-color-item:last-child {
+    margin-right: 0;
+  }
+
+  /* 主题配置项 */
+  .ele-setting-item {
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    box-sizing: border-box;
+    border-radius: elVar("border-radius", "base");
+    transition: background-color 0.2s;
+    margin-bottom: 6px;
+
+    .ele-setting-item-title {
+      flex: 1;
+      line-height: 32px;
+    }
+
+    .ele-setting-item-control {
+      line-height: 1;
+    }
+
+    &:hover {
+      background: elVar("fill-color", "light");
+    }
+  }
+
+  .el-divider.el-divider--horizontal {
+    width: calc(100% - 12px);
+    margin: 14px auto 10px auto;
+    opacity: 0.6;
+  }
+
+  /* 颜色选择器 */
+  .ele-setting-colors .ele-setting-color-picker {
+    margin-top: 8px;
+    line-height: 0;
+    width: auto;
+    height: auto;
+
+    .el-color-picker__trigger {
+      padding: 0;
+      width: 20px;
+      height: 20px;
+      border: none;
+    }
+
+    .el-color-picker__color {
+      border: none;
+    }
+
+    &.is-empty-color .el-color-picker__color-inner {
+      background: conic-gradient(
+        from 90deg at 50% 50%,
+        rgb(255, 0, 0) -19.41deg,
+        rgb(255, 0, 0) 18.76deg,
+        rgb(255, 138, 0) 59.32deg,
+        rgb(255, 230, 0) 99.87deg,
+        rgb(20, 255, 0) 141.65deg,
+        rgb(0, 163, 255) 177.72deg,
+        rgb(5, 0, 255) 220.23deg,
+        rgb(173, 0, 255) 260.13deg,
+        rgb(255, 0, 199) 300.69deg,
+        rgb(255, 0, 0) 340.59deg,
+        rgb(255, 0, 0) 378.76deg
+      ) !important;
+
+      * {
+        display: none;
+      }
+    }
+  }
+
+  /* 常用布局 */
+  .ele-setting-layout-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    grid-gap: 22px 6px;
+    box-sizing: border-box;
+  }
+
+  .ele-setting-layout-item {
+    padding: 6px;
+    box-sizing: border-box;
+    word-break: break-all;
+    cursor: pointer;
+  }
+
+  .ele-setting-layout-item-cover {
+    width: 100%;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: elVar("bg-color", "page");
+    border-radius: elVar("border-radius", "base");
+    border: 1px solid elVar("border-color", "light");
+    box-sizing: border-box;
+    transition: all 0.3s;
+    overflow: hidden;
+
+    & > div {
+      width: 100%;
+      height: 100%;
+    }
+
+    &:hover {
+      transform: scale(1.06);
+      box-shadow: 0 2px 12px rgba(80, 80, 80, 0.2);
+    }
+
+    * {
+      pointer-events: none;
+    }
+  }
+
+  .ele-setting-layout-item-label {
+    margin-top: 8px;
+    font-size: 13px;
+    max-height: 36px;
+    line-height: 18px;
+    text-align: center;
+    padding: 0 8px;
+    box-sizing: border-box;
+    transition: all 0.3s;
+    overflow: hidden;
+
+    &::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      margin: 0 4px 0 -8px;
+      display: inline-block;
+      background: transparent;
+      transition: all 0.3s;
+      vertical-align: 2px;
+      border-radius: 50%;
+    }
+  }
+
+  .ele-setting-layout-item-cover-img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .ele-setting-layout-item.is-active .ele-setting-layout-item-label {
+    color: elVar("color-primary");
+
+    &::before {
+      background: elVar("color-primary");
+    }
+  }
+
+  .ele-setting-layout-list + .ele-setting-item {
+    margin-top: 14px;
+  }
+
+  /* 背景上传 */
+  .ele-setting-bg-upload {
+    width: 28px;
+    height: 28px;
+    font-size: 15px;
+    color: elVar("text-color", "placeholder");
+    border: 1px dashed elVar("border-color");
+    border-radius: elVar("border-radius", "base");
+    box-sizing: border-box;
+    transition: (color 0.2s, border-color 0.2s);
+
+    &:hover {
+      color: elVar("color-primary");
+      border-color: elVar("color-primary");
+    }
+  }
+
+  .el-upload {
+    display: flex;
+  }
+
+  /* 背景颜色选择 */
+  .ele-setting-bg-picker {
+    display: flex;
+    width: auto;
+    height: auto;
+    margin-right: 1.5px;
+
+    .el-color-picker__trigger {
+      padding: 0;
+      width: 25px;
+      height: 25px;
+    }
+
+    .el-color-picker__color {
+      border: none;
+    }
+
+    .el-color-picker__color-inner * {
+      display: none;
+    }
+  }
+
+  /* 布局缩略图 */
+  .ele-setting-layout-cover-bg-dark {
+    background: #262626;
+  }
+
+  .ele-setting-layout-cover-bg-light {
+    background: elVar("bg-color");
+  }
+
+  .ele-setting-layout-cover-bg-primary {
+    background: $header-primary-bg;
+  }
+
+  .ele-setting-layout-cover-bg-blue {
+    background: #187b67;
+  }
+
+  .ele-setting-layout-cover-bg-blue-dark {
+    background: #199b81;
+  }
+
+  .ele-setting-layout-cover-border-lighter {
+    border-color: elVar("border-color", "lighter");
+  }
+
+  .ele-setting-layout-cover-bg-fill {
+    background: elVar("fill-color");
+  }
+
+  .ele-setting-layout-cover-bg-fill-light {
+    background: elVar("border-color", "light");
+  }
+
+  .ele-setting-layout-cover-bg-fill-dark {
+    background: elVar("fill-color", "darker");
+  }
+}
+
+/* 选项卡 */
+.ele-setting-segmented-wrapper {
+  flex-shrink: 0;
+  padding: 10px 14px 6px 14px;
+  box-sizing: border-box;
+}
+
+/* 底栏 */
+.ele-setting-footer {
+  padding: 6px 6px 0 6px;
+  display: flex;
+  align-items: center;
+
+  .el-button {
+    flex: 1;
+  }
+}

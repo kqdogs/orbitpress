@@ -1,0 +1,26 @@
+---
+import type { LayoutBlock, Settings, Category, Post } from '../../lib/schema';
+import { renderMarkdown } from '../../lib/markdown';
+import { brandLogo } from '../../lib/branding';
+import { postPath } from '../../lib/permalinks';
+import Icon from '../Icon.astro';
+interface Props {
+ block:LayoutBlock; settings:Settings; categories:Category[]; posts:Post[];
+ toc:{id:string;text:string;level:number}[];
+}
+const {block,settings,categories,posts,toc}=Astro.props;
+---
+<section class:list={['layout-widget',`layout-widget-${block.type}`]}>
+ {block.type==='heading' ? (block.level===3?<h3>{block.title}</h3>:<h2>{block.title}</h2>) : block.type!=='divider'&&block.title&&<h2 class="layout-widget-title">{block.title}</h2>}
+ {block.type==='markdown'&&<div class="prose" set:html={renderMarkdown(block.text).html.replace(/id="section-/g,`id="widget-${block.id}-section-`)}/>}
+ {block.type==='notice'&&<p class="layout-notice-copy">{block.text}</p>}
+ {block.type==='image'&&(block.image?<figure><img src={block.image} alt={block.alt} loading="lazy"/>{block.text&&<figcaption>{block.text}</figcaption>}</figure>:<p class="layout-widget-empty">请在装修面板中选择图片。</p>)}
+ {block.type==='button'&&<a class="button primary" href={block.href}>{block.text||'了解更多'}<Icon name="arrow" size={16}/></a>}
+ {block.type==='author'&&<div class="layout-author"><img src={brandLogo(settings)} alt="" width="52" height="52"/><strong>{settings.title}</strong><p>{block.text||settings.description||settings.tagline}</p></div>}
+ {block.type==='toc'&&(toc.length?<nav aria-label={block.title||'正文目录'}>{toc.map(item=><a class:list={[{nested:item.level>2}]} href={`#${item.id}`}>{item.text}</a>)}</nav>:<p class="layout-widget-empty">正文添加标题后，目录会自动显示。</p>)}
+ {block.type==='categories'&&<nav aria-label={block.title||'分类目录'}>{categories.length?categories.slice(0,block.limit).map(cat=><a href={`/category/${cat.slug}/`}><span><Icon name={cat.icon} size={17}/>{cat.name}</span><small>{cat.count}</small></a>):<p class="layout-widget-empty">暂无分类</p>}</nav>}
+ {block.type==='latest'&&<nav aria-label={block.title||'最新文章'}>{posts.length?posts.slice(0,block.limit).map(post=><a class="layout-latest-link" href={postPath(post,settings)}><span>{post.title}</span><small>{post.publishedAt?.slice(0,10)}</small></a>):<p class="layout-widget-empty">暂无已发布文章</p>}</nav>}
+ {block.type==='search'&&<form action="/" method="get" role="search"><label class="layout-search-label" for={`widget-search-${block.id}`}>搜索本站内容</label><div class="layout-search"><input id={`widget-search-${block.id}`} name="s" type="search" placeholder={block.text||'搜索文章…'} maxlength="100" required/><button type="submit" aria-label="搜索文章"><Icon name="search" size={19}/></button></div></form>}
+ {block.type==='links'&&<nav aria-label={block.title||'快捷链接'}>{block.links.map(link=><a href={link.href}><span>{link.label}</span><Icon name="arrow" size={15}/></a>)}</nav>}
+ {block.type==='divider'&&<hr/>}
+</section>

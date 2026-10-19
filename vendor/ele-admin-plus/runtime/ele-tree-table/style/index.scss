@@ -1,0 +1,224 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-tree-table-var($ele);
+
+.ele-tree-table-wrapper {
+  border-top: 1px solid eleVar('table', 'border-color');
+  border-right: 1px solid eleVar('table', 'border-color');
+  border-radius: eleVar('table', 'radius');
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+
+  &::after,
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    box-sizing: border-box;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  &::after {
+    height: calc(1px + #{eleVar('table', 'radius')});
+    left: 0;
+    right: 0;
+    border-bottom: 1px solid eleVar('table', 'border-color');
+    border-bottom-right-radius: eleVar('table', 'radius');
+    border-bottom-left-radius: eleVar('table', 'radius');
+  }
+
+  &::before {
+    width: calc(1px + #{eleVar('table', 'radius')});
+    top: 0;
+    left: 0;
+    border-left: 1px solid eleVar('table', 'border-color');
+    border-bottom-left-radius: eleVar('table', 'radius');
+    border-top-left-radius: eleVar('table', 'radius');
+  }
+}
+
+/* 表格 */
+.ele-tree-table {
+  color: eleVar('table', 'color');
+  font-size: eleVar('table', 'font-size');
+  line-height: eleVar('table', 'line-height');
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+.ele-tree-table-main {
+  min-width: max-content;
+  box-sizing: border-box;
+}
+
+.ele-tree-table-row,
+.ele-tree-table-cells {
+  display: flex;
+  box-sizing: border-box;
+}
+
+/* 单元格 */
+.ele-tree-table-cell {
+  padding: eleVar('table', 'padding');
+  background: eleVar('table', 'tr-bg');
+  border-left: 1px solid eleVar('table', 'border-color');
+  border-bottom: 1px solid eleVar('table', 'border-color');
+  transition: background-color $transition-base;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  &:not(.is-tree-index) {
+    flex: 1;
+    text-overflow: ellipsis;
+  }
+
+  &.is-tree-index {
+    flex-shrink: 0;
+    padding-left: 0;
+    padding-right: 0;
+    white-space: nowrap;
+    word-break: break-all;
+    text-align: center;
+
+    &.is-placeholder {
+      border-left: none;
+    }
+  }
+}
+
+/* 表头 */
+.ele-tree-table-header {
+  color: eleVar('table', 'th-color');
+  font-weight: eleVar('table', 'th-font-weight');
+  box-sizing: border-box;
+  position: sticky;
+  top: 0;
+  z-index: 4;
+
+  .ele-tree-table-cell {
+    background: eleVar('table', 'th-bg');
+  }
+}
+
+/* 主体 */
+.ele-tree-table-row-body {
+  flex: 1;
+  box-sizing: border-box;
+}
+
+/* 行鼠标移入状态 */
+.ele-tree-table-cells:hover .ele-tree-table-cell,
+.ele-tree-table-body .ele-tree-table-row > .ele-tree-table-cell:hover {
+  background: eleVar('table', 'tr-hover-bg');
+}
+
+.ele-tree-table-cell:hover + .ele-tree-table-row-body > .ele-tree-table-cells {
+  .ele-tree-table-cell {
+    background: eleVar('table', 'tr-hover-bg');
+  }
+}
+
+.ele-tree-table-cell {
+  &:has(+ .ele-tree-table-row-body > .ele-tree-table-cells:hover) {
+    background: eleVar('table', 'tr-hover-bg');
+  }
+}
+
+/* 空状态 */
+.ele-tree-table-empty {
+  padding: eleVar('table', 'padding');
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* 固定列 */
+.ele-tree-table-cell.is-fixed-left,
+.ele-tree-table-cell.is-fixed-right {
+  position: sticky;
+  z-index: 3;
+}
+
+.ele-tree-table-cell.is-fixed-left {
+  left: 0;
+}
+
+.ele-tree-table-cell.is-fixed-right {
+  right: 0;
+}
+
+.ele-tree-table-cell.is-fixed-left-last,
+.ele-tree-table-cell.is-fixed-right-first {
+  overflow: visible;
+
+  &::before {
+    content: '';
+    width: 10px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    transition: box-shadow $transition-base;
+    pointer-events: none;
+  }
+}
+
+.ele-tree-table-cell.is-fixed-left-last::before {
+  right: -10px;
+}
+
+.ele-tree-table-cell.is-fixed-right-first::before {
+  left: -10px;
+}
+
+.ele-tree-table-wrapper {
+  &.is-ping-left .ele-tree-table-cell.is-fixed-left-last {
+    border-right-color: transparent;
+
+    &::before {
+      box-shadow: eleVar('table', 'fixed-left-shadow');
+    }
+  }
+
+  &.is-ping-right .ele-tree-table-cell.is-fixed-right-first {
+    border-left-color: transparent;
+
+    &::before {
+      box-shadow: eleVar('table', 'fixed-right-shadow');
+    }
+  }
+}
+
+/* 展开图标 */
+.ele-tree-table-expand {
+  width: 16px;
+  height: 16px;
+  font-size: 12px;
+  vertical-align: -1px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: eleVar('table', 'icon-radius');
+  transition: (color $transition-base, background-color $transition-base);
+  cursor: pointer;
+
+  & > .el-icon {
+    transition: all $transition-base;
+  }
+
+  &.is-collapse > .el-icon {
+    transform: rotate(-90deg);
+  }
+
+  &:hover {
+    background: eleVar('table', 'icon-hover-bg');
+  }
+}
+
+.ele-tree-table-row.is-collapse {
+  & > .ele-tree-table-row-body > .ele-tree-table-children {
+    display: none;
+  }
+}

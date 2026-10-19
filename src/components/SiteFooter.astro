@@ -1,0 +1,11 @@
+---
+import type { Settings } from '../lib/schema';
+import SocialLinks from './SocialLinks.astro';
+import { brandLogo } from '../lib/branding';
+import BrandBackdrop from './BrandBackdrop.astro';
+import {footerCopyright,footerNavigation} from '../lib/footer-settings';
+interface Props { settings: Settings }
+const { settings } = Astro.props;
+const logo = brandLogo(settings);
+---
+<footer class="site-footer"><BrandBackdrop variant="footer"/><div class="container footer-container"><div class="footer-top"><div><a class="footer-brand" href="/"><img src={logo} alt="" width="44" height="44"/><div><h2>{settings.title}</h2><p>{settings.tagline}</p></div></a><p class="footer-description">{settings.description}</p></div><SocialLinks settings={settings} variant="footer"/></div><div class="copyright"><span>{footerCopyright(settings)}</span><nav class="footer-nav" aria-label="页脚导航">{footerNavigation(settings).map(item=><a href={item.href}>{item.label}</a>)}</nav></div></div></footer>

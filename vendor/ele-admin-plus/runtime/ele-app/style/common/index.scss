@@ -1,0 +1,55 @@
+/* 表单组件宽度撑满 */
+.ele-fluid {
+  width: 100%;
+  box-sizing: border-box;
+
+  &.el-select,
+  &.el-input-number,
+  &.el-date-editor,
+  &.el-date-editor.el-input,
+  &.el-date-editor.el-input__wrapper,
+  &.el-date-editor > .el-input__wrapper {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* 日期选择 */
+  &.el-date-editor {
+    &.el-input__wrapper {
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .el-range-input {
+      flex: 1;
+      width: 100%;
+    }
+
+    .el-range-separator {
+      flex: 0;
+    }
+
+    & > .el-input__icon {
+      flex-shrink: 0;
+    }
+  }
+
+  /* 数字输入框 */
+  &.el-input-number.is-controls-right .el-input__inner {
+    text-align: left;
+  }
+}
+
+/* 隐藏滚动条 */
+.ele-scrollbar-hide,
+.ele-scrollbar-hover:not(:hover) {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.ele-scrollbar-hover {
+  overflow: auto;
+}

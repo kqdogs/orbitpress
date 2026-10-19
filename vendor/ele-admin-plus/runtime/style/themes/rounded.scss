@@ -1,0 +1,263 @@
+/** 圆角主题 */
+@use 'sass:map';
+@use '../util.scss' as *;
+$radius-large: 8px !default;
+
+$ele-rounded: () !default;
+$ele-rounded: map.deep-merge(
+  (
+    'header': (
+      'menu-height': 38px,
+      'tool-height': 38px,
+      'tool-radius': elVar('border-radius', 'base'),
+      'primary-active-bg': rgba(255, 255, 255, 0.24)
+    ),
+    'sidebar': (
+      'tool-height': 38px
+    ),
+    'alert': (
+      'radius': $radius-large,
+      'close-hover-bg': hsla(0, 0%, 60%, 0.15)
+    ),
+    'alert-dark': (
+      'close-hover-bg': rgba(255, 255, 255, 0.2)
+    ),
+    'message': (
+      'radius': $radius-large,
+      'close-hover-bg': hsla(0, 0%, 60%, 0.15)
+    ),
+    'card': (
+      'radius': $radius-large,
+      'header-font-weight': 500
+    ),
+    'drawer': (
+      'icon-hover-bg': elVar('fill-color', 'light'),
+      'header-font-weight': 500
+    ),
+    'dropdown': (
+      'padding': 4px,
+      'item-padding': 0 12px,
+      'item-radius': elVar('border-radius', 'small'),
+      'sm-padding': 2px,
+      'sm-item-padding': 0 10px,
+      'lg-padding': 6px,
+      'lg-item-padding': 0 14px
+    ),
+    'file': (
+      'item-radius': $radius-large
+    ),
+    'icon': (
+      'menus-padding': 12px 4px,
+      'menu-radius': elVar('border-radius', 'small'),
+      'menu-hover-color': elVar('text-color', 'primary'),
+      'menu-hover-bg': elVar('fill-color', 'light'),
+      'menu-active-line': 0
+    ),
+    'map': (
+      'search-padding': 2px 12px 6px 12px
+    ),
+    'menu': (
+      'arrow-margin': 0 -8px 0 6px,
+      'padding': 2px 0,
+      'item-padding': 6px,
+      'item-radius': elVar('border-radius', 'base'),
+      'item-hover-color': elVar('text-color', 'primary'),
+      'item-hover-bg': elVar('fill-color', 'light'),
+      'item-focus-bg': elVar('fill-color', 'light'),
+      'item-active-line': 0
+    ),
+    'menu-popup': (
+      'radius': $radius-large,
+      'item-padding': 12px
+    ),
+    'menu-horizontal': (
+      'padding': 8px 6px,
+      'height': 40px,
+      'item-padding': 12px,
+      'item-margin': 4px,
+      'item-radius': elVar('border-radius', 'base'),
+      'hover-bg': rgba(0, 0, 0, 0.04),
+      'focus-bg': rgba(0, 0, 0, 0.04),
+      'active-bg': elVar('color-primary', 'light-9'),
+      'arrow-margin': 0 -4px 0 4px,
+      'line-size': 0,
+      'dark-hover-bg': rgba(255, 255, 255, 0.1),
+      'dark-focus-bg': rgba(255, 255, 255, 0.1),
+      'dark-active-bg': elVar('color-primary')
+    ),
+    'menu-dark': (
+      'hover-bg': rgba(255, 255, 255, 0.1),
+      'focus-bg': rgba(255, 255, 255, 0.1)
+    ),
+    'menu-colorful': (
+      'icon-radius': elVar('border-radius', 'base'),
+      'icon-size': 22px
+    ),
+    'modal': (
+      'radius': $radius-large,
+      'header-font-weight': 500,
+      'header-padding': 18px 20px 12px 20px,
+      'header-border': none,
+      'icon-hover-bg': elVar('fill-color', 'light'),
+      'body-padding': 16px 22px 24px 22px,
+      'form-body-padding': 16px 22px 8px 20px,
+      'footer-padding': 8px 20px 18px 20px,
+      'footer-border': none
+    ),
+    'pagination': (
+      'radius': elVar('border-radius', 'base'),
+      'active-color': elVar('color', 'primary'),
+      'active-bg': none,
+      'active-border': 1px solid elVar('color', 'primary'),
+      'sm-radius': elVar('border-radius', 'base'),
+      'lg-radius': $radius-large
+    ),
+    'segmented': (
+      'radius': elVar('border-radius', 'small')
+    ),
+    'segmented-large': (
+      'radius': elVar('border-radius', 'base')
+    ),
+    'step': (
+      'icon-color': elVar('text-color', 'secondary'),
+      'icon-bg': elVar('fill-color', 'light'),
+      'icon-border': none,
+      'active-icon-border': none,
+      'finish-icon-bg': elVar('color-primary', 'light-9'),
+      'finish-icon-border': none
+    ),
+    'tab-bar': (
+      'active-font-weight': 500
+    ),
+    'tab': (
+      'close-size': 18px,
+      'close-radius': elVar('border-radius', 'small'),
+      'close-hover-color': elVar('text-color', 'primary'),
+      'close-hover-bg': hsla(0, 0%, 60%, 0.15),
+      'active-close-hover-color': elVar('text-color', 'primary'),
+      'active-close-hover-bg': hsla(0, 0%, 60%, 0.15),
+      'sm-close-size': 14px,
+      'lg-close-size': 20px,
+      'simple-radius': 10px 10px 0px 0px,
+      'simple-active-line': 0px,
+      'simple-line-display': none,
+      'simple-angle-size': 12px,
+      'simple-angle-display': flex,
+      'simple-tool-hover-bg': transparent,
+      'button-radius': $radius-large
+    ),
+    'text': (
+      'heading-weight': 500
+    ),
+    'table': (
+      'radius': elVar('border-radius', 'base'),
+      'th-font-weight': 500,
+      'lg-radius': $radius-large,
+      'sm-radius': elVar('border-radius', 'small')
+    ),
+    'table-filter': (
+      'padding': 4px,
+      'item-padding': 0 12px,
+      'item-radius': elVar('border-radius', 'small')
+    ),
+    'tool-column': (
+      'body-padding': 6px 4px,
+      'item-padding': 10px,
+      'item-radius': elVar('border-radius', 'small'),
+      'btn-hover-bg': elVar('color-primary', 'light-8'),
+      'btn-active-bg': elVar('color-primary', 'light-7')
+    ),
+    'toolbar': (
+      'radius': $radius-large
+    ),
+    'tree-select': (
+      'padding': 4px
+    ),
+    'upload-list': (
+      'file-tool-hover-color': elVar('text-color', 'primary'),
+      'file-tool-hover-bg': elVar('fill-color', 'light')
+    ),
+    'chat': (
+      'conversation-group-padding': 12px 8px 2px 8px,
+      'conversation-padding': 8px,
+      'conversation-margin': 2px 12px,
+      'conversation-radius': elVar('border-radius', 'base'),
+      'conversation-more-radius': elVar('border-radius', 'base'),
+      'conversation-more-margin': 0 -4px 0 4px,
+      'bubble-radius': 0 12px 12px 12px,
+      'bubble-end-radius': 12px 0 12px 12px,
+      'input-radius': 20px,
+      'input-tool-radius': $radius-large,
+      'file-item-radius': 12px
+    ),
+    'popper': (
+      'radius': $radius-large
+    ),
+    'popover': (
+      'title-padding': 13px 16px 0 16px,
+      'title-border': none
+    ),
+    'select': (
+      'padding': 4px,
+      'item-padding': 0 12px,
+      'item-radius': elVar('border-radius', 'small')
+    ),
+    'autocomplete': (
+      'padding': 4px,
+      'item-padding': 0 12px,
+      'item-radius': elVar('border-radius', 'small')
+    ),
+    'cascader': (
+      'menu-padding': 6px,
+      'item-padding': 0 12px,
+      'item-radius': elVar('border-radius', 'small')
+    ),
+    'message-box': (
+      'radius': $radius-large,
+      'header-font-weight': 500,
+      'icon-hover-bg': elVar('fill-color', 'light')
+    ),
+    'notification': (
+      'radius': $radius-large,
+      'close-hover-bg': elVar('fill-color', 'light')
+    ),
+    'tag': (
+      'close-hover-bg': elVar('color-primary', 'light-8'),
+      'info-close-hover-bg': hsla(0, 0%, 60%, 0.25),
+      'success-close-hover-bg': elVar('color-success', 'light-8'),
+      'warning-close-hover-bg': elVar('color-warning', 'light-8'),
+      'danger-close-hover-bg': elVar('color-error', 'light-8'),
+      'dark-close-hover-bg': rgba(255, 255, 255, 0.2),
+      'dark-info-close-hover-bg': hsla(0, 0%, 60%, 0.25),
+      'dark-success-close-hover-bg': rgba(255, 255, 255, 0.2),
+      'dark-warning-close-hover-bg': rgba(255, 255, 255, 0.2),
+      'dark-danger-close-hover-bg': rgba(255, 255, 255, 0.2),
+      'plain-close-hover-bg': elVar('color-primary', 'light-8'),
+      'plain-info-close-hover-bg': hsla(0, 0%, 60%, 0.25),
+      'plain-success-close-hover-bg': elVar('color-success', 'light-8'),
+      'plain-warning-close-hover-bg': elVar('color-warning', 'light-8'),
+      'plain-danger-close-hover-bg': elVar('color-error', 'light-8')
+    ),
+    'tree': (
+      'item-padding': 0 12px,
+      'item-radius': elVar('border-radius', 'small'),
+      'expand-hover-bg': hsla(0, 0%, 60%, 0.15)
+    ),
+    'descriptions': (
+      'radius': $radius-large
+    ),
+    'datepicker': (
+      'cell-radius': elVar('border-radius', 'small'),
+      'year-radius': elVar('border-radius', 'base'),
+      'sidebar-padding': 6px,
+      'shortcut-height': 28px,
+      'shortcut-padding': 0 8px,
+      'shortcut-margin': 4px,
+      'shortcut-radius': elVar('border-radius', 'small')
+    ),
+    'timepicker': (
+      'item-radius': elVar('border-radius', 'small')
+    )
+  ),
+  $ele-rounded
+);

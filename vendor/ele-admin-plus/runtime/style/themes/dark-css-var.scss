@@ -1,0 +1,6 @@
+/** 暗黑主题(css-var 模式) */
+@use './dark.scss' as *;
+@use './theme-util.scss' as *;
+$dark-selector: 'html.dark' !default;
+
+@include set-theme-var($dark-selector, $ele-dark);

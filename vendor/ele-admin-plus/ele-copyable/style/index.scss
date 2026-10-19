@@ -1,0 +1,28 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+
+.ele-copyable {
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  .ele-copyable-inner {
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .ele-copyable-icon {
+    flex-shrink: 0;
+    display: inline-flex;
+    color: elVar('color-primary');
+    font-size: 15px;
+    margin-left: 6px;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+}
+
+.ele-copyable-done .ele-copyable-icon {
+  color: elVar('color-success');
+}

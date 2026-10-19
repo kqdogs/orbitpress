@@ -1,0 +1,9 @@
+---
+import StudioDocument from '../components/StudioDocument.astro';
+import {env} from 'cloudflare:workers';
+import {siteSettings} from '../lib/repository';
+const {value}=await siteSettings(env.DB);
+Astro.response.headers.set('Cache-Control','no-store');
+if(value.adminPath!=='/admin')return Astro.redirect(value.adminPath+Astro.url.search,302);
+---
+<StudioDocument/>

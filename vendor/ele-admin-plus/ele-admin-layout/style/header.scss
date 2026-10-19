@@ -1,0 +1,231 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+
+/* 顶栏 */
+.ele-admin-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  height: eleVar('header', 'height');
+  line-height: eleVar('header', 'height');
+  background: eleVar('header', 'bg');
+  box-shadow: eleVar('header', 'shadow');
+  z-index: calc(#{eleVar('layout', 'index')} + 2);
+  transition: all $transition-base;
+
+  /* 顶栏面包屑导航 */
+  .ele-admin-breadcrumb {
+    $tool-padding: eleVar('header', 'tool-padding');
+    margin-left: calc(#{eleVar('header', 'tools-padding')} + #{$tool-padding});
+    flex-shrink: 0;
+  }
+
+  /* 顶栏菜单 */
+  .ele-admin-menus {
+    flex: 1;
+    overflow: hidden;
+
+    & > .ele-menu.el-menu.el-menu--horizontal {
+      $menu-height: eleVar('header', 'menu-height');
+      #{eleVarName('menu-horizontal', 'height')}: #{$menu-height};
+      padding-top: 0;
+      padding-bottom: 0;
+      background: none;
+      border: none;
+    }
+  }
+
+  /* 顶栏页签栏 */
+  & > .ele-admin-tabs {
+    flex: 1;
+    overflow: hidden;
+    line-height: normal;
+
+    &.ele-tab-wrap {
+      padding-right: 0;
+      background: none;
+      box-shadow: none;
+    }
+
+    & + .ele-admin-tools {
+      padding-left: 0;
+    }
+
+    &.is-simple,
+    &.is-indicator {
+      align-self: flex-end;
+    }
+  }
+
+  & > .ele-admin-tabs.ele-tab-wrap.is-simple,
+  & > .ele-admin-tabs.ele-tab-wrap.is-indicator {
+    $height: eleVar('header', 'height');
+    $tool-height: eleVar('header', 'tool-height');
+    $tab-height: calc(#{$height} - (#{$height} - #{$tool-height}) / 2);
+    #{eleVarName('tab', 'height')}: #{$tab-height};
+
+    .el-tabs__item,
+    .ele-tab-tool,
+    .el-tabs__nav-prev,
+    .el-tabs__nav-next {
+      line-height: calc(#{$height} - (#{$height} - #{$tool-height}));
+    }
+
+    .el-tabs__nav-prev,
+    .el-tabs__nav-next {
+      display: block;
+
+      & > .el-icon {
+        vertical-align: -2px;
+      }
+    }
+
+    & > .ele-tabs > .el-tabs__header .el-tabs__item .is-icon-close,
+    & > .ele-tabs > .el-tabs__header .ele-tab-title::before {
+      margin-top: calc((#{$height} - #{$tool-height}) / 2 / 2 * -1);
+    }
+  }
+
+  /* 顶栏与页签栏分割线 */
+  &.show-divider {
+    box-shadow: eleVar('header', 'divider-shadow');
+  }
+
+  /* 模糊透明顶栏 */
+  &.is-ghost {
+    background: eleVar('header', 'ghost-bg');
+    backdrop-filter: eleVar('header', 'ghost-filter');
+  }
+
+  /* 固定顶栏 */
+  &.is-fixed {
+    position: sticky;
+    top: 0;
+  }
+}
+
+/* 顶栏操作按钮容器 */
+.ele-admin-tools {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 eleVar('header', 'tools-padding');
+  box-sizing: border-box;
+  height: 100%;
+
+  & + .ele-admin-breadcrumb {
+    margin-left: 0;
+  }
+
+  & + .ele-admin-tabs {
+    &.ele-tab-wrap,
+    &:not(.is-fixed-home) .el-tabs__nav-wrap:not(.is-scrollable) .el-tabs__nav {
+      padding-left: 0;
+    }
+  }
+
+  & + .is-simple,
+  & + .is-indicator {
+    &.is-fixed-home,
+    &:not(.is-fixed-home) .el-tabs__nav-wrap:not(.is-scrollable) .el-tabs__nav {
+      padding-left: eleVar('tab', 'simple-angle-size');
+    }
+  }
+
+  & + .is-button {
+    &.is-fixed-home,
+    &:not(.is-fixed-home) .el-tabs__nav-wrap:not(.is-scrollable) .el-tabs__nav {
+      padding-left: eleVar('tab', 'button-space');
+    }
+  }
+}
+
+/* 暗色顶栏 */
+.ele-admin-header.is-dark,
+.ele-admin-header.is-primary {
+  color: eleVar('header', 'dark-color');
+  background: eleVar('header', 'dark-bg');
+  box-shadow: eleVar('header', 'dark-shadow');
+
+  /* 暗色顶栏面包屑 */
+  .ele-breadcrumb .el-breadcrumb__item {
+    .el-breadcrumb__inner,
+    .el-breadcrumb__separator {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .el-breadcrumb__inner.is-link:hover,
+    &:last-child .el-breadcrumb__inner {
+      color: eleVar('header', 'dark-color');
+    }
+  }
+
+  /* 暗色顶栏页签栏 */
+  & > .ele-admin-tabs.ele-tab-wrap {
+    $color: eleVar('header', 'dark-color');
+    $shadow: 0 0 0 0.8px rgba(255, 255, 255, 0.2) inset;
+    $hover-bg: eleVar('header', 'dark-tool-hover-bg');
+    $hover-shadow: 0 0 0 0.8px rgba(255, 255, 255, 0.28) inset;
+    #{eleVarName('tab', 'color')}: #{$color};
+    #{eleVarName('tab', 'hover-color')}: #{$color};
+    #{eleVarName('tab', 'close-color')}: #{$color};
+    #{eleVarName('tab', 'close-hover-color')}: #{$color};
+    #{eleVarName('tab', 'close-hover-bg')}: #{$hover-bg};
+    #{eleVarName('tab', 'tool-color')}: #{$color};
+    #{eleVarName('tab', 'tool-hover-color')}: #{$color};
+    #{eleVarName('tab', 'simple-hover-color')}: #{$color};
+    #{eleVarName('tab', 'simple-hover-bg')}: #{$hover-bg};
+    #{eleVarName('tab', 'simple-active-bg')}: #{elVar('bg-color')};
+    #{eleVarName('tab', 'simple-line-width')}: 16px;
+    #{eleVarName('tab', 'simple-tool-hover-bg')}: transparent;
+    #{eleVarName('tab', 'indicator-dot-color')}: rgba(255, 255, 255, 0.4);
+    #{eleVarName('tab', 'indicator-dot-hover-color')}: rgba(255, 255, 255, 0.6);
+    #{eleVarName('tab', 'button-bg')}: #{$hover-bg};
+    #{eleVarName('tab', 'button-shadow')}: #{$shadow};
+    #{eleVarName('tab', 'button-hover-bg')}: rgba(255, 255, 255, 0.2);
+    #{eleVarName('tab', 'button-hover-color')}: #{$color};
+    #{eleVarName('tab', 'button-hover-shadow')}: #{$hover-shadow};
+    #{eleVarName('tab', 'button-active-bg')}: #{elVar('bg-color')};
+    #{eleVarName('tab', 'button-active-shadow')}: none;
+  }
+}
+
+.ele-admin-header.is-dark > .ele-admin-tabs.ele-tab-wrap {
+  $color: eleVar('header', 'dark-color');
+  $hover-bg: eleVar('header', 'dark-tool-hover-bg');
+  #{eleVarName('tab', 'active-close-color')}: #{$color};
+  #{eleVarName('tab', 'active-close-hover-color')}: #{$color};
+  #{eleVarName('tab', 'active-close-hover-bg')}: #{$hover-bg};
+  #{eleVarName('tab', 'simple-active-color')}: #{$color};
+  #{eleVarName('tab', 'simple-active-bg')}: #{elVar('color-primary')};
+  #{eleVarName('tab', 'simple-active-line')}: 0px;
+  #{eleVarName('tab', 'indicator-dot-active-color')}: #{$color};
+  #{eleVarName('tab', 'button-active-color')}: #{$color};
+  #{eleVarName('tab', 'button-active-bg')}: #{elVar('color-primary')};
+}
+
+/* 主色顶栏 */
+.ele-admin-header.is-primary {
+  background: eleVar('header', 'primary-bg');
+  box-shadow: eleVar('header', 'primary-shadow');
+
+  /* 主色顶栏菜单 */
+  .ele-admin-menus > .ele-menu {
+    $active-bg: eleVar('header', 'primary-active-bg');
+    #{eleVarName('menu-horizontal', 'dark-active-bg')}: #{$active-bg};
+  }
+
+  /* 主色顶栏页签拖动 */
+  & > .ele-admin-tabs .ele-tabs.is-sortable {
+    & > .el-tabs__header .el-tabs__item.sortable-chosen:not(.is-active) {
+      #{eleVarName('tab', 'simple-active-bg')}: eleVar(
+        'tab',
+        'simple-hover-bg'
+      );
+      #{eleVarName('tab', 'button-active-bg')}: eleVar(
+        'tab',
+        'button-hover-bg'
+      );
+    }
+  }
+}

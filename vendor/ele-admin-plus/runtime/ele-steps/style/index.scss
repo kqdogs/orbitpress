@@ -1,0 +1,208 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-step-var($ele);
+
+.ele-steps .el-step {
+  .el-step__head {
+    width: auto;
+    position: static;
+    display: flex;
+  }
+
+  .el-step__main {
+    padding: eleVar('step', 'margin') 0 0 0;
+    box-sizing: border-box;
+  }
+
+  /* 线条 */
+  .el-step__line {
+    background: none;
+    border-style: solid;
+    border-width: eleVar('step', 'line-size');
+    border-color: eleVar('step', 'line-color');
+    transition: border-color $transition-base;
+  }
+
+  .el-step__line-inner {
+    display: none;
+  }
+
+  /* 图标 */
+  .el-step__icon {
+    width: auto;
+    height: auto;
+    display: flex;
+    color: eleVar('step', 'color');
+    font-size: eleVar('step', 'icon-size');
+    background: none;
+    transition: (
+      color $transition-base,
+      border-color $transition-base,
+      background-color $transition-base
+    );
+
+    &.is-text {
+      width: eleVar('step', 'icon-size');
+      height: eleVar('step', 'icon-size');
+      line-height: eleVar('step', 'icon-size');
+      font-size: eleVar('step', 'icon-font-size');
+      font-weight: eleVar('step', 'icon-font-weight');
+      background: eleVar('step', 'icon-bg');
+      border: eleVar('step', 'icon-border');
+    }
+
+    .el-step__icon-inner {
+      font-size: inherit;
+      font-weight: inherit;
+      line-height: inherit;
+      transform: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  /* 标题 */
+  .el-step__title {
+    color: eleVar('step', 'color');
+    font-size: eleVar('step', 'font-size');
+    font-weight: eleVar('step', 'font-weight');
+    line-height: eleVar('step', 'line-height');
+    padding: 0;
+  }
+
+  /* 描述 */
+  .el-step__description {
+    color: eleVar('step', 'text-color');
+    font-size: eleVar('step', 'text-font-size');
+    line-height: eleVar('step', 'text-line-height');
+    margin: eleVar('step', 'text-margin') 0 0 0;
+    padding: 0;
+  }
+
+  /* 当前步骤 */
+  .el-step__head.is-process {
+    .el-step__icon {
+      color: eleVar('step', 'active-icon-bg');
+
+      &.is-text {
+        color: eleVar('step', 'active-icon-color');
+        background: eleVar('step', 'active-icon-bg');
+        border: eleVar('step', 'active-icon-border');
+      }
+    }
+  }
+
+  .el-step__title.is-process {
+    color: eleVar('step', 'active-color');
+  }
+
+  .el-step__description.is-process {
+    color: eleVar('step', 'active-text-color');
+  }
+
+  /* 完成步骤 */
+  .el-step__head.is-finish,
+  .el-step__head.is-success {
+    .el-step__line {
+      border-color: eleVar('step', 'finish-line-color');
+    }
+
+    .el-step__icon {
+      color: eleVar('step', 'finish-icon-color');
+
+      &.is-text {
+        background: eleVar('step', 'finish-icon-bg');
+        border: eleVar('step', 'finish-icon-border');
+      }
+
+      .el-step__icon-inner.is-status {
+        font-size: eleVar('step', 'finish-icon-font-size');
+      }
+    }
+  }
+
+  .el-step__title.is-finish,
+  .el-step__title.is-success {
+    color: eleVar('step', 'finish-color');
+  }
+
+  .el-step__description.is-finish,
+  .el-step__description.is-success {
+    color: eleVar('step', 'finish-text-color');
+  }
+
+  /* 水平 */
+  &.is-horizontal {
+    $space: eleVar('step', 'line-space');
+    $icon-size: eleVar('step', 'icon-size');
+
+    .el-step__line {
+      top: calc((#{$icon-size} - #{eleVar('step', 'line-size')}) / 2);
+      left: calc(#{$icon-size} + #{$space});
+      right: $space;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      height: 0;
+    }
+
+    &.is-center {
+      .el-step__line {
+        left: calc(50% + #{$space} + (#{$icon-size} / 2));
+        right: calc(-50% + #{$space} + (#{$icon-size} / 2));
+      }
+
+      .el-step__head {
+        justify-content: center;
+      }
+    }
+  }
+
+  /* 垂直 */
+  &.is-vertical {
+    $space: eleVar('step', 'line-space');
+    $icon-size: eleVar('step', 'icon-size');
+
+    .el-step__line {
+      left: calc((#{$icon-size} - #{eleVar('step', 'line-size')}) / 2);
+      top: calc(#{$icon-size} + #{$space});
+      bottom: $space;
+      border-right: none;
+      border-top: none;
+      border-bottom: none;
+      width: 0;
+    }
+
+    .el-step__main {
+      padding: 0 0 0 eleVar('step', 'vertical-margin');
+    }
+  }
+}
+
+/* 紧凑风格 */
+.ele-steps.is-inline .el-step {
+  display: flex;
+  align-items: flex-start;
+
+  .el-step__main {
+    flex-grow: 1;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    .el-step__title {
+      padding: 0 eleVar('step', 'line-space') 0 eleVar('step', 'margin');
+      background: eleVar('step', 'bg');
+      backdrop-filter: eleVar('step', 'backdrop-filter');
+      position: relative;
+    }
+
+    .el-step__description {
+      padding: 0 eleVar('step', 'margin');
+    }
+  }
+}

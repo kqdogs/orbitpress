@@ -1,0 +1,9 @@
+@use '../../style/util.scss' as *;
+
+/* 通用下拉选择主题变量 */
+@mixin set-basic-select-var($var) {
+  .ele-select {
+    @include set-ele-var('input', $var);
+    @include set-ele-var('input-error', $var);
+  }
+}

@@ -1,0 +1,8 @@
+@use '../../../../style/util.scss' as *;
+
+/* ElNotification 主题变量 */
+@mixin set-el-notification-var($var) {
+  .el-notification {
+    @include set-ele-var('notification', $var);
+  }
+}

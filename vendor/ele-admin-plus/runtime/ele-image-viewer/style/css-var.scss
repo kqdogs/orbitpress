@@ -1,0 +1,8 @@
+@use '../../style/util.scss' as *;
+
+/* 图片预览主题变量 */
+@mixin set-image-viewer-var($var) {
+  .ele-image-viewer {
+    @include set-ele-var('image-viewer', $var);
+  }
+}

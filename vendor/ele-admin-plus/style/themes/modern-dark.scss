@@ -1,0 +1,215 @@
+/** 现代主题暗黑(css-var 模式) */
+@use 'sass:map';
+@use 'ele-admin-plus/es/style/util.scss' as *;
+@use 'ele-admin-plus/es/style/themes/theme-util.scss' as *;
+$theme-modern-dark-selector: 'html.ele-theme-modern-dark' !default;
+
+$ele-modern-dark: () !default;
+$ele-modern-dark: map.deep-merge(
+  (
+    'card': (
+      'radius': 12px,
+      'none-border': 1px solid elVar('border-color', 'extra-light'),
+      'none-shadow': 0 0 12px 0 rgba(0, 0, 0, 0.42),
+      'shadow': elVar('box-shadow')
+    ),
+    'modal': (
+      'radius': 12px
+    ),
+    'menu-dark-thumb': (
+      'color': rgba(255, 255, 255, 0.6),
+      'hover-color': #fff
+    )
+  ),
+  $ele-modern-dark
+);
+
+@include set-theme-var($theme-modern-dark-selector, $ele-modern-dark);
+
+#{$theme-modern-dark-selector} {
+  $layout-padding: 8px;
+  $layout-body-radius: 14px;
+  $layout-primary-bg: (
+    linear-gradient(rgba(0, 0, 0, 0.68), rgba(0, 0, 0, 0.68)) center / 102% 102%,
+    elVar('color-primary')
+  );
+  .ele-pro-layout {
+    padding: 0 $layout-padding $layout-padding 0;
+    background: $layout-primary-bg;
+    #{eleVarName('layout', 'bg')}: elVar('bg-color');
+    #{eleVarName('layout', 'button-tab-page-pt')}: 12px;
+    #{eleVarName('header', 'bg')}: eleVar('layout', 'bg');
+    #{eleVarName('header', 'height')}: 46px;
+    #{eleVarName('header', 'divider-shadow')}: none;
+    #{eleVarName('header', 'ghost-bg')}: $layout-primary-bg;
+    #{eleVarName('header', 'shadow')}: none;
+    #{eleVarName('header', 'primary-bg')}: elVar('color-primary', 'light-5');
+    #{eleVarName('header', 'primary-shadow')}: none;
+    #{eleVarName('header', 'menu-height')}: 38px;
+    #{eleVarName('sidebar', 'bg')}: $layout-primary-bg;
+    #{eleVarName('sidebar', 'shadow')}: none;
+    #{eleVarName('sidebar', 'divider-shadow')}: none;
+    #{eleVarName('sidebar', 'dark-bg')}: $layout-primary-bg;
+    #{eleVarName('sidebar', 'ghost-bg')}: $layout-primary-bg;
+    #{eleVarName('sidebar', 'mobile-bg')}: $layout-primary-bg;
+    #{eleVarName('sidebar', 'mobile-dark-bg')}: $layout-primary-bg;
+    #{eleVarName('sidebar', 'dark-shadow')}: none;
+    #{eleVarName('sidebar', 'dark-line-color')}: -0.8px 0 0 0
+      rgba(255, 255, 255, 0.16) inset;
+    #{eleVarName('sidebar', 'collapse-width')}: 56px;
+
+    &.is-row-direction {
+      padding-top: $layout-padding;
+    }
+
+    & > .ele-admin-main > .ele-admin-body > .ele-admin-wrapper {
+      background: eleVar('layout', 'bg');
+      border-bottom-left-radius: $layout-body-radius;
+      border-bottom-right-radius: $layout-body-radius;
+    }
+
+    & > .ele-admin-main > .ele-admin-header {
+      border-top-left-radius: $layout-body-radius;
+      border-top-right-radius: $layout-body-radius;
+    }
+
+    & > .ele-admin-header {
+      #{eleVarName('header', 'bg')}: $layout-primary-bg;
+      #{eleVarName('header', 'dark-bg')}: $layout-primary-bg;
+      #{eleVarName('header', 'dark-shadow')}: none;
+      #{eleVarName('header', 'primary-bg')}: $layout-primary-bg;
+      #{eleVarName('header', 'primary-shadow')}: none;
+      #{eleVarName('header', 'ghost-bg')}: $layout-primary-bg;
+
+      &.is-primary > .ele-admin-tabs {
+        #{eleVarName('tab', 'simple-active-bg')}: eleVar('layout', 'bg');
+      }
+    }
+
+    & > .ele-admin-header > .ele-admin-tools,
+    & > .ele-admin-main > .ele-admin-header > .ele-admin-tools {
+      #{eleVarName('header', 'tool-height')}: 38px;
+      #{eleVarName('header', 'tool-radius')}: 38px;
+    }
+
+    & > .ele-admin-header .ele-menu,
+    & > .ele-admin-side > .ele-admin-sidebar .ele-menu,
+    & > .ele-admin-main > .ele-admin-side > .ele-admin-sidebar .ele-menu,
+    & > .ele-admin-side > .ele-admin-sidebox .ele-menu,
+    & > .ele-admin-main > .ele-admin-side > .ele-admin-sidebox .ele-menu {
+      $menu-hover-bg: rgba(255, 255, 255, 0.1);
+      #{eleVarName('menu', 'arrow-margin')}: 0 -8px 0 6px;
+      #{eleVarName('menu', 'padding')}: 2px 0;
+      #{eleVarName('menu', 'child-bg')}: transparent;
+      #{eleVarName('menu', 'dark-child-bg')}: transparent;
+      #{eleVarName('menu', 'item-padding')}: $layout-padding;
+      #{eleVarName('menu', 'item-radius')}: 20px;
+      #{eleVarName('menu', 'item-hover-bg')}: $menu-hover-bg;
+      #{eleVarName('menu', 'item-focus-bg')}: $menu-hover-bg;
+      #{eleVarName('menu', 'item-active-line')}: 0;
+      #{eleVarName('menu', 'horizontal-padding')}: 0 6px;
+      #{eleVarName('menu', 'horizontal-item-padding')}: 12px;
+      #{eleVarName('menu', 'horizontal-item-margin')}: 4px;
+      #{eleVarName('menu', 'horizontal-item-radius')}: 20px;
+      #{eleVarName('menu', 'horizontal-hover-bg')}: $menu-hover-bg;
+      #{eleVarName('menu', 'horizontal-focus-bg')}: $menu-hover-bg;
+      #{eleVarName('menu', 'horizontal-arrow-margin')}: 0 -4px 0 4px;
+      #{eleVarName('menu', 'horizontal-line-size')}: 0;
+      #{eleVarName('menu', 'colorful-icon-radius')}: 50%;
+      #{eleVarName('menu', 'colorful-icon-size')}: 22px;
+    }
+
+    & > .ele-admin-header.is-dark .ele-menu,
+    & > .ele-admin-header.is-primary .ele-menu,
+    & > .ele-admin-side > .ele-admin-sidebar.is-dark .ele-menu,
+    & > .ele-admin-main > .ele-admin-side .ele-admin-sidebar.is-dark .ele-menu,
+    & > .ele-admin-side > .ele-admin-sidebox.is-dark .ele-menu,
+    & > .ele-admin-main > .ele-admin-side .ele-admin-sidebox.is-dark .ele-menu {
+      $menu-hover-bg: rgba(255, 255, 255, 0.12);
+      $menu-dot-color: rgba(255, 255, 255, 0.6);
+      $menu-dot-active-color: elVar('color-primary');
+      #{eleVarName('menu', 'item-hover-bg')}: $menu-hover-bg;
+      #{eleVarName('menu', 'item-focus-bg')}: $menu-hover-bg;
+      #{eleVarName('menu', 'item-active-color')}: eleVar('menu', 'item-color');
+      #{eleVarName('menu', 'item-active-bg')}: #fff;
+      #{eleVarName('menu', 'horizontal-hover-bg')}: $menu-hover-bg;
+      #{eleVarName('menu', 'horizontal-focus-bg')}: $menu-hover-bg;
+      #{eleVarName('menu', 'horizontal-active-bg')}: #fff;
+      #{eleVarName('menu', 'horizontal-dark-hover-bg')}: $menu-hover-bg;
+      #{eleVarName('menu', 'horizontal-dark-focus-bg')}: $menu-hover-bg;
+      #{eleVarName('menu', 'horizontal-dark-active-bg')}: #fff;
+      #{eleVarName('menu', 'dark-hover-bg')}: $menu-hover-bg;
+      #{eleVarName('menu', 'dark-active-bg')}: #fff;
+      #{eleVarName('menu', 'colorful-dot-color')}: $menu-dot-color;
+      #{eleVarName('menu', 'colorful-dot-hover-color')}: #fff;
+      #{eleVarName('menu', 'colorful-dot-active-color')}: $menu-dot-active-color;
+      #{eleVarName('menu', 'colorful-dark-dot-color')}: $menu-dot-color;
+      #{eleVarName('menu', 'colorful-dark-dot-hover-color')}: #fff;
+      #{eleVarName('menu', 'colorful-dark-dot-active-color')}: $menu-dot-active-color;
+
+      .el-menu-item.is-active,
+      .el-sub-menu.is-active > .el-sub-menu__title.el-tooltip__trigger {
+        #{elVarName('menu', 'active-color')}: elVar('color-primary');
+      }
+    }
+
+    & > .ele-admin-side > .ele-admin-sidebox,
+    & > .ele-admin-main > .ele-admin-side > .ele-admin-sidebox {
+      #{eleVarName('sidebar', 'divider-shadow')}: 0 0 0 0.8px
+        rgba(255, 255, 255, 0.16);
+
+      &:not(.is-compact) .ele-menu {
+        #{eleVarName('menu', 'item-radius')}: $layout-body-radius;
+      }
+    }
+
+    & > .ele-admin-main {
+      & > .ele-admin-body > .ele-admin-tabs {
+        #{eleVarName('tab', 'height')}: 38px;
+        #{eleVarName('tab', 'button-padding')}: 4px;
+        #{eleVarName('tab', 'button-space')}: 12px;
+        #{eleVarName('tab', 'button-shadow')}:
+          0 0 0 0.8px elVar('border-color', 'extra-light') inset,
+          0 0 4px 0 rgba(0, 0, 0, 0.42);
+        #{eleVarName('tab', 'button-active-shadow')}:
+          0 0 0 0.8px elVar('border-color', 'lighter') inset,
+          0 0 4px 0 rgba(0, 0, 0, 0.42);
+      }
+
+      & > .ele-admin-side + .ele-admin-body > .ele-admin-tabs,
+      & > .ele-admin-body:first-child > .ele-admin-tabs,
+      & > .ele-admin-body > .ele-admin-wrapper:first-child {
+        border-top-left-radius: $layout-body-radius;
+        border-top-right-radius: $layout-body-radius;
+      }
+
+      & > .ele-admin-header + .ele-admin-body > .ele-admin-wrapper {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
+
+      & > .ele-admin-header.is-primary > .ele-admin-tabs {
+        #{eleVarName('tab', 'simple-active-bg')}: eleVar('layout', 'bg');
+      }
+    }
+
+    &.is-top-layout {
+      padding-left: $layout-padding;
+    }
+
+    &.is-mobile {
+      padding-left: $layout-padding;
+
+      & > .ele-admin-side > .ele-admin-sidebox,
+      & > .ele-admin-side > .ele-admin-sidebar {
+        border-top-left-radius: $layout-body-radius;
+        border-bottom-left-radius: $layout-body-radius;
+      }
+
+      & > .ele-admin-side > .ele-admin-sidebox + .ele-admin-sidebar {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+    }
+  }
+}

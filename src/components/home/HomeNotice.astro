@@ -1,0 +1,7 @@
+---
+import type { HomeComponentProps } from '../../lib/home-components';
+import Icon from '../Icon.astro';
+const {settings,block}=Astro.props as HomeComponentProps;
+
+---
+{(block.title||settings.notice||block.text)&&<div class="container notice-strip"><Icon name="globe"/><span>{block.title||settings.notice}{block.text&&<small> · {block.text}</small>}</span></div>}

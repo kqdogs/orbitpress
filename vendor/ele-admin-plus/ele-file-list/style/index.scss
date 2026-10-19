@@ -1,0 +1,431 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-file-var($ele);
+
+.ele-file-list-group {
+  position: relative;
+  user-select: none;
+
+  /* 复选框 */
+  .ele-file-list-checkbox {
+    width: 16px;
+    height: 16px;
+    border-radius: 2px;
+    display: inline-block;
+    border: 1px solid elVar('border-color');
+    background: elVar('fill-color', 'blank');
+    box-sizing: border-box;
+    transition: all $transition-base;
+    position: relative;
+    cursor: pointer;
+
+    &:hover {
+      border-color: elVar('color-primary');
+    }
+
+    /* 对勾 */
+    &::before {
+      content: '';
+      display: table;
+      width: 5.71428571px;
+      height: 9.14285714px;
+      border: 2px solid #fff;
+      border-left: 0;
+      border-top: 0;
+      opacity: 0;
+      transform: rotate(45deg) scale(0) translate(-50%, -50%);
+      transition: (all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6), opacity 0.1s);
+      box-sizing: border-box;
+      position: absolute;
+      top: 50%;
+      left: 21.5%;
+    }
+
+    &.is-checked {
+      background: elVar('color-primary');
+      border-color: elVar('color-primary');
+
+      &::before {
+        opacity: 1;
+        transform: rotate(45deg) scale(1) translate(-50%, -50%);
+        transition: all 0.2s cubic-bezier(0.12, 0.4, 0.29, 1.46) 0.1s;
+      }
+    }
+
+    /* 半选 */
+    &::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      display: table;
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0;
+      transition: (all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6), opacity 0.1s);
+      box-sizing: border-box;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+    }
+
+    &.is-indeterminate::after {
+      background: elVar('color-primary');
+      opacity: 1;
+    }
+
+    /* 单选 */
+    &.is-radio {
+      border-radius: 50%;
+    }
+  }
+
+  /* 鼠标选择框 */
+  .ele-file-list-selector {
+    display: none;
+    position: absolute;
+    box-sizing: border-box;
+    border: eleVar('file', 'selector-border');
+    background: eleVar('file', 'selector-bg');
+    z-index: eleVar('file', 'selector-index');
+    pointer-events: none;
+  }
+
+  /* 右键菜单触发器 */
+  .ele-file-list-item-dropdown {
+    display: block;
+    max-width: 36px;
+    position: absolute;
+    top: calc(50% - 6px);
+    left: 36px;
+    right: 0;
+  }
+}
+
+/* 网格布局 */
+.ele-file-list {
+  position: relative;
+  box-sizing: border-box;
+
+  /* header */
+  .ele-file-list-header {
+    padding: 0 eleVar('file', 'header-padding');
+    box-sizing: border-box;
+    border-bottom: 1px solid elVar('border-color', 'light');
+    line-height: eleVar('file', 'header-height');
+    display: flex;
+
+    /* 全选框 */
+    .ele-file-list-selection {
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+
+      .ele-file-list-checkbox {
+        margin-right: 14px;
+      }
+    }
+  }
+
+  /* body */
+  .ele-file-list-body {
+    padding-top: eleVar('file', 'item-space');
+    padding-left: eleVar('file', 'item-space');
+    box-sizing: border-box;
+  }
+
+  /* item */
+  .ele-file-list-item {
+    flex-shrink: 0;
+    width: eleVar('file', 'item-width');
+    margin-right: eleVar('file', 'item-space');
+    margin-bottom: eleVar('file', 'item-space');
+    display: inline-block;
+    box-sizing: border-box;
+    border: eleVar('file', 'item-border');
+    border-radius: eleVar('file', 'item-radius');
+    transition: all $transition-base;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+
+    .ele-file-list-item-body {
+      padding: eleVar('file', 'item-padding');
+      box-sizing: border-box;
+    }
+
+    /* 图标 */
+    .ele-file-list-item-icon {
+      height: eleVar('file', 'icon-height');
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+
+      & > img,
+      & > .el-icon {
+        width: eleVar('file', 'icon-size');
+        height: eleVar('file', 'icon-size');
+        font-size: eleVar('file', 'icon-size');
+        display: inline-block;
+        pointer-events: none;
+      }
+
+      & > .ele-file-list-item-image {
+        width: eleVar('file', 'image-size');
+        height: eleVar('file', 'image-size');
+        border-radius: eleVar('file', 'image-radius');
+        object-fit: contain;
+      }
+    }
+
+    /* 标题 */
+    .ele-file-list-item-title {
+      margin-top: eleVar('file', 'title-margin');
+      overflow: hidden;
+      white-space: nowrap;
+      word-break: break-all;
+      text-overflow: ellipsis;
+      box-sizing: border-box;
+      transition: color $transition-base;
+
+      &:hover {
+        color: elVar('color-primary');
+      }
+    }
+
+    /* 复选框 */
+    .ele-file-list-item-checkbox {
+      border-radius: 50%;
+      background: elVar('bg-color');
+      transition: all $transition-base;
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      opacity: 0;
+
+      .ele-file-list-checkbox {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        display: block;
+        opacity: 0.4;
+      }
+    }
+
+    &:hover,
+    &.is-active,
+    &.is-checked {
+      background: eleVar('file', 'item-active-bg');
+
+      .ele-file-list-item-checkbox {
+        opacity: 1;
+      }
+    }
+
+    &.is-checked {
+      border-color: eleVar('file', 'item-active-border-color');
+
+      .ele-file-list-item-checkbox .ele-file-list-checkbox {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+/* 表头排序图标 */
+.ele-file-list-item-sort {
+  width: 8px;
+  height: 12px;
+  margin-left: 6px;
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+
+  &::before,
+  &::after {
+    content: '';
+    width: 0;
+    height: 0;
+    display: block;
+    border: 4px solid eleVar('file', 'sort-color');
+    border-left-color: transparent;
+    border-right-color: transparent;
+  }
+
+  &::before {
+    border-top-color: transparent;
+    margin: -4px 0 4px 0;
+  }
+
+  &::after {
+    border-bottom-color: transparent;
+  }
+
+  &.is-asc::before {
+    border-bottom-color: eleVar('file', 'sort-active-color');
+  }
+
+  &.is-desc::after {
+    border-top-color: eleVar('file', 'sort-active-color');
+  }
+}
+
+/* 表格布局 */
+.ele-file-list-table {
+  position: relative;
+
+  /* item */
+  .ele-file-list-item {
+    line-height: eleVar('file', 'td-height');
+    border-top: 1px solid elVar('border-color', 'light');
+    transition: background-color $transition-base;
+    position: relative;
+
+    .ele-file-list-item-body {
+      display: flex;
+      align-items: center;
+    }
+
+    &:first-child {
+      border-top-color: transparent;
+      margin-top: -1px;
+    }
+
+    &:last-child {
+      border-bottom: 1px solid elVar('border-color', 'light');
+    }
+
+    /* 复选框 */
+    .ele-file-list-item-checkbox {
+      width: 36px;
+      padding-left: eleVar('file', 'header-padding');
+      box-sizing: border-box;
+      line-height: 0;
+      flex-shrink: 0;
+    }
+
+    /* 图标和标题 */
+    .ele-file-list-item-name {
+      display: flex;
+      align-items: center;
+      padding: eleVar('file', 'td-padding');
+      box-sizing: border-box;
+      position: relative;
+      overflow: hidden;
+      min-width: 110px;
+      flex: 1;
+    }
+
+    .ele-file-list-item-icon {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+
+      & > img,
+      & > .el-icon {
+        width: eleVar('file', 'td-icon-szie');
+        height: eleVar('file', 'td-icon-szie');
+        font-size: eleVar('file', 'td-icon-szie');
+        flex-shrink: 0;
+        cursor: pointer;
+
+        &:hover + .ele-file-list-item-title {
+          color: elVar('color-primary');
+        }
+      }
+
+      & > .ele-file-list-item-image {
+        border-radius: eleVar('file', 'td-image-radius');
+        object-fit: contain;
+      }
+    }
+
+    .ele-file-list-item-title {
+      padding-left: eleVar('file', 'td-icon-margin');
+      transition: color $transition-base;
+      box-sizing: border-box;
+      text-overflow: ellipsis;
+      word-break: break-all;
+      white-space: nowrap;
+      overflow: hidden;
+      cursor: pointer;
+
+      &:hover {
+        color: elVar('color-primary');
+      }
+    }
+
+    /* 工具按钮 */
+    .ele-file-list-item-tools {
+      flex-shrink: 0;
+      box-sizing: border-box;
+      align-items: center;
+      display: none;
+
+      .ele-file-list-item-tool {
+        font-size: 17px;
+        margin-left: eleVar('file', 'td-icon-margin');
+        color: elVar('color-primary');
+        cursor: pointer;
+      }
+    }
+
+    &:hover .ele-file-list-item-tools {
+      display: flex;
+    }
+
+    /* 自定义列 */
+    .ele-file-list-item-cell {
+      padding: eleVar('file', 'td-item-padding');
+      box-sizing: border-box;
+    }
+  }
+
+  /* header */
+  .ele-file-list-header .ele-file-list-item {
+    line-height: eleVar('file', 'header-height');
+    border-top: none;
+    margin-top: 0;
+
+    .ele-file-list-item-name > div {
+      overflow: hidden;
+      white-space: nowrap;
+      word-break: break-all;
+      text-overflow: ellipsis;
+    }
+
+    .ele-file-list-item-name,
+    .ele-file-list-item-cell {
+      transition: color $transition-base;
+
+      &.is-sortable {
+        cursor: pointer;
+
+        &:hover {
+          color: elVar('color-primary');
+        }
+      }
+    }
+  }
+
+  /* body */
+  .ele-file-list-body .ele-file-list-item {
+    &:hover,
+    &.is-active,
+    &.is-checked {
+      background: eleVar('file', 'item-active-bg');
+      border-color: eleVar('file', 'item-active-border-color');
+
+      & + .ele-file-list-item {
+        border-top-color: eleVar('file', 'item-active-border-color');
+      }
+    }
+  }
+}
+
+/* 右键菜单 */
+.ele-file-list-item-context {
+  min-width: 108px;
+}

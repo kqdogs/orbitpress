@@ -1,0 +1,216 @@
+/** 透明主题 */
+@use 'sass:map';
+@use '../util.scss' as *;
+$bg-transparent: transparent !default;
+$backdrop-filter: blur(18px) !default;
+
+$ele-transparent: () !default;
+$ele-transparent: map.deep-merge(
+  (
+    'skin-bg': (
+      'wallpaper': $bg-transparent,
+      'header': hsla(0, 0%, 60%, 0.2),
+      'sidebar': hsla(0, 0%, 60%, 0.2),
+      'card': hsla(0, 0%, 60%, 0.2),
+      'overlay': hsla(0, 0%, 60%, 0.4),
+      'tooltip': hsla(0, 0%, 18%, 0.8)
+    ),
+    'layout': (
+      'bg': $bg-transparent
+    ),
+    'header': (
+      'bg': eleVar('skin-bg', 'header'),
+      'shadow': (
+        0 0 0 0.8px #fff inset,
+        0 -3px 3px 0 rgba(255, 255, 255, 0.98) inset,
+        0 2px 4px 0 rgba(0, 0, 0, 0.06)
+      )
+    ),
+    'sidebar': (
+      'bg': eleVar('skin-bg', 'sidebar'),
+      'mobile-bg': elVar('bg-color', 'overlay'),
+      'shadow': (
+        -0.8px 0 0 0 elVar('border-color', 'extra-light'),
+        0 0 0 0.8px rgba(255, 255, 255, 0.48) inset,
+        -3px 3px 3px 0 rgba(255, 255, 255, 0.8) inset,
+        2px 1px 2px 0 rgba(0, 0, 0, 0.04)
+      ),
+      'divider-shadow': (
+        0.8px 0 0 0 elVar('border-color', 'extra-light'),
+        0 0 0 0.8px rgba(255, 255, 255, 0.4) inset,
+        3px 3px 3px 0 rgba(255, 255, 255, 0.8) inset,
+        -2px 1px 2px 0 rgba(0, 0, 0, 0.04)
+      )
+    ),
+    'card': (
+      'bg': eleVar('skin-bg', 'card'),
+      'border': 1px solid #fff,
+      'none-border': 1px solid #fff,
+      'none-shadow': (
+        0 3px 3px 0 rgba(255, 255, 255, 0.98) inset,
+        0 2px 4px 0 rgba(0, 0, 0, 0.06)
+      ),
+      'shadow': (
+        0 3px 3px 0 rgba(255, 255, 255, 0.98) inset,
+        elVar('box-shadow', 'lighter')
+      ),
+      'hover-shadow': (
+        0 3px 3px 0 rgba(255, 255, 255, 0.98) inset,
+        elVar('box-shadow')
+      )
+    ),
+    'modal': (
+      'bg': elVar('bg-color', 'overlay')
+    ),
+    'drawer': (
+      'bg': elVar('bg-color', 'overlay')
+    ),
+    'table': (
+      'tr-bg': $bg-transparent,
+      'fixed-backdrop-filter': $backdrop-filter
+    ),
+    'pro-table': (
+      'full-bg': elVar('bg-color', 'overlay')
+    ),
+    'tool-column': (
+      'input-bg': elVar('fill-color', 'lighter')
+    ),
+    'table-select': (
+      'tr-bg': $bg-transparent
+    ),
+    'bottom-bar': (
+      'bg': eleVar('skin-bg', 'card')
+    ),
+    'scrollbar': (
+      'color': hsla(0, 0%, 68%, 0.4),
+      'hover-color': hsla(0, 0%, 68%, 0.68)
+    ),
+    'menu-thumb': (
+      'color': hsla(0, 0%, 68%, 0.4),
+      'hover-color': hsla(0, 0%, 68%, 0.68)
+    ),
+    'menu': (
+      'bg': $bg-transparent
+    ),
+    'segmented': (
+      'bg': elVar('fill-color', 'light')
+    ),
+    'tab': (
+      'bg': eleVar('skin-bg', 'card'),
+      'button-bg': eleVar('skin-bg', 'card'),
+      'button-shadow': (
+        0 0 0 0.8px #fff inset,
+        0 3px 3px 0 rgba(255, 255, 255, 0.98) inset,
+        0 2px 4px 0 rgba(0, 0, 0, 0.06)
+      ),
+      'button-active-shadow': (
+        0 0 0 0.8px #fff inset,
+        0 3px 3px 0 rgba(255, 255, 255, 0.98) inset,
+        0 2px 4px 0 rgba(0, 0, 0, 0.06)
+      )
+    ),
+    'step': (
+      'bg': none,
+      'backdrop-filter': blur(3px)
+    ),
+    'backtop': (
+      'bg': eleVar('skin-bg', 'card')
+    ),
+    'chat': (
+      'side-bg': elVar('fill-color', 'lighter'),
+      'header-tools-bg': elVar('fill-color', 'lighter'),
+      'bubble-avatar-bg': elVar('fill-color', 'extra-light'),
+      'input-bg': elVar('fill-color', 'light'),
+      'file-tool-hover-bg': elVar('bg-color', 'overlay'),
+      'backbottom-hover-bg': elVar('bg-color', 'overlay')
+    ),
+    'message': (
+      'bg': elVar('bg-color', 'overlay')
+    ),
+    'viewer': (
+      'bg': radial-gradient(
+          #{elVar('text-color', 'placeholder')} 8%,
+          $bg-transparent 8%
+        )
+        center / 16px 16px repeat
+    ),
+    'pro-form-builder': (
+      'group-label-bg': none,
+      'group-label-backdrop-filter': $backdrop-filter
+    ),
+    'checkbox': (
+      'bg': $bg-transparent
+    ),
+    'radio': (
+      'bg': $bg-transparent
+    ),
+    'popper': (
+      'bg': elVar('bg-color', 'overlay')
+    ),
+    'tooltip': (
+      'bg': eleVar('skin-bg', 'tooltip')
+    ),
+    'textarea': (
+      'count-bg': $bg-transparent,
+      'count-backdrop-filter': $backdrop-filter
+    )
+  ),
+  $ele-transparent
+);
+
+$ele-transparent-dark: () !default;
+$ele-transparent-dark: map.deep-merge(
+  (
+    'header': (
+      'shadow': (
+        0 0 0 0.8px elVar('border-color', 'light'),
+        0 -3px 3px 0 rgba(255, 255, 255, 0.08) inset,
+        0 2px 4px 0 rgba(0, 0, 0, 0.06)
+      )
+    ),
+    'sidebar': (
+      'shadow': (
+        0 0 0 0.8px elVar('border-color', 'extra-light'),
+        -3px 3px 3px 0 rgba(255, 255, 255, 0.06) inset,
+        2px 1px 2px 0 rgba(0, 0, 0, 0.04)
+      ),
+      'divider-shadow': (
+        0.8px 0 0 0 rgba(255, 255, 255, 0.08),
+        -0.8px 0 0 0 elVar('border-color', 'extra-light'),
+        0 -0.8px 0 0 elVar('border-color', 'extra-light'),
+        0 0.8px 0 0 elVar('border-color', 'extra-light'),
+        3px 3px 3px 0 rgba(255, 255, 255, 0.06) inset,
+        -2px 1px 2px 0 rgba(0, 0, 0, 0.04)
+      )
+    ),
+    'card': (
+      'border': 1px solid elVar('border-color', 'light'),
+      'none-border': 1px solid elVar('border-color', 'lighter'),
+      'none-shadow': (
+        0 3px 3px 0 rgba(255, 255, 255, 0.08) inset,
+        0 2px 4px 0 rgba(0, 0, 0, 0.06)
+      ),
+      'shadow': (
+        0 3px 3px 0 rgba(255, 255, 255, 0.08) inset,
+        elVar('box-shadow', 'lighter')
+      ),
+      'hover-shadow': (
+        0 3px 3px 0 rgba(255, 255, 255, 0.08) inset,
+        elVar('box-shadow')
+      )
+    ),
+    'tab': (
+      'button-shadow': (
+        0 0 0 0.8px elVar('border-color', 'light') inset,
+        0 3px 3px 0 rgba(255, 255, 255, 0.08) inset,
+        0 2px 4px 0 rgba(0, 0, 0, 0.06)
+      ),
+      'button-active-shadow': (
+        0 0 0 0.8px elVar('border-color') inset,
+        0 3px 3px 0 rgba(255, 255, 255, 0.08) inset,
+        0 2px 4px 0 rgba(0, 0, 0, 0.06)
+      )
+    )
+  ),
+  $ele-transparent-dark
+);

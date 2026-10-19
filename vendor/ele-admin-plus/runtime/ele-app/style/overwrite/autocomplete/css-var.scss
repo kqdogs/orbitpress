@@ -1,0 +1,8 @@
+@use '../../../../style/util.scss' as *;
+
+/* ElAutocomplete 主题变量 */
+@mixin set-el-autocomplete-var($var) {
+  .el-autocomplete__popper {
+    @include set-ele-var('autocomplete', $var);
+  }
+}

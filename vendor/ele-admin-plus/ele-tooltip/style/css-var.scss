@@ -1,0 +1,100 @@
+@use '../../style/util.scss' as *;
+
+/* 文字提示主题变量 */
+@mixin set-tooltip-var($var) {
+  .el-popper {
+    @include set-ele-var('popper', $var);
+  }
+
+  .el-popper.is-dark,
+  .ele-tooltip {
+    @include set-ele-var('tooltip', $var);
+  }
+
+  .ele-tooltip.is-light {
+    @include set-ele-var('tooltip-light', $var);
+  }
+
+  .ele-popover {
+    @include set-ele-var('popover', $var);
+  }
+}
+
+/* 底层气泡样式 */
+@mixin popper-style($selector) {
+  #{$selector} {
+    border-radius: eleVar('popper', 'radius');
+
+    &.is-light {
+      background: eleVar('popper', 'bg');
+      border: eleVar('popper', 'border');
+      box-shadow: eleVar('popper', 'shadow');
+
+      & > .el-popper__arrow::before {
+        background: eleVar('popper', 'arrow-bg');
+        border: eleVar('popper', 'border');
+        box-shadow: eleVar('popper', 'arrow-shadow');
+      }
+    }
+
+    .el-popper__arrow {
+      width: eleVar('popper', 'arrow-size');
+      height: eleVar('popper', 'arrow-size');
+
+      &::before {
+        width: eleVar('popper', 'arrow-size');
+        height: eleVar('popper', 'arrow-size');
+        clip-path: polygon(300% -200%, 300% 300%, -200% 300%);
+      }
+    }
+
+    &[data-popper-placement^='top'] > .el-popper__arrow {
+      bottom: eleVar('popper', 'arrow-offset');
+    }
+
+    &[data-popper-placement^='bottom'] > .el-popper__arrow {
+      top: eleVar('popper', 'arrow-offset');
+
+      &::before {
+        clip-path: polygon(-200% 300%, -200% -200%, 300% -200%);
+      }
+    }
+
+    &[data-popper-placement^='left'] > .el-popper__arrow {
+      right: eleVar('popper', 'arrow-offset');
+
+      &::before {
+        clip-path: polygon(-200% -200%, 300% -200%, 300% 300%);
+      }
+    }
+
+    &[data-popper-placement^='right'] > .el-popper__arrow {
+      left: eleVar('popper', 'arrow-offset');
+
+      &::before {
+        clip-path: polygon(300% 300%, -200% 300%, -200% -200%);
+      }
+    }
+
+    &.is-dark {
+      color: eleVar('tooltip', 'color');
+      font-size: eleVar('tooltip', 'font-size');
+      line-height: eleVar('tooltip', 'line-height');
+      padding: eleVar('tooltip', 'padding');
+      background: eleVar('tooltip', 'bg');
+      border: eleVar('tooltip', 'border');
+      box-shadow: eleVar('tooltip', 'shadow');
+      border-radius: eleVar('tooltip', 'radius');
+
+      & > .el-popper__arrow::before {
+        background: eleVar('tooltip', 'arrow-bg');
+        border: eleVar('tooltip', 'border');
+        box-shadow: eleVar('tooltip', 'arrow-shadow');
+      }
+    }
+
+    &.is-prevent-event .el-popper__arrow {
+      pointer-events: none;
+    }
+  }
+}

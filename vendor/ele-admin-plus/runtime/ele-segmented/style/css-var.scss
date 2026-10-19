@@ -1,0 +1,16 @@
+@use '../../style/util.scss' as *;
+
+/* 分段器主题变量 */
+@mixin set-segmented-var($var) {
+  .ele-segmented {
+    @include set-ele-var('segmented', $var);
+  }
+
+  .ele-segmented.is-large {
+    @include set-ele-var('segmented-large', $var);
+  }
+
+  .ele-segmented.is-small {
+    @include set-ele-var('segmented-small', $var);
+  }
+}

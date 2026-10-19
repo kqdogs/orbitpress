@@ -1,0 +1,70 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-tool-var($ele);
+
+.ele-tool {
+  line-height: 1;
+  padding: eleVar('tool', 'padding');
+  font-size: eleVar('tool', 'font-size');
+  border: eleVar('tool', 'border');
+  border-radius: eleVar('tool', 'radius');
+  transition: (color $transition-base, background-color $transition-base);
+  box-sizing: border-box;
+  position: relative;
+  cursor: pointer;
+
+  &:hover {
+    background: eleVar('tool', 'hover-bg');
+  }
+
+  .ele-tool-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .el-dropdown {
+    color: inherit;
+    cursor: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    position: static;
+  }
+
+  .el-tooltip__trigger {
+    position: static;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+  }
+}
+
+.ele-toolbar .ele-tool {
+  flex-shrink: 0;
+  margin-top: calc(#{eleVar('toolbar', 'space')} / 2);
+  margin-bottom: calc(#{eleVar('toolbar', 'space')} / 2);
+  margin-left: eleVar('toolbar', 'space');
+  margin-right: 0;
+}
+
+/* 朴素风格 */
+.ele-toolbar.is-plain .ele-tool {
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  font-size: eleVar('tool-plain', 'font-size');
+  margin-left: calc(#{eleVar('toolbar', 'space')} * 2);
+
+  &:hover {
+    color: elVar('color-primary');
+    background: none;
+  }
+}

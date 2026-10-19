@@ -1,0 +1,8 @@
+@use '../../style/util.scss' as *;
+
+/* 表格操作按钮主题变量 */
+@mixin set-buttons-var($var) {
+  .ele-buttons-wrap {
+    @include set-ele-var('buttons', $var);
+  }
+}

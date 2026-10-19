@@ -1,0 +1,12 @@
+@use '../../style/util.scss' as *;
+
+/* 工具按钮主题变量 */
+@mixin set-tool-var($var) {
+  .ele-tool {
+    @include set-ele-var('tool', $var);
+  }
+
+  .ele-toolbar.is-plain .ele-tool {
+    @include set-ele-var('tool-plain', $var);
+  }
+}

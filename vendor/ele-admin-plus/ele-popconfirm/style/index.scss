@@ -1,0 +1,41 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-popconfirm-var($ele);
+
+.ele-popconfirm > .ele-popover-body {
+  padding: eleVar('popconfirm', 'padding');
+}
+
+.ele-popconfirm-main {
+  display: flex;
+}
+
+.ele-popconfirm-icon.el-icon {
+  flex-shrink: 0;
+  font-size: eleVar('popconfirm', 'icon-font-size');
+  margin: eleVar('popconfirm', 'icon-margin');
+}
+
+.ele-popconfirm-body {
+  flex: 1;
+}
+
+.ele-popconfirm-title {
+  color: eleVar('popconfirm', 'title-color');
+  font-size: eleVar('popconfirm', 'title-font-size');
+  font-weight: eleVar('popconfirm', 'title-font-weight');
+  margin-bottom: eleVar('popconfirm', 'title-margin');
+}
+
+.ele-popconfirm-action {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: eleVar('popconfirm', 'action-margin');
+
+  .el-button + .el-button {
+    margin-left: eleVar('popconfirm', 'action-space');
+  }
+}

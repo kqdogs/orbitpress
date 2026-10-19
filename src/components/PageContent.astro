@@ -1,0 +1,13 @@
+---
+import {renderMarkdown} from '../lib/markdown';
+import type { Settings } from '../lib/schema';
+import {resolvePageLayout} from '../lib/page-layouts';
+import ContentLayout from './page-layout/ContentLayout.astro';
+interface Props { page:{id?:string;title:string;excerpt:string;body:string};settings:Settings;builder?:boolean }
+const {page,settings,builder=false}=Astro.props;
+const markdown=renderMarkdown(page.body);
+const layout=resolvePageLayout(settings,page.id?`page:${page.id}`:'default');
+---
+<ContentLayout layout={layout} settings={settings} toc={markdown.toc} builder={builder}>
+ <div class="container page-content"><div class="breadcrumb"><a href="/">首页</a><span>›</span><span>{page.title}</span></div><article class="article-body"><h1>{page.title}</h1>{page.excerpt&&<p class="page-lead">{page.excerpt}</p>}<div class="prose" set:html={markdown.html}/></article></div>
+</ContentLayout>

@@ -1,0 +1,68 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-buttons-var($ele);
+
+/* 按钮容器 */
+.ele-buttons {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  &.is-nowrap {
+    flex-wrap: nowrap;
+  }
+
+  &.is-gap {
+    gap: eleVar('buttons', 'gap');
+
+    .ele-buttons-item.ele-buttons-btn {
+      margin: 0;
+    }
+  }
+
+  &.is-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+/* 下拉箭头 */
+.ele-buttons-link .ele-buttons-arrow {
+  font-size: eleVar('buttons', 'link-arrow-font-size');
+  margin: eleVar('buttons', 'link-arrow-margin');
+  vertical-align: eleVar('buttons', 'link-arrow-vertical-align');
+}
+
+.ele-buttons-btn .ele-buttons-arrow {
+  font-size: eleVar('buttons', 'btn-arrow-vertical-align');
+  margin: eleVar('buttons', 'btn-arrow-margin');
+}
+
+/* 带图标间距调整 */
+.ele-buttons-item {
+  &.ele-buttons-icon-link > .el-icon {
+    font-size: eleVar('buttons', 'link-icon-font-size');
+    margin: eleVar('buttons', 'link-icon-margin');
+  }
+
+  &.ele-buttons-btn.ele-buttons-icon-btn {
+    padding-left: eleVar('buttons', 'icon-btn-padding-left');
+    padding-right: eleVar('buttons', 'icon-btn-padding-right');
+
+    & > .el-icon {
+      margin: eleVar('buttons', 'btn-icon-margin');
+    }
+
+    &.el-button--small {
+      padding-left: eleVar('buttons', 'icon-btn-sm-padding-left');
+      padding-right: eleVar('buttons', 'icon-btn-sm-padding-right');
+    }
+
+    &.el-button--large {
+      padding-left: eleVar('buttons', 'icon-btn-lg-padding-left');
+      padding-right: eleVar('buttons', 'icon-btn-lg-padding-right');
+    }
+  }
+}

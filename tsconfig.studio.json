@@ -1,0 +1,6 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "jsx": "preserve", "jsxImportSource": "vue", "skipLibCheck": true, "moduleResolution": "bundler", "allowJs": false },
+  "include": ["src/components/studio/**/*.ts", "src/components/studio/**/*.vue", "src/types/ele-admin.d.ts", "worker-configuration.d.ts"],
+  "exclude": ["node_modules", "vendor", "dist"]
+}

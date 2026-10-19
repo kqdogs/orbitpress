@@ -1,0 +1,148 @@
+@use '../../style/util.scss' as *;
+
+/* 数据表格主题变量 */
+@mixin set-data-table-var($var) {
+  .ele-data-table {
+    @include set-ele-var('table', $var);
+  }
+
+  .ele-table-filter-popper {
+    @include set-ele-var('table-filter', $var);
+  }
+}
+
+/* 表格原始样式变量修改 */
+@mixin table-var-style($selector) {
+  #{$selector} {
+    $left-shadow: eleVar('table', 'fixed-left-shadow');
+    $right-shadow: eleVar('table', 'fixed-right-shadow');
+    #{elVarName('table', 'border-color')}: eleVar('table', 'border-color');
+    #{elVarName('table', 'text-color')}: eleVar('table', 'color');
+    #{elVarName('table', 'fixed-left-column')}: #{$left-shadow};
+    #{elVarName('table', 'fixed-right-column')}: #{$right-shadow};
+  }
+}
+
+/* 设置单元格圆角 */
+@mixin data-table-radius($radius) {
+  & > .el-table__inner-wrapper > .el-table__header-wrapper,
+  &.el-table--border > .el-table__inner-wrapper::after,
+  &.el-table--border.hide-header
+    > .el-table__inner-wrapper
+    > .el-table__body-wrapper,
+  &.el-table--layout-auto:not(.hide-header)
+    > .el-table__inner-wrapper
+    > .el-table__body-wrapper {
+    border-top-left-radius: $radius;
+    border-top-right-radius: $radius;
+  }
+
+  & > .el-table__inner-wrapper > .el-table__footer-wrapper,
+  &.el-table--border > .el-table__inner-wrapper::before,
+  &.el-table--border:not(.has-footer)
+    > .el-table__inner-wrapper
+    > .el-table__body-wrapper,
+  &.el-table--layout-auto.has-footer
+    > .el-table__inner-wrapper
+    > .el-table__body-wrapper {
+    border-bottom-left-radius: $radius;
+    border-bottom-right-radius: $radius;
+  }
+
+  &.el-table--border::before {
+    border-bottom-left-radius: $radius;
+    border-top-left-radius: $radius;
+  }
+
+  &.el-table--border::after {
+    border-bottom-right-radius: $radius;
+    border-top-right-radius: $radius;
+  }
+}
+
+/* 空状态样式 */
+@mixin table-empty-style() {
+  .ele-table-empty {
+    padding: 58px 0;
+    line-height: 1;
+
+    .el-empty__description {
+      margin-top: 8px;
+
+      p {
+        color: elVar('text-color', 'placeholder');
+      }
+    }
+  }
+}
+
+/* 单元格内组件样式修改 */
+@mixin table-common-style() {
+  /* 表单组件 */
+  .el-checkbox,
+  .el-switch {
+    height: auto;
+  }
+
+  /* Link */
+  .el-link {
+    display: inline;
+    font-size: inherit;
+
+    & > .el-link__inner {
+      display: inline;
+    }
+
+    & > .el-icon {
+      vertical-align: -1.7px;
+    }
+  }
+}
+
+/* 表头筛选多选样式 */
+@mixin filter-checkbox-style($transition-base) {
+  .el-checkbox-group {
+    padding: eleVar('table-filter', 'padding');
+    box-sizing: border-box;
+
+    & > .el-checkbox {
+      width: 100%;
+      display: flex;
+      height: eleVar('table-filter', 'item-height');
+      padding: eleVar('table-filter', 'item-padding');
+      border-radius: eleVar('table-filter', 'item-radius');
+      transition: (color $transition-base, background-color $transition-base);
+      box-sizing: border-box;
+      margin: 0;
+
+      & > .el-checkbox__label {
+        color: eleVar('table-filter', 'item-color');
+      }
+
+      &:hover {
+        background: eleVar('table-filter', 'item-hover-bg');
+
+        & > .el-checkbox__label {
+          color: eleVar('table-filter', 'item-hover-color');
+        }
+      }
+
+      &.is-checked {
+        background: eleVar('table-filter', 'item-active-bg');
+
+        & > .el-checkbox__label {
+          color: eleVar('table-filter', 'item-active-color');
+          font-weight: eleVar('table-filter', 'item-active-font-weight');
+        }
+
+        &:hover {
+          background: eleVar('table-filter', 'item-active-hover-bg');
+        }
+      }
+
+      & + .el-checkbox {
+        margin-top: eleVar('table-filter', 'item-margin');
+      }
+    }
+  }
+}

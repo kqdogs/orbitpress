@@ -1,0 +1,19 @@
+.article-video-links{box-shadow:0 16px 28px #102b5010;padding:20px}
+.article-video-links h2{display:flex;align-items:center;gap:9px;font-size:16px;margin:0 0 16px;line-height:1.5}
+.resource-play{background:#f32224;color:#fff;border-radius:50%;width:26px;height:26px;display:grid;place-items:center;flex-shrink:0}
+.article-video-links ul{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.article-video-links li{display:flex;flex-direction:column;gap:3px;background:#eef2f8;padding:12px 14px;border-radius:13px;font-size:13px;overflow-wrap:anywhere;min-width:0}
+.article-video-links li>a{color:#0875ff;font-weight:700;text-decoration:none;line-height:1.6}
+.coupon-copy{color:#8a5b00;background:#fff7dc;border:1px solid #ffd069;border-radius:7px;padding:6px 10px;box-shadow:0 3px 6px #73510016;text-align:left;width:fit-content;max-width:100%;overflow-wrap:anywhere;font:600 12px inherit;margin-top:7px}
+.video-description-link{display:block;margin-top:14px;color:#64799a;font-size:13px}
+.resource-copy-status{font-size:12px;color:#4872a4;display:block;margin-top:8px}
+.video-fallback{font-size:12px!important;line-height:1.7;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;color:#71829a}
+.video-fallback a{color:#246bc5}.video-alternate{border:0!important;background:transparent!important;color:#557299;line-height:inherit!important;width:auto!important;padding:0!important;font:inherit;border-radius:0!important}
+.video-embed{aspect-ratio:auto}.video-embed iframe{display:block;aspect-ratio:16/9}.video-stage{aspect-ratio:16/9;overflow:hidden;border-radius:10px;background:#09162b}.video-stage iframe{height:100%}
+.code-block{margin:22px 0;border:1px solid #26394f;border-radius:11px;overflow:hidden;background:#0d1b2d;color:#d3e3f5;max-width:100%}
+.code-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:9px 14px;background:#15263a;color:#9eb6d1;font:12px/1.5 Consolas,monospace}
+.code-toolbar button{padding:3px 9px;border:1px solid #344960;border-radius:5px;background:#ffffff09;color:#c1d7ec;font:12px/1.5 inherit}
+.prose .code-block pre{margin:0;border:0;border-radius:0;background:transparent;padding:16px 18px;overflow:auto;tab-size:4;white-space:pre;line-height:1.75}
+.prose .code-block code{font-family:Consolas,'Cascadia Code',monospace;font-size:13px;white-space:pre;overflow-wrap:normal}
+@media(max-width:1150px){.article-resources{display:block;position:static;grid-column:2;min-width:0}.article-grid-no-toc .article-resources{grid-column:1}}
+@media(max-width:760px){.article-resources{grid-column:1}.article-video-links{padding:17px}.article-video-links li{font-size:14px}}

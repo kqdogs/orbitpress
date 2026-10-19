@@ -1,0 +1,68 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+
+.ele-dot {
+  display: inline-flex;
+  align-items: center;
+
+  .ele-dot-text {
+    flex-shrink: 0;
+    margin-left: 8px;
+  }
+
+  .ele-dot-status {
+    flex-shrink: 0;
+    background: elVar('color-primary');
+    border-radius: 50%;
+    position: relative;
+  }
+
+  .ele-dot-ripple {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: elVar('color-primary');
+    animation: eleAnimDot 1.2s ease-in-out infinite;
+    transform-origin: center;
+    border-radius: 50%;
+    display: none;
+  }
+
+  &.is-ripple .ele-dot-ripple {
+    display: block;
+  }
+
+  &.is-success .ele-dot-status,
+  &.is-success .ele-dot-ripple {
+    background: elVar('color-success');
+  }
+
+  &.is-warning .ele-dot-status,
+  &.is-warning .ele-dot-ripple {
+    background: elVar('color-warning');
+  }
+
+  &.is-danger .ele-dot-status,
+  &.is-danger .ele-dot-ripple {
+    background: elVar('color-danger');
+  }
+
+  &.is-info .ele-dot-status,
+  &.is-info .ele-dot-ripple {
+    background: elVar('color-info');
+  }
+}
+
+@keyframes eleAnimDot {
+  from {
+    transform: scale(0.8);
+    opacity: 0.6;
+  }
+
+  to {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}

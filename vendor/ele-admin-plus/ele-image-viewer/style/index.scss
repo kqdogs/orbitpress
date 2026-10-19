@@ -1,0 +1,121 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-image-viewer-var($ele);
+
+.ele-image-viewer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: all $transition-slow;
+  box-sizing: border-box;
+
+  &.ele-loading-show {
+    position: absolute;
+  }
+
+  .el-image-viewer__wrapper {
+    position: absolute;
+    background: elVar('overlay-color', 'lighter');
+    transition: opacity $transition-slow;
+    overflow: hidden;
+
+    &.viewer-fade-enter-active {
+      animation: none;
+    }
+
+    &.viewer-fade-leave-active {
+      animation: none;
+    }
+  }
+
+  .el-image-viewer__mask {
+    background: none;
+  }
+
+  .el-image-viewer__canvas {
+    transition: transform $transition-slow;
+  }
+
+  .el-image-viewer__img {
+    cursor: grab;
+  }
+
+  .el-image-viewer__close,
+  .el-image-viewer__prev,
+  .el-image-viewer__next {
+    width: eleVar('image-viewer', 'tool-size');
+    height: eleVar('image-viewer', 'tool-size');
+    font-size: eleVar('image-viewer', 'tool-font-size');
+    background: eleVar('image-viewer', 'tool-bg');
+    box-shadow: eleVar('image-viewer', 'tool-shadow');
+    transition: all $transition-base;
+    opacity: 1;
+
+    .el-icon {
+      cursor: inherit;
+    }
+
+    &:not(.is-disabled):hover {
+      background: eleVar('image-viewer', 'tool-hover-bg');
+    }
+
+    &.is-disabled {
+      opacity: eleVar('image-viewer', 'disabled-opacity');
+      cursor: not-allowed;
+    }
+  }
+
+  .el-image-viewer__actions {
+    $padding: calc(eleVar('image-viewer', 'tool-action-size') / 2);
+    width: auto;
+    height: auto;
+    padding: 0 $padding;
+    background: eleVar('image-viewer', 'tool-bg');
+    box-shadow: eleVar('image-viewer', 'tool-shadow');
+    border-radius: $padding;
+    cursor: default;
+    opacity: 1;
+  }
+
+  .el-image-viewer__actions__inner {
+    width: auto;
+    height: auto;
+
+    & > .el-icon {
+      width: eleVar('image-viewer', 'tool-action-size');
+      height: eleVar('image-viewer', 'tool-action-size');
+      font-size: eleVar('image-viewer', 'tool-action-font-size');
+      transition: all $transition-base;
+
+      &:hover {
+        background: eleVar('image-viewer', 'tool-action-hover-bg');
+      }
+
+      &:last-child > svg,
+      &:nth-last-child(2) > svg {
+        transform: scale(1.1);
+      }
+    }
+
+    & > i + i {
+      margin-left: eleVar('image-viewer', 'tool-action-gap');
+    }
+  }
+
+  .el-image-viewer__actions__divider {
+    display: none;
+  }
+}
+
+.ele-image-viewer-fade-enter-from > .el-image-viewer__wrapper,
+.ele-image-viewer-fade-leave-active > .el-image-viewer__wrapper {
+  opacity: 0;
+
+  & > .el-image-viewer__canvas {
+    transform: scale(0);
+  }
+}

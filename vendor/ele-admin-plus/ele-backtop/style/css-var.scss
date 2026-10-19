@@ -1,0 +1,8 @@
+@use '../../style/util.scss' as *;
+
+/* 返回顶部主题变量 */
+@mixin set-backtop-var($var) {
+  .ele-backtop {
+    @include set-ele-var('backtop', $var);
+  }
+}

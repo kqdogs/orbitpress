@@ -1,0 +1,9 @@
+import 'element-plus/es/components/dropdown/style/index';
+import 'element-plus/es/components/dropdown-menu/style/index';
+import 'element-plus/es/components/dropdown-item/style/index';
+import 'element-plus/es/components/icon/style/index';
+import 'element-plus/es/components/scrollbar/style/index';
+import 'element-plus/es/components/button-group/style/index';
+import 'element-plus/es/components/button/style/index';
+import '../../ele-tooltip/style/index';
+import './index.scss';

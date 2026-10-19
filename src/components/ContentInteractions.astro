@@ -1,0 +1,28 @@
+<script>
+ import {youtubeId,youtubeUrl} from '../lib/video-embed';
+ document.querySelectorAll<HTMLElement>('[data-video-id]').forEach(player=>{
+  const id=player.dataset.videoId||'',start=Number(player.dataset.videoStart||0);
+  if(!youtubeId.test(id)||!Number.isInteger(start)||start<0||start>86400)return;
+  const frame=player.querySelector('iframe');
+  if(frame)frame.src=youtubeUrl(id,start,new URL(document.baseURI).origin);
+  function play(privacy=false){
+   const iframe=document.createElement('iframe');
+   iframe.src=youtubeUrl(id,start,new URL(document.baseURI).origin,true,privacy);iframe.title='YouTube 教程视频';
+   iframe.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen';
+   iframe.referrerPolicy='strict-origin-when-cross-origin';iframe.allowFullscreen=true;
+   player.querySelector('.video-stage')?.replaceChildren(iframe);
+  }
+  player.querySelector('.video-play')?.addEventListener('click',()=>play());
+  player.querySelector<HTMLButtonElement>('.video-alternate')?.addEventListener('click',()=>play(true));
+ });
+ document.addEventListener('click',async event=>{
+  const button=event.target instanceof Element?event.target.closest<HTMLButtonElement>('[data-copy-code], [data-copy-value]'):null;
+  if(!button)return;
+  const code=button.hasAttribute('data-copy-code');
+  const text=code?button.closest('.code-block')?.querySelector('code')?.textContent:button.dataset.copyValue;
+  if(text==null)return;
+  const status=code?button:button.closest('.article-video-links')?.querySelector('.resource-copy-status');
+  try {await navigator.clipboard.writeText(text);if(status)status.textContent=code?'已复制':'优惠码已复制';}
+  catch {if(status)status.textContent='复制失败，请手动选中文字复制';}
+ });
+</script>

@@ -1,0 +1,34 @@
+@use '../../../../style/util.scss' as *;
+
+/* ElInput 主题变量 */
+@mixin set-el-input-var($var) {
+  .el-input,
+  .el-textarea,
+  .el-select,
+  .el-range-editor {
+    @include set-ele-var('input', $var);
+    @include set-ele-var('input-error', $var);
+  }
+
+  .el-input--small,
+  .el-select--small {
+    @include set-ele-var('input-sm', $var);
+  }
+
+  .el-input--large,
+  .el-select--large {
+    @include set-ele-var('input-lg', $var);
+  }
+
+  .el-textarea {
+    @include set-ele-var('textarea', $var);
+  }
+
+  .el-textarea.el-input--small {
+    @include set-ele-var('textarea-sm', $var);
+  }
+
+  .el-textarea.el-input--large {
+    @include set-ele-var('textarea-lg', $var);
+  }
+}

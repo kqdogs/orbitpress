@@ -1,0 +1,93 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-tooltip-var($ele);
+
+@include popper-style('.ele-popper.el-popper');
+
+.ele-tooltip-body,
+.ele-popover-body {
+  box-sizing: border-box;
+}
+
+.ele-tooltip-body {
+  padding: eleVar('tooltip', 'padding');
+  position: relative;
+  z-index: 2;
+}
+
+.ele-popper.el-popper.ele-tooltip {
+  color: eleVar('tooltip', 'color');
+  font-size: eleVar('tooltip', 'font-size');
+  line-height: eleVar('tooltip', 'line-height');
+  padding: 0;
+  background: eleVar('tooltip', 'bg');
+  border: eleVar('tooltip', 'border');
+  box-shadow: eleVar('tooltip', 'shadow');
+  border-radius: eleVar('tooltip', 'radius');
+
+  & > .el-popper__arrow::before {
+    background: eleVar('tooltip', 'arrow-bg');
+    border: eleVar('tooltip', 'border');
+    box-shadow: eleVar('tooltip', 'arrow-shadow');
+  }
+
+  &.is-dark {
+    padding: 0;
+  }
+
+  &.is-light {
+    color: eleVar('tooltip-light', 'color');
+    background: eleVar('tooltip-light', 'bg');
+    border: eleVar('tooltip-light', 'border');
+    box-shadow: eleVar('tooltip-light', 'shadow');
+
+    & > .el-popper__arrow::before {
+      background: eleVar('tooltip-light', 'arrow-bg');
+      border: eleVar('tooltip-light', 'border');
+      box-shadow: eleVar('tooltip-light', 'arrow-shadow');
+    }
+  }
+
+  &.is-danger,
+  &.is-danger > .el-popper__arrow::before {
+    background: elVar('color-danger');
+    border-color: elVar('color-danger');
+  }
+
+  &.is-warning,
+  &.is-warning > .el-popper__arrow::before {
+    background: elVar('color-warning');
+    border-color: elVar('color-warning');
+  }
+
+  &.is-success,
+  &.is-success > .el-popper__arrow::before {
+    background: elVar('color-success');
+    border-color: elVar('color-success');
+  }
+}
+
+/* 气泡卡片 */
+.ele-popper.ele-popover {
+  color: eleVar('popover', 'color');
+  font-size: eleVar('popover', 'font-size');
+  line-height: inherit;
+  text-align: left;
+  min-width: 150px;
+  padding: 0;
+}
+
+.ele-popover-content {
+  padding: eleVar('popover', 'padding');
+  box-sizing: border-box;
+}
+
+.ele-popover-title {
+  color: eleVar('popover', 'title-color');
+  font-size: eleVar('popover', 'title-font-size');
+  font-weight: eleVar('popover', 'title-font-weight');
+  padding: eleVar('popover', 'title-padding');
+  border-bottom: eleVar('popover', 'title-border');
+}

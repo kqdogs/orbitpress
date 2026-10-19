@@ -1,0 +1,9 @@
+@use '../../../style/themes/default.scss' as *;
+@use '../../../style/util.scss' as *;
+@use './css-var.scss' as *;
+
+:root {
+  @include set-scrollbar-var($ele);
+}
+
+@include set-scrollbar-style($scrollbar-selector);

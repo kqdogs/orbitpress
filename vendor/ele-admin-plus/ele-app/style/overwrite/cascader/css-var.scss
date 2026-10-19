@@ -1,0 +1,8 @@
+@use '../../../../style/util.scss' as *;
+
+/* ElCascader 主题变量 */
+@mixin set-el-cascader-var($var) {
+  .el-cascader__dropdown {
+    @include set-ele-var('cascader', $var);
+  }
+}

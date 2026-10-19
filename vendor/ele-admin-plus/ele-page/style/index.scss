@@ -1,0 +1,82 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use '../../ele-pro-table/style/css-var.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-page-var($ele);
+
+.ele-page {
+  box-sizing: border-box;
+
+  &:not(.is-plain) {
+    padding: eleVar('page', 'padding');
+  }
+
+  /* 多个卡片 */
+  &.is-multi-card {
+    padding-bottom: 0;
+
+    .ele-card,
+    .el-card {
+      margin-bottom: eleVar('page', 'padding');
+    }
+  }
+
+  /* 关闭页脚 */
+  &.is-hide-footer + .ele-footer {
+    display: none;
+  }
+}
+
+/* 撑开页脚 */
+.ele-admin-content > .ele-page {
+  flex: auto;
+}
+
+.ele-page.is-hide-footer {
+  flex: none;
+}
+
+/* 内部表格高度铺满 */
+.ele-page.is-flex-table {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+
+  @include flex-pro-table();
+}
+
+.ele-page.is-flex-auto-table {
+  flex: auto;
+  display: flex;
+  flex-direction: column;
+
+  @include flex-auto-pro-table();
+}
+
+/* 内容定宽 */
+.ele-admin-limited > .ele-admin-main > .ele-admin-body > .ele-admin-wrapper {
+  & > .ele-admin-content > .ele-page:not(.is-plain) {
+    margin: 0 auto;
+    width: eleVar('page', 'max-width');
+    max-width: 100%;
+  }
+}
+
+/* 按钮风格页签 */
+.ele-admin-tabs.is-button + .ele-admin-wrapper > .ele-admin-content {
+  & > .ele-page:not(.is-plain):first-child {
+    padding-top: eleVar('layout', 'button-tab-page-pt');
+  }
+}
+
+/* 页签置于顶栏 */
+.ele-admin-header.is-ghost + .ele-admin-body,
+.ele-admin-header.is-ghost + .ele-admin-main > .ele-admin-body {
+  & > .ele-admin-wrapper > .ele-admin-content {
+    & > .ele-page:not(.is-plain):first-child {
+      padding-top: eleVar('layout', 'ghost-header-page-pt');
+    }
+  }
+}

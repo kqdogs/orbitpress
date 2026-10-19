@@ -1,0 +1,37 @@
+---
+import Icon from './Icon.astro';
+import BackToTop from './BackToTop.astro';
+---
+<dialog class="search-dialog" aria-label="搜索内容"><div class="search-surface"><button class="close-search" aria-label="关闭搜索">×</button><div class="search-panel"><form action="/" method="get"><input type="search" name="s" maxlength="100" placeholder="搜索教程、工具与实用指南" aria-label="搜索关键词" required/><button class="search-submit-button" aria-label="搜索" type="submit"><Icon name="search" size={25}/></button></form><div class="search-popular"><strong>热门搜索</strong><div>{['AI工具','Apple','Apple Pay','ChatGPT','DITO','eSIM','iFAST','Maya','Roogoo'].map(term=><a href={`/?s=${encodeURIComponent(term)}`}># {term}</a>)}</div></div></div></div></dialog>
+<BackToTop/>
+<script>
+ const dialog=document.querySelector<HTMLDialogElement>('.search-dialog')!;
+ const surface=dialog.querySelector<HTMLElement>('.search-surface')!;
+ let closing=false;
+ let cancelClose=()=>{};
+ function closeSearch(){
+   if(!dialog.open||closing)return;
+   closing=true;dialog.classList.remove('is-open');
+   // Keep the native modal and scroll lock until the sliding layer has left.
+   // transitionend is used instead of relying on animation.finished, which is
+   // not consistently exposed for CSS transitions in embedded browser builds.
+   const finish=()=>{cancelClose();if(closing&&dialog.open)dialog.close();};
+   if(matchMedia('(prefers-reduced-motion: reduce)').matches){finish();return;}
+   const onEnd=(event:TransitionEvent)=>{if(event.target===surface&&event.propertyName==='transform')finish();};
+   const timeout=window.setTimeout(finish,1600);
+   cancelClose=()=>{window.clearTimeout(timeout);surface.removeEventListener('transitionend',onEnd);};
+   surface.addEventListener('transitionend',onEnd);
+ }
+ document.querySelectorAll('.open-search').forEach(b=>b.addEventListener('click',()=>{
+   if(dialog.open)return;
+   closing=false;
+   dialog.showModal();document.documentElement.classList.add('search-open');
+   surface.getBoundingClientRect(); // Establish the offscreen state before transitioning.
+   dialog.classList.add('is-open');
+   dialog.querySelector<HTMLInputElement>('input')?.focus({preventScroll:true});
+ }));
+ dialog.querySelector('.close-search')?.addEventListener('click',()=>void closeSearch());
+ dialog.addEventListener('cancel',event=>{event.preventDefault();void closeSearch();});
+ dialog.addEventListener('close',()=>{cancelClose();closing=false;dialog.classList.remove('is-open');document.documentElement.classList.remove('search-open');});
+ dialog.addEventListener('click',event=>{if(event.target===dialog||event.target===surface||event.target===dialog.querySelector('.search-panel'))void closeSearch();});
+</script>

@@ -1,0 +1,82 @@
+/** 暗黑主题 */
+@use 'sass:map';
+@use '../util.scss' as *;
+
+$ele-dark: () !default;
+$ele-dark: map.deep-merge(
+  (
+    'scrollbar': (
+      'color': #484848,
+      'hover-color': #5b5b5b
+    ),
+    'header': (
+      'shadow': 0 0 0 0.8px elVar('border-color', 'extra-light'),
+      'tool-hover-bg': rgba(255, 255, 255, 0.05),
+      'dark-tool-hover-bg': rgba(255, 255, 255, 0.05),
+      'dark-bg': #1f1f1f,
+      'dark-shadow': eleVar('header', 'shadow'),
+      'ghost-bg': hsla(0, 0%, 32%, 0.4)
+    ),
+    'sidebar': (
+      'dark-bg': #1f1f1f,
+      'shadow': 0 0 0 0.8px elVar('border-color', 'extra-light'),
+      'dark-shadow': eleVar('sidebar', 'shadow')
+    ),
+    'menu-thumb': (
+      'color': #484848,
+      'hover-color': #5b5b5b
+    ),
+    'menu': (
+      'child-bg': rgba(255, 255, 255, 0.04)
+    ),
+    'menu-dark': (
+      'bg': #1f1f1f,
+      'child-bg': #141414
+    ),
+    'menu-colorful': (
+      'dot-color': #5a5a5a,
+      'dot-hover-color': #8b8b8b
+    ),
+    'card': (
+      'border': 1px solid elVar('border-color', 'extra-light'),
+      'shadow': elVar('box-shadow', 'light')
+    ),
+    'segmented': (
+      'bg': elVar('bg-color', 'page'),
+      'hover-bg': rgba(255, 255, 255, 0.05)
+    ),
+    'tab': (
+      'scroll-left-shadow': inset 10px 0 10px -10px rgba(0, 0, 0, 0.88),
+      'scroll-right-shadow': inset -10px 0 10px -10px rgba(0, 0, 0, 0.88),
+      'simple-hover-bg': rgba(255, 255, 255, 0.05),
+      'indicator-dot-color': #5a5a5a,
+      'indicator-dot-hover-color': #8b8b8b,
+      'button-shadow': 0 0 0 0.8px elVar('border-color', 'extra-light') inset,
+      'button-active-shadow': 0 0 0 0.8px elVar('border-color', 'lighter') inset
+    ),
+    'table': (
+      'icon-hover-bg': rgba(255, 255, 255, 0.12),
+      'fixed-left-shadow': inset 10px 0 10px -10px rgba(0, 0, 0, 0.88),
+      'fixed-right-shadow': inset -10px 0 10px -10px rgba(0, 0, 0, 0.88)
+    ),
+    'tool': (
+      'hover-bg': rgba(255, 255, 255, 0.05)
+    ),
+    'chat': (
+      'side-bg': #111112
+    ),
+    'popper': (
+      'bg': '#202020',
+      'arrow-shadow': 0 0 8px 0 rgba(0, 0, 0, 0.28)
+    ),
+    'tooltip': (
+      'bg': '#2a2a2a',
+      'shadow': 0 0 8px 0 rgba(0, 0, 0, 0.28),
+      'arrow-shadow': 0 0 8px 0 rgba(0, 0, 0, 0.28)
+    ),
+    'tag': (
+      'info-bg': elVar('color-info', 'light-8')
+    )
+  ),
+  $ele-dark
+);

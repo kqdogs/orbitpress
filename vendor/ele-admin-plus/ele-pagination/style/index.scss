@@ -1,0 +1,288 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-pagination-var($ele);
+
+.ele-pagination {
+  flex-wrap: wrap;
+  justify-content: center;
+
+  /* 圆角风格 */
+  &.is-circle {
+    /* 间距 */
+    & > * {
+      margin: eleVar('pagination', 'gap') !important;
+      margin-left: 0 !important;
+      margin-bottom: 0 !important;
+    }
+
+    & > .is-last {
+      margin-right: 0 !important;
+    }
+
+    /* 操作按钮 */
+    .btn-prev,
+    .btn-next,
+    .el-pager li {
+      height: eleVar('pagination', 'height');
+      line-height: eleVar('pagination', 'height');
+      min-width: eleVar('pagination', 'height');
+      padding: eleVar('pagination', 'padding');
+      border-radius: eleVar('pagination', 'radius');
+      color: eleVar('pagination', 'color');
+      font-size: eleVar('pagination', 'font-size');
+      background: eleVar('pagination', 'bg');
+      border: eleVar('pagination', 'border');
+      transition: (color $transition-base, background-color $transition-base);
+
+      &:hover {
+        color: eleVar('pagination', 'hover-color');
+        background: eleVar('pagination', 'hover-bg');
+        border: eleVar('pagination', 'hover-border');
+      }
+    }
+
+    .btn-prev:disabled,
+    .btn-next:disabled,
+    .el-pager li.is-disabled {
+      color: eleVar('pagination', 'disabled-color');
+      background: eleVar('pagination', 'disabled-bg');
+      border: eleVar('pagination', 'disabled-border');
+    }
+
+    .el-pager {
+      margin-left: eleVar('pagination', 'space') !important;
+      margin-right: eleVar('pagination', 'space') !important;
+
+      li {
+        margin: 0;
+
+        & + li {
+          margin-left: eleVar('pagination', 'space');
+        }
+
+        &.is-active {
+          color: eleVar('pagination', 'active-color');
+          background: eleVar('pagination', 'active-bg');
+          border: eleVar('pagination', 'active-border');
+          font-weight: eleVar('pagination', 'active-font-weight');
+
+          &.is-disabled {
+            color: eleVar('pagination', 'disabled-active-color');
+            background: eleVar('pagination', 'disabled-active-bg');
+            border: eleVar('pagination', 'disabled-active-border');
+          }
+        }
+      }
+    }
+
+    .btn-prev {
+      margin-right: 0 !important;
+    }
+
+    /* 图标 */
+    .btn-prev .el-icon,
+    .btn-next .el-icon {
+      font-size: initial;
+      transform: scale(1.02);
+    }
+
+    /* 输入框 */
+    .el-pagination__editor.el-input {
+      width: 50px;
+    }
+
+    .el-pagination__sizes {
+      .el-input,
+      .el-select {
+        width: 96px;
+
+        .el-select__caret {
+          margin-left: 0;
+        }
+      }
+
+      .el-input .el-input__wrapper,
+      .el-select .el-select__wrapper {
+        padding-left: 1px;
+        padding-right: 7px;
+      }
+
+      .el-select__selected-item {
+        text-align: center;
+      }
+    }
+
+    .el-input__inner,
+    .el-select__selected-item > span {
+      font-size: eleVar('pagination', 'sm-font-size');
+    }
+
+    /* 文本 */
+    .el-pagination__total,
+    .el-pagination__goto,
+    .el-pagination__classifier {
+      line-height: eleVar('pagination', 'height');
+    }
+
+    /* 小尺寸 */
+    &.el-pagination--small {
+      & > * {
+        margin: eleVar('pagination', 'sm-gap') !important;
+        margin-left: 0 !important;
+        margin-bottom: 0 !important;
+      }
+
+      & > .is-last {
+        margin-right: 0 !important;
+      }
+
+      .btn-prev,
+      .btn-next,
+      .el-pager li {
+        height: eleVar('pagination', 'sm-height');
+        line-height: eleVar('pagination', 'sm-height');
+        min-width: eleVar('pagination', 'sm-height');
+        padding: eleVar('pagination', 'sm-padding');
+        border-radius: eleVar('pagination', 'sm-radius');
+        font-size: eleVar('pagination', 'sm-font-size');
+      }
+
+      .el-pager {
+        margin-left: eleVar('pagination', 'sm-space') !important;
+        margin-right: eleVar('pagination', 'sm-space') !important;
+
+        li + li {
+          margin-left: eleVar('pagination', 'sm-space');
+        }
+      }
+
+      .btn-prev {
+        margin-right: 0 !important;
+      }
+
+      .btn-prev .el-icon,
+      .btn-next .el-icon {
+        transform: scale(0.88);
+      }
+
+      .el-pagination__editor.el-input {
+        width: 44px;
+      }
+
+      .el-pagination__sizes {
+        .el-input,
+        .el-select {
+          width: 88px;
+
+          .el-select__caret {
+            font-size: 12px;
+          }
+        }
+
+        .el-input .el-input__wrapper,
+        .el-select .el-select__wrapper {
+          padding-right: 6px;
+        }
+      }
+
+      .el-input__inner,
+      .el-select__selected-item > span {
+        font-size: eleVar('pagination', 'sm-font-size');
+      }
+
+      .el-pagination__total,
+      .el-pagination__goto,
+      .el-pagination__classifier {
+        line-height: eleVar('pagination', 'sm-height');
+        font-size: eleVar('pagination', 'sm-font-size');
+      }
+    }
+
+    /* 大尺寸 */
+    &.el-pagination--large {
+      & > * {
+        margin: eleVar('pagination', 'lg-gap') !important;
+        margin-left: 0 !important;
+        margin-bottom: 0 !important;
+      }
+
+      & > .is-last {
+        margin-right: 0 !important;
+      }
+
+      .btn-prev,
+      .btn-next,
+      .el-pager li {
+        height: eleVar('pagination', 'lg-height');
+        line-height: eleVar('pagination', 'lg-height');
+        min-width: eleVar('pagination', 'lg-height');
+        padding: eleVar('pagination', 'lg-padding');
+        border-radius: eleVar('pagination', 'lg-radius');
+        font-size: eleVar('pagination', 'lg-font-size');
+      }
+
+      .el-pager {
+        margin-left: eleVar('pagination', 'lg-space') !important;
+        margin-right: eleVar('pagination', 'lg-space') !important;
+
+        li + li {
+          margin-left: eleVar('pagination', 'lg-space');
+        }
+      }
+
+      .btn-prev {
+        margin-right: 0 !important;
+      }
+
+      .btn-prev .el-icon,
+      .btn-next .el-icon {
+        transform: scale(1.16);
+      }
+
+      .el-pagination__editor.el-input {
+        width: 56px;
+      }
+
+      .el-pagination__sizes {
+        .el-input,
+        .el-select {
+          width: 104px;
+        }
+
+        .el-input .el-input__wrapper,
+        .el-select .el-select__wrapper {
+          padding-right: 8px;
+        }
+      }
+
+      .el-input__inner,
+      .el-select__selected-item > span {
+        font-size: eleVar('pagination', 'lg-font-size');
+      }
+
+      .el-pagination__total,
+      .el-pagination__goto,
+      .el-pagination__classifier {
+        line-height: eleVar('pagination', 'lg-height');
+        font-size: eleVar('pagination', 'lg-font-size');
+      }
+    }
+  }
+
+  /* 无限页数 */
+  &.is-infinite {
+    .el-pager li:not(.is-active),
+    .el-pagination__total {
+      display: none;
+    }
+  }
+}
+
+/* 每页数量选择下拉框 */
+.ele-pagination-popper.el-popper {
+  &.is-fixed {
+    position: fixed !important;
+  }
+}

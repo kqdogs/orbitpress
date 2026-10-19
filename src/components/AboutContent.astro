@@ -1,0 +1,24 @@
+---
+import type { Settings } from '../lib/schema';
+import { renderMarkdown } from '../lib/markdown';
+import { resolvePageLayout } from '../lib/page-layouts';
+import ContentLayout from './page-layout/ContentLayout.astro';
+interface Props { settings: Settings;builder?:boolean }
+const { settings,builder=false } = Astro.props;
+const design = settings.aboutDesign;
+const content = renderMarkdown(design.body);
+---
+<ContentLayout layout={resolvePageLayout(settings,'about')} settings={settings} toc={content.toc} builder={builder}>
+<div class:list={['about-content', { 'about-with-banner': design.layout === 'banner' }]}>
+  <div class="about-heading"><div class="container about-heading-inner">
+    <div class="breadcrumb"><a href="/">首页</a><span>›</span><span>{design.title}</span></div>
+    {design.eyebrow && <span class="eyebrow">{design.eyebrow}</span>}
+    <h1>{design.title}</h1>
+    {design.lead && <p class="lead">{design.lead}</p>}
+  </div></div>
+  <div class="container about-copy">
+    <div class="prose" set:html={content.html}/>
+    {design.showBackButton && <a href={design.buttonHref} class="button primary">{design.buttonLabel}</a>}
+  </div>
+</div>
+</ContentLayout>

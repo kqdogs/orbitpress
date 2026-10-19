@@ -1,0 +1,8 @@
+@use '../../style/util.scss' as *;
+
+/* 分页主题变量 */
+@mixin set-pagination-var($var) {
+  .ele-pagination {
+    @include set-ele-var('pagination', $var);
+  }
+}

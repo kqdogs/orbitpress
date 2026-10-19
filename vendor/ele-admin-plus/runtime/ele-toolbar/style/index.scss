@@ -1,0 +1,56 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-toolbar-var($ele);
+
+.ele-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  box-sizing: border-box;
+  padding: eleVar('toolbar', 'padding');
+  background: eleVar('toolbar', 'bg');
+  border: eleVar('toolbar', 'border');
+  border-radius: eleVar('toolbar', 'radius');
+
+  .ele-toolbar-title {
+    flex-shrink: 0;
+    max-width: 100%;
+    margin-top: eleVar('toolbar', 'space');
+    margin-bottom: eleVar('toolbar', 'space');
+    margin-right: eleVar('toolbar', 'space');
+  }
+
+  .ele-toolbar-body {
+    flex: auto;
+    max-width: 100%;
+    margin: eleVar('toolbar', 'space') 0;
+  }
+
+  .ele-toolbar-tools {
+    flex-shrink: 0;
+    max-width: 100%;
+    margin-right: 0;
+    margin-left: auto;
+    margin-top: calc(#{eleVar('toolbar', 'space')} / 2);
+    margin-bottom: calc(#{eleVar('toolbar', 'space')} / 2);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  /* 朴素风格 */
+  &.is-plain {
+    padding: 0;
+    border: none;
+    background: none;
+    margin: eleVar('toolbar-plain', 'margin');
+  }
+
+  /* 修复上传列表占位 */
+  .el-upload-list {
+    margin: 0;
+  }
+}

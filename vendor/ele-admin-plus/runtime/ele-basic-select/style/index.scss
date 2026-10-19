@@ -1,0 +1,270 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-basic-select-var($ele);
+
+.ele-select {
+  width: 100%;
+  position: relative;
+  cursor: pointer;
+
+  & > .el-input,
+  & > .el-input > .el-input__wrapper,
+  & > .el-input > .el-input__wrapper > .el-input__inner {
+    cursor: inherit;
+  }
+
+  &.is-filterable {
+    cursor: text;
+  }
+
+  /* 输入框 */
+  & > .el-input > .el-input__wrapper {
+    border: eleVar('input', 'border');
+    background: eleVar('input', 'bg');
+    transition: all $transition-base;
+    box-sizing: border-box;
+    position: relative;
+    box-shadow: none;
+  }
+
+  &:hover > .el-input > .el-input__wrapper {
+    border: eleVar('input', 'hover-border');
+    background: eleVar('input', 'hover-bg');
+    box-shadow: eleVar('input', 'hover-shadow');
+  }
+
+  & > .el-input > .el-input__wrapper.is-focus,
+  &.is-opened > .el-input > .el-input__wrapper {
+    border: eleVar('input', 'focus-border');
+    background: eleVar('input', 'focus-bg');
+    box-shadow: eleVar('input', 'focus-shadow');
+  }
+
+  /* 图标 */
+  & > .el-input > .el-input__wrapper .el-input__icon {
+    color: eleVar('input', 'icon-color');
+    font-size: eleVar('input', 'icon-size');
+    transition: all $transition-base;
+  }
+
+  & > .el-input .el-input__prefix-inner .el-input__icon {
+    margin-right: eleVar('input', 'icon-space');
+  }
+
+  & > .el-input .el-input__suffix-inner .el-input__icon {
+    margin-left: eleVar('input', 'icon-space');
+  }
+
+  /* 箭头和清空图标 */
+  & > .el-input .el-input__icon.ele-select-clear,
+  & > .el-input .el-input__icon.ele-select-arrow {
+    margin: eleVar('input', 'clear-margin');
+  }
+
+  & > .el-input .el-input__icon.ele-select-clear {
+    color: eleVar('input', 'clear-color');
+    cursor: pointer;
+
+    &:hover {
+      color: eleVar('input', 'clear-hover-color');
+    }
+  }
+
+  .ele-select-clear,
+  &:hover .ele-select-clear + .ele-select-arrow,
+  &:hover .ele-select-clear + .ele-select-arrow + .el-input__validateIcon {
+    display: none;
+  }
+
+  &:hover .ele-select-clear {
+    display: flex;
+  }
+
+  .ele-select-arrow > svg > path {
+    transition: d $transition-base;
+  }
+
+  &.is-opened .ele-select-arrow > svg > path {
+    #{'d'}: path('M10 31 24 17 38 31');
+  }
+
+  /* 多选 */
+  &.is-multiple {
+    min-height: elVar('component-size');
+
+    & > .el-input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+
+      & > .el-input__wrapper,
+      & > .el-input__wrapper > .el-input__inner {
+        height: 100%;
+        box-sizing: border-box;
+      }
+    }
+  }
+
+  /* 多选标签 */
+  .ele-select-tags {
+    display: flex;
+    flex-wrap: wrap;
+    min-height: inherit;
+    box-sizing: border-box;
+    padding: 2px 0 2px 4px;
+    width: calc(100% - 22px);
+    position: relative;
+    z-index: 3;
+
+    & > .el-tag {
+      flex-shrink: 0;
+      margin: 2px 4px 2px 0;
+      height: calc(elVar('component-size') - 4px - 4px);
+      border: none;
+    }
+  }
+
+  &.is-empty .ele-select-tags {
+    padding-left: 8.8px;
+  }
+
+  /* 多选搜索框 */
+  .ele-select-search.el-tag {
+    flex: 1;
+    padding: 0;
+    margin-right: 0;
+    min-width: 60px;
+    overflow: hidden;
+    background: none;
+    display: none;
+    font-size: 0;
+
+    & > .el-tag__content {
+      width: 100%;
+      height: 100%;
+      display: block;
+      font-size: 0;
+    }
+
+    .el-input {
+      width: 100%;
+      height: 100%;
+      cursor: inherit;
+
+      .el-input__wrapper {
+        height: 100%;
+        min-height: auto;
+        padding: 0 0 0 2px;
+        box-sizing: border-box;
+        border: none;
+        box-shadow: none;
+        background: none;
+        cursor: inherit;
+      }
+
+      .el-input__inner {
+        height: 100%;
+        cursor: inherit;
+      }
+    }
+  }
+
+  &.is-opened .ele-select-search.el-tag {
+    display: block;
+  }
+
+  /* 小尺寸 */
+  &.is-small {
+    &.is-multiple {
+      min-height: elVar('component-size', 'small');
+    }
+
+    .ele-select-tags {
+      width: calc(100% - 20px);
+
+      & > .el-tag {
+        margin: 1px 4px 1px 0;
+        height: calc(elVar('component-size', 'small') - 4px - 2px);
+      }
+    }
+
+    &.is-empty .ele-select-tags {
+      padding-left: 6.8px;
+    }
+  }
+
+  /* 大尺寸 */
+  &.is-large {
+    &.is-multiple {
+      min-height: elVar('component-size', 'large');
+    }
+
+    .ele-select-tags {
+      padding: 4px 0 4px 6px;
+      width: calc(100% - 24px);
+
+      & > .el-tag {
+        height: calc(elVar('component-size', 'large') - 8px - 4px);
+      }
+    }
+
+    &.is-empty .ele-select-tags {
+      padding-left: 10.8px;
+    }
+  }
+
+  /* 禁用 */
+  &.is-disabled {
+    cursor: not-allowed;
+
+    & > .el-input.is-disabled > .el-input__wrapper {
+      border: eleVar('input', 'disabled-border');
+      background: eleVar('input', 'disabled-bg');
+      box-shadow: none;
+    }
+
+    & > .el-input > .el-input__wrapper > .el-input__inner {
+      color: eleVar('input', 'disabled-color');
+      -webkit-text-fill-color: eleVar('input', 'disabled-color');
+    }
+
+    .ele-select-tags > .el-tag {
+      color: elVar('disabled', 'text-color');
+      background: hsla(0, 0%, 60%, 0.15);
+    }
+  }
+}
+
+/* 表单验证 */
+.el-form-item.is-error {
+  .ele-select > .el-input > .el-input__wrapper {
+    border: eleVar('input-error', 'border');
+    background: eleVar('input-error', 'bg');
+    box-shadow: none;
+  }
+
+  .ele-select:hover > .el-input > .el-input__wrapper {
+    border: eleVar('input-error', 'hover-border');
+    background: eleVar('input-error', 'hover-bg');
+    box-shadow: eleVar('input-error', 'hover-shadow');
+  }
+
+  .ele-select > .el-input > .el-input__wrapper.is-focus,
+  .ele-select.is-opened > .el-input > .el-input__wrapper {
+    border: eleVar('input-error', 'focus-border');
+    background: eleVar('input-error', 'focus-bg');
+    box-shadow: eleVar('input-error', 'focus-shadow') !important;
+  }
+
+  .ele-select.is-disabled > .el-input > .el-input__wrapper {
+    border: eleVar('input-error', 'disabled-border');
+    background: eleVar('input-error', 'disabled-bg');
+    box-shadow: none;
+  }
+}

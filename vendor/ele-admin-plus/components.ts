@@ -1,0 +1,11 @@
+export * from './core-components';
+export { default as EleBarCode } from './ele-bar-code/index.vue';
+export { default as EleCountUp } from './ele-count-up/index.vue';
+export { default as EleCropper } from './ele-cropper/index.vue';
+export { default as EleCropperModal } from './ele-cropper-modal/index.vue';
+export { default as EleCrud } from './ele-crud/index';
+export { default as EleCrudBuilder } from './ele-crud-builder/index.vue';
+export { default as EleMapPicker } from './ele-map-picker/index.vue';
+export { default as EleProForm } from './ele-pro-form/index.vue';
+export { default as EleProFormBuilder } from './ele-pro-form-builder/index.vue';
+export { default as EleXgPlayer } from './ele-xg-player/index.vue';

@@ -1,0 +1,268 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-icon-var($ele);
+
+/* 选择框 */
+.ele-select.is-icon-select .el-input__prefix-inner {
+  color: elVar('input', 'text-color');
+}
+
+/* 下拉面板 */
+.ele-icon-select-popper.is-icon-select-responsive {
+  max-width: calc(100vw - 32px);
+}
+
+.ele-icon-select-popper.is-icon-select-default,
+.ele-icon-select-popper > .ele-popover-body,
+.ele-icon-select-popper > .el-dialog__body > .ele-modal-body,
+.ele-icon-select-popper > .el-drawer__body > .ele-drawer-body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0;
+}
+
+.ele-icon-select-main {
+  flex: 1;
+  display: flex;
+  overflow: auto;
+}
+
+/* 顶栏 */
+.ele-icon-select-header {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: eleVar('icon', 'header-padding');
+  box-shadow: 0 -0.8px 0 elVar('border-color', 'light') inset;
+}
+
+.ele-icon-select-tabs {
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+
+  .ele-icon-select-tab {
+    height: eleVar('icon', 'tab-height');
+    line-height: eleVar('icon', 'tab-height');
+    color: eleVar('icon', 'tab-color');
+    font-size: eleVar('icon', 'tab-font-size');
+    padding: eleVar('icon', 'tab-padding');
+    border-radius: eleVar('icon', 'tab-radius');
+    transition: (color $transition-base, background-color $transition-base);
+    box-sizing: border-box;
+    word-break: break-all;
+    white-space: nowrap;
+    position: relative;
+    cursor: pointer;
+
+    & + .ele-icon-select-tab {
+      margin-left: eleVar('icon', 'tab-space');
+    }
+
+    &::after {
+      content: '';
+      width: 100%;
+      height: eleVar('icon', 'tab-active-line');
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      opacity: 0;
+      transform: scaleX(0.0001);
+      background: elVar('color-primary');
+      transition: (
+        transform 0.15s cubic-bezier(0.215, 0.61, 0.355, 1),
+        opacity 0.15s cubic-bezier(0.215, 0.61, 0.355, 1)
+      );
+    }
+
+    &:hover {
+      color: eleVar('icon', 'tab-hover-color');
+      background: eleVar('icon', 'tab-hover-bg');
+    }
+
+    &:active {
+      background: eleVar('icon', 'tab-active-bg');
+    }
+
+    &.is-active {
+      color: eleVar('icon', 'tab-active-color');
+      background: eleVar('icon', 'tab-active-bg');
+      font-weight: eleVar('icon', 'tab-active-font-weight');
+
+      &::after {
+        opacity: 1;
+        transform: scaleX(1);
+        transition: (
+          transform 0.15s cubic-bezier(0.645, 0.045, 0.355, 1),
+          opacity 0.15s cubic-bezier(0.645, 0.045, 0.355, 1)
+        );
+      }
+    }
+  }
+}
+
+/* 顶栏搜索框 */
+.ele-icon-select-search {
+  width: 100%;
+  flex-shrink: 0;
+  padding: eleVar('icon', 'search-padding');
+  box-sizing: border-box;
+
+  & > .el-input .el-input__prefix .el-input__icon {
+    font-size: eleVar('icon', 'search-icon-size');
+  }
+}
+
+.ele-icon-select-tabs + .ele-icon-select-search {
+  width: eleVar('icon', 'search-width');
+  padding-left: 12px;
+}
+
+/* 左侧菜单 */
+.ele-icon-select-menus {
+  flex-shrink: 0;
+  width: eleVar('icon', 'menus-width');
+  padding: eleVar('icon', 'menus-padding');
+  box-shadow: -0.8px 0 0 elVar('border-color', 'light') inset;
+  box-sizing: border-box;
+  overflow: auto;
+
+  .ele-icon-select-menu {
+    height: eleVar('icon', 'menu-height');
+    line-height: eleVar('icon', 'menu-height');
+    color: eleVar('icon', 'menu-color');
+    font-size: eleVar('icon', 'menu-font-size');
+    padding: eleVar('icon', 'menu-padding');
+    border-radius: eleVar('icon', 'menu-radius');
+    transition: (color $transition-base, background-color $transition-base);
+    overflow: hidden;
+    white-space: nowrap;
+    word-break: break-all;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+    position: relative;
+    cursor: pointer;
+
+    & + .ele-icon-select-menu {
+      margin-top: eleVar('icon', 'menu-space');
+    }
+
+    &::after {
+      content: '';
+      height: 100%;
+      width: eleVar('icon', 'menu-active-line');
+      position: absolute;
+      top: 0;
+      right: 0;
+      opacity: 0;
+      transform: scaleY(0.0001);
+      background: elVar('color-primary');
+      transition: (
+        transform 0.15s cubic-bezier(0.215, 0.61, 0.355, 1),
+        opacity 0.15s cubic-bezier(0.215, 0.61, 0.355, 1)
+      );
+    }
+
+    &:hover {
+      color: eleVar('icon', 'menu-hover-color');
+      background: eleVar('icon', 'menu-hover-bg');
+    }
+
+    &:active {
+      background: eleVar('icon', 'menu-active-bg');
+    }
+
+    &.is-active {
+      color: eleVar('icon', 'menu-active-color');
+      background: eleVar('icon', 'menu-active-bg');
+      font-weight: eleVar('icon', 'menu-active-font-weight');
+
+      &::after {
+        opacity: 1;
+        transform: scaleY(1);
+        transition: (
+          transform 0.15s cubic-bezier(0.645, 0.045, 0.355, 1),
+          opacity 0.15s cubic-bezier(0.645, 0.045, 0.355, 1)
+        );
+      }
+    }
+  }
+}
+
+/* 图标列表 */
+.ele-icon-select-body {
+  flex: 1;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  & > .el-scrollbar__wrap > .el-scrollbar__view {
+    padding: eleVar('icon', 'body-padding');
+  }
+}
+
+.ele-icon-select-grid {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
+  grid-gap: 8px;
+
+  .ele-icon-select-item {
+    height: eleVar('icon', 'item-height');
+    padding: eleVar('icon', 'item-padding');
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: eleVar('icon', 'color');
+    font-size: eleVar('icon', 'font-size');
+    border: eleVar('icon', 'border');
+    border-radius: eleVar('icon', 'radius');
+    transition: (color $transition-base, background-color $transition-base);
+    box-sizing: border-box;
+    overflow: hidden;
+    cursor: pointer;
+
+    &:hover {
+      color: eleVar('icon', 'hover-color');
+      background: eleVar('icon', 'hover-bg');
+      border: eleVar('icon', 'hover-border');
+    }
+
+    &.is-active {
+      color: eleVar('icon', 'active-color');
+      background: eleVar('icon', 'active-bg');
+      border: eleVar('icon', 'active-border');
+    }
+  }
+
+  .ele-icon-select-item-name {
+    max-width: 100%;
+    font-size: eleVar('icon', 'name-font-size');
+    margin-top: eleVar('icon', 'name-margin-top');
+    white-space: nowrap;
+    word-break: break-all;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  &.is-loose {
+    grid-template-columns: repeat(auto-fill, minmax(98px, 1fr));
+
+    .ele-icon-select-item {
+      font-size: eleVar('icon', 'loose-font-size');
+      height: eleVar('icon', 'loose-item-height');
+      padding: eleVar('icon', 'loose-item-padding');
+    }
+  }
+}
+
+/* 抽屉模式 */
+.ele-icon-select-popper > .el-drawer__body > .ele-drawer-body {
+  height: 100%;
+  overflow: auto;
+}

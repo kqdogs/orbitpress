@@ -1,0 +1,25 @@
+---
+import { env } from 'cloudflare:workers';
+import { siteSettings } from '../lib/repository';
+import SiteUtilities from '../components/SiteUtilities.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import ContentInteractions from '../components/ContentInteractions.astro';
+import type { Settings } from '../lib/schema';
+import '../styles/site.css';
+import '../styles/brand-motion.css';
+import '../styles/scrollbars.css';
+import '../styles/content-tools.css';
+interface Props { title?:string; description?:string; preview?:boolean; settingsOverride?:Settings }
+const settings=Astro.props.settingsOverride||(await siteSettings(env.DB)).value;
+const {title=settings.title,description=settings.description,preview=false}=Astro.props;
+const pathname=Astro.url.pathname;
+---
+<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>{title===settings.title?title:`${title} - ${settings.title}`}</title><meta name="description" content={description}/><link rel="icon" href="/favicon.svg"/><slot name="head"/>{preview&&<><meta name="robots" content="noindex,nofollow"/><style is:inline>body[data-preview] a,body[data-preview] button{pointer-events:none}</style></>}</head><body data-preview={preview||undefined}>
+ <a class="skip-link" href="#main-content">跳至内容</a>
+ <SiteHeader settings={settings} pathname={pathname}/>
+ <main id="main-content"><slot/></main>
+ <SiteFooter settings={settings}/>
+ <SiteUtilities/>
+ <ContentInteractions/>
+</body></html>

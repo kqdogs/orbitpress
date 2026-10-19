@@ -1,0 +1,8 @@
+@use '../../../../style/util.scss' as *;
+
+/* ElDescriptions 主题变量 */
+@mixin set-el-descriptions-var($var) {
+  .el-descriptions {
+    @include set-ele-var('descriptions', $var);
+  }
+}

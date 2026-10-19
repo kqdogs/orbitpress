@@ -1,0 +1,8 @@
+@use '../../style/util.scss' as *;
+
+/* 地图位置选择器主题变量 */
+@mixin set-map-var($var) {
+  .ele-map-view {
+    @include set-ele-var('map', $var);
+  }
+}

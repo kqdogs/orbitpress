@@ -1,0 +1,192 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use '../../ele-pro-table/style/css-var.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-drawer-var($ele);
+
+/* 抽屉 */
+.ele-drawer {
+  &.el-drawer-fade-enter-active *,
+  &.el-drawer-fade-leave-active * {
+    pointer-events: none !important;
+  }
+
+  &.el-overlay {
+    overflow: hidden;
+  }
+
+  & > .el-drawer {
+    background: eleVar('drawer', 'bg');
+
+    & > .el-drawer__header {
+      margin: 0;
+      padding: 0;
+      color: inherit;
+      display: block;
+      flex-shrink: 0;
+      border: none;
+    }
+
+    & > .el-drawer__body {
+      padding: 0;
+    }
+
+    & > .el-drawer__footer {
+      padding: 0;
+      flex-shrink: 0;
+      border: none;
+    }
+  }
+}
+
+.ele-drawer-header {
+  display: flex;
+  align-items: center;
+  padding: eleVar('drawer', 'header-padding');
+  border-bottom: eleVar('drawer', 'header-border');
+  box-sizing: border-box;
+}
+
+.ele-drawer-title {
+  flex: 1;
+  color: eleVar('drawer', 'header-color');
+  font-size: eleVar('drawer', 'header-font-size');
+  line-height: eleVar('drawer', 'header-line-height');
+  font-weight: eleVar('drawer', 'header-font-weight');
+  box-sizing: border-box;
+}
+
+.ele-drawer-close {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: eleVar('drawer', 'icon-size');
+  height: eleVar('drawer', 'icon-size');
+  line-height: eleVar('drawer', 'icon-size');
+  color: eleVar('drawer', 'icon-color');
+  font-size: eleVar('drawer', 'icon-font-size');
+  border-radius: eleVar('drawer', 'icon-radius');
+  transition: (color $transition-base, background-color $transition-base);
+  box-sizing: border-box;
+  cursor: pointer;
+
+  &:hover {
+    color: eleVar('drawer', 'icon-hover-color');
+    background: eleVar('drawer', 'icon-hover-bg');
+  }
+}
+
+.ele-drawer-body {
+  padding: eleVar('drawer', 'body-padding');
+  box-sizing: border-box;
+
+  &.is-form {
+    padding: eleVar('drawer', 'form-body-padding');
+  }
+}
+
+.ele-drawer-footer {
+  flex-shrink: 0;
+  padding: eleVar('drawer', 'footer-padding');
+  border-top: eleVar('drawer', 'footer-border');
+  box-sizing: border-box;
+}
+
+/* 失活状态 */
+.ele-drawer-hide {
+  display: none !important;
+}
+
+/* 最大宽度适应屏幕 */
+.ele-drawer-responsive > .el-drawer {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* 限制在主体区域 */
+.ele-admin-modals > .ele-drawer {
+  height: auto;
+  pointer-events: auto;
+  position: absolute !important;
+
+  &:not(.el-drawer-fade-leave-active):not(.el-drawer-fade-enter-active) {
+    transition: (width $transition-base, left $transition-base);
+  }
+}
+
+/* 内容异步组件加载状态 */
+.ele-drawer-comp-loading > .el-drawer > .el-drawer__body > .ele-loading {
+  background: none;
+  pointer-events: none;
+}
+
+/* 内部表格弹性布局 */
+.ele-drawer-flex-table > .el-drawer > .el-drawer__body {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  & > .ele-drawer-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+
+    @include flex-pro-table();
+  }
+}
+
+.ele-drawer-flex-auto-table > .el-drawer > .el-drawer__body {
+  display: flex;
+  flex-direction: column;
+
+  & > .ele-drawer-body {
+    flex: auto;
+    display: flex;
+    flex-direction: column;
+
+    @include flex-auto-pro-table();
+  }
+}
+
+/* 在内容区添加自定义底栏 */
+.ele-drawer-custom-footer > .el-drawer > .el-drawer__body {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  & > .ele-drawer-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 0;
+
+    & > .ele-drawer-custom-footer,
+    & > .ele-buttons.is-modal-footer {
+      flex-shrink: 0;
+      padding: eleVar('drawer', 'footer-padding');
+      border-top: eleVar('drawer', 'footer-border');
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    & > .ele-drawer-custom-body,
+    & > .el-form {
+      flex: 1;
+      box-sizing: border-box;
+      padding: eleVar('drawer', 'body-padding');
+      overflow: auto;
+    }
+
+    &.is-form {
+      & > .ele-drawer-custom-body,
+      & > .el-form {
+        padding: eleVar('drawer', 'form-body-padding');
+      }
+    }
+  }
+}

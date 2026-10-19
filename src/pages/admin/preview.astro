@@ -1,0 +1,33 @@
+---
+import { env } from 'cloudflare:workers';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import ArticleContent from '../../components/ArticleContent.astro';
+import { articlePreviewInput, type Post } from '../../lib/schema';
+import { ApiError, readBody } from '../../lib/http';
+import { authenticate } from '../../lib/security';
+import { categories, siteSettings } from '../../lib/repository';
+
+// POST-only rendering: no preview URL, database row, public draft or publication.
+if (Astro.request.method !== 'POST') {
+ return new Response('预览仅通过文章编辑器打开', { status:405, headers:{Allow:'POST'} });
+}
+let input;
+try {
+ // Drain and bound the request before early auth rejection in local workerd.
+ input = await readBody(Astro.request, articlePreviewInput);
+ await authenticate(Astro.request, env.DB, 'admin');
+} catch (error) {
+ const known = error instanceof ApiError;
+ return new Response(JSON.stringify({error:{code:known?error.code:'INTERNAL',message:known?error.message:'预览暂时不可用'}}), {
+  status:known?error.status:500,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'}
+ });
+}
+Astro.response.headers.set('Cache-Control','no-store');
+Astro.response.headers.set('X-Robots-Tag','noindex, nofollow');
+const {value:settings}=await siteSettings(env.DB);
+const cats=await categories(env.DB);
+const category=cats.find(c=>c.id===input.categoryId);
+const post:Post={...input,title:input.title||'未命名文章',slug:'preview',id:'preview',featured:false,status:'draft',version:1,
+ createdAt:'',updatedAt:'',publishedAt:input.publishedAt||null,categoryName:category?.name||'未分类',categorySlug:category?.slug||''};
+---
+<SiteLayout title={post.title} description={post.excerpt} preview><ArticleContent post={post} settings={settings}/></SiteLayout>

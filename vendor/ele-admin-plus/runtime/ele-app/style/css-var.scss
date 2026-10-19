@@ -1,0 +1,11 @@
+@use '../../style/util.scss' as *;
+@use './message/css-var.scss' as *;
+@use './overwrite/css-var.scss' as *;
+@use './scrollbar/css-var.scss' as *;
+
+/* App 主题变量 */
+@mixin set-app-var($var) {
+  @include set-scrollbar-var($var);
+  @include set-overwrite-var($var);
+  @include set-message-var($var);
+}

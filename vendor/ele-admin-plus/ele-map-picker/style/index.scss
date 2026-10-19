@@ -1,0 +1,292 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-map-var($ele);
+
+.ele-modal .ele-map-picker .ele-modal-body {
+  padding: 0;
+}
+
+.ele-map-picker {
+  overflow: hidden;
+}
+
+/* 主体区域 */
+.ele-map-view {
+  display: flex;
+  position: relative;
+
+  &.is-poi-mode > .ele-loading-spinner {
+    background: none;
+
+    & > .ele-loading-dot {
+      display: none;
+    }
+  }
+}
+
+/* 地图容器 */
+.ele-map-view-body {
+  flex: 1;
+  height: 100%;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 地图中心图标 */
+.ele-map-view-body-icon {
+  width: 26px;
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  margin-left: -13px;
+  pointer-events: none;
+  z-index: eleVar('map', 'btn-index');
+}
+
+.ele-map-view-icon-plus.el-icon {
+  color: #2f54eb;
+  font-size: 14px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: eleVar('map', 'btn-index');
+}
+
+/* 列表区域 */
+.ele-map-view-side {
+  width: 40%;
+  height: 100%;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* 列表顶部搜索框 */
+.ele-map-view-search {
+  flex-shrink: 0;
+  padding: eleVar('map', 'search-padding');
+  box-sizing: border-box;
+
+  .el-autocomplete,
+  .el-input {
+    width: 100%;
+  }
+}
+
+/* 列表底部提示信息 */
+.ele-map-view-extra {
+  flex-shrink: 0;
+  padding: 6px 12px;
+  box-sizing: border-box;
+
+  /* 确定按钮 */
+  .ele-map-view-btn-ok {
+    width: 100%;
+    display: block;
+  }
+}
+
+.ele-map-view-message {
+  padding: 4px 8px;
+  box-sizing: border-box;
+  color: elVar('color-error');
+  font-size: elVar('font-size', 'small');
+  background: elVar('color-error', 'light-9');
+  border: 1px solid elVar('color-error', 'light-8');
+  border-radius: elVar('border-radius', 'base');
+  text-align: center;
+}
+
+/* 列表空图标 */
+.ele-map-view-empty {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* poi列表 */
+.ele-map-view-list {
+  flex: 1;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+.ele-map-view-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 14px;
+  transition: background-color $transition-base;
+  box-sizing: border-box;
+  position: relative;
+  cursor: pointer;
+
+  &:hover {
+    background: elVar('fill-color', 'light');
+  }
+
+  & + .ele-map-view-item::before {
+    content: '';
+    border-top: 1px solid elVar('border-color', 'light');
+    position: absolute;
+    top: 0;
+    left: 12px;
+    right: 12px;
+  }
+}
+
+.ele-map-view-item-body {
+  flex: 1;
+  padding: 0 0 0 6px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.ele-map-view-item-title {
+  font-size: elVar('font-size', 'base');
+  word-break: break-all;
+}
+
+.ele-map-view-item-text {
+  color: elVar('text-color', 'secondary');
+  font-size: elVar('font-size', 'extra-small');
+  word-break: break-all;
+  margin-top: 2px;
+}
+
+.ele-map-view-item-icon.el-icon {
+  flex-shrink: 0;
+  font-size: 18px;
+  color: elVar('text-color', 'secondary');
+}
+
+.ele-map-view-item-radio.el-icon {
+  font-size: 14px;
+  color: elVar('color-primary');
+  margin: 0 -4px 0 0;
+}
+
+.ele-map-view-item:not(.is-active) .ele-map-view-item-radio {
+  visibility: hidden;
+}
+
+/* 地图底部提示信息 */
+.ele-map-view-body {
+  & > .ele-map-view-search {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    padding: 0;
+    width: 200px;
+    max-width: calc(100% - 16px);
+    background: elVar('bg-color', 'overlay');
+    box-shadow: elVar('box-shadow', 'lighter');
+    border-radius: elVar('border-radius', 'base');
+    z-index: eleVar('map', 'btn-index');
+  }
+
+  & > .ele-map-view-message,
+  & > .ele-map-view-btn-ok {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: max-content;
+    max-width: calc(100% - 32px);
+    box-shadow: elVar('box-shadow', 'light');
+    z-index: eleVar('map', 'btn-index');
+  }
+
+  & > .ele-map-view-btn-ok {
+    width: 120px;
+    border-radius: 32px;
+  }
+}
+
+/* 搜索建议列表 */
+.ele-map-suggest-popper.el-popper .el-autocomplete-suggestion__list > li {
+  height: auto;
+}
+
+.ele-map-suggest-item {
+  line-height: normal;
+  box-sizing: border-box;
+  padding: 6px 0;
+}
+
+.ele-map-suggest-title,
+.ele-map-suggest-text {
+  max-width: 260px;
+  white-space: nowrap;
+  word-break: break-all;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.ele-map-suggest-text {
+  color: elVar('text-color', 'secondary');
+  font-size: elVar('font-size', 'small');
+  margin-top: 2px;
+}
+
+/* 小屏幕适应 */
+@media screen and (max-width: #{$mobile-max-width}) {
+  .ele-map-picker.is-responsive {
+    top: 0 !important;
+    left: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    border-radius: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+
+    & > .el-dialog__header {
+      flex-shrink: 0;
+
+      .ele-modal-tool-max,
+      .ele-modal-resize-icon {
+        display: none;
+      }
+    }
+
+    & > .el-dialog__body {
+      flex: 1;
+      overflow: hidden;
+
+      & > .ele-modal-body {
+        height: 100%;
+        overflow: hidden;
+      }
+    }
+
+    .ele-map-view {
+      height: 100% !important;
+      flex-direction: column;
+    }
+
+    .ele-map-view-body {
+      height: auto;
+    }
+
+    .ele-map-view-side {
+      height: 68%;
+      width: 100%;
+      min-width: 100%;
+
+      & > .ele-map-view-search {
+        padding-top: 6px;
+      }
+    }
+  }
+}

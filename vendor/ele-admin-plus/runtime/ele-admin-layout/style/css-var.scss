@@ -1,0 +1,14 @@
+@use '../../style/util.scss' as *;
+
+/* 布局主题变量 */
+@mixin set-layout-var($var) {
+  .ele-admin-layout {
+    @include set-ele-var('layout', $var);
+    @include set-ele-var('logo', $var);
+    @include set-ele-var('header', $var);
+    @include set-ele-var('sidebar', $var);
+    @include set-ele-var('sidebox', $var);
+    @include set-ele-var('menu-thumb', $var);
+    @include set-ele-var('menu-dark-thumb', $var);
+  }
+}

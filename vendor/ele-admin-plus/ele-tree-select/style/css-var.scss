@@ -1,0 +1,8 @@
+@use '../../style/util.scss' as *;
+
+/* 树下拉选择主题变量 */
+@mixin set-tree-select-var($var) {
+  .ele-tree-select-popper {
+    @include set-ele-var('tree-select', $var);
+  }
+}

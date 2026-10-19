@@ -1,0 +1,8 @@
+@use '../../style/util.scss' as *;
+
+/* 步骤条主题变量 */
+@mixin set-step-var($var) {
+  .ele-steps {
+    @include set-ele-var('step', $var);
+  }
+}

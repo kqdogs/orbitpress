@@ -1,0 +1,13 @@
+---
+import type {HomeComponentProps} from '../../lib/home-components';
+import HomeHero from './HomeHero.astro';
+import HomePromo from './HomePromo.astro';
+import HomeCategories from './HomeCategories.astro';
+import HomeVideos from './HomeVideos.astro';
+import HomeTutorials from './HomeTutorials.astro';
+import HomeNotice from './HomeNotice.astro';
+const props=Astro.props as HomeComponentProps;
+const components={'home-hero':HomeHero,'home-promo':HomePromo,'home-categories':HomeCategories,'home-videos':HomeVideos,'home-tutorials':HomeTutorials,'home-notice':HomeNotice};
+const Component=components[props.block.type as keyof typeof components];
+---
+{Component&&<Component {...props}/>}

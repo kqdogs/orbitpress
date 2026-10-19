@@ -1,0 +1,44 @@
+@use '../../../../style/themes/default.scss' as *;
+@use '../../../../style/util.scss' as *;
+
+/* ColorPicker */
+body .el-color-picker__panel,
+body .el-color-picker-panel {
+  padding: 10px;
+  background: none;
+}
+
+.el-color-picker__panel {
+  .el-color-dropdown__btns {
+    margin-top: 8px;
+  }
+
+  .el-color-predefine__color-selector.selected {
+    box-shadow: none;
+    position: relative;
+
+    &::after {
+      content: '';
+      width: 5.71428571px;
+      height: 9.14285714px;
+      border: 2px solid #fff;
+      border-left: 0;
+      border-top: 0;
+      transform: rotate(45deg) translate(-50%, -50%);
+      box-sizing: border-box;
+      position: absolute;
+      top: 50%;
+      left: 6px;
+    }
+  }
+}
+
+.el-color-picker .el-color-picker__color {
+  border-color: elVar('border-color', 'light');
+  overflow: hidden;
+}
+
+body .el-color-picker .el-color-picker__icon,
+body .el-color-picker .el-color-picker__empty {
+  font-size: 13px;
+}

@@ -1,0 +1,9 @@
+@use '../../../../style/themes/default.scss' as *;
+@use '../../../../style/util.scss' as *;
+@use '../../../../ele-tooltip/style/css-var.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-el-popper-var($ele);
+
+/* 气泡通用 */
+@include popper-style('body .el-popper');

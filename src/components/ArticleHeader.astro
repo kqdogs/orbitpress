@@ -1,0 +1,25 @@
+---
+import type { Post, Settings } from '../lib/schema';
+import { brandLogo } from '../lib/branding';
+import { articleHighlights, tagHref } from '../lib/article-metadata';
+import '../styles/article-heading.css';
+interface Props {post: Post; settings: Settings}
+const {post, settings} = Astro.props;
+const highlights = articleHighlights(post);
+---
+<header class="article-banner article-heading">
+ <div class="container">
+  <nav class="breadcrumb" aria-label="文章位置"><a href="/">首页</a><span aria-hidden="true">/</span><a href={post.videoId?'/videos/':'/tutorials/'}>{post.videoId?'最新视频':'教程文章'}</a></nav>
+  <h1>{post.title}</h1>
+  {highlights.length>0&&<ul class="article-highlights" aria-label="文章亮点">{highlights.map(text=><li>{text}</li>)}</ul>}
+  <div class="article-meta">
+   <img src={brandLogo(settings)} width="24" height="24" alt=""/>
+   <span>{settings.title}</span>
+   <a href={post.videoId?'/videos/':'/tutorials/'}>{post.videoId?'最新视频':settings.articleDesign.bannerEyebrow}</a>
+   {post.categoryName&&<a href={'/category/'+post.categorySlug+'/'}>{post.categoryName}</a>}
+   {post.publishedAt&&<time datetime={post.publishedAt}>{post.publishedAt.slice(0,10)}</time>}
+   <span class="article-reading-time">{Math.max(1,Math.ceil(post.body.length/400))} 分钟阅读</span>
+  </div>
+  {settings.articleDesign.showTags&&post.tags.length>0&&<nav class="article-header-tags" aria-label="文章标签"><span>标签</span>{post.tags.map(tag=><a rel="tag" href={tagHref(tag)}>{tag}</a>)}</nav>}
+ </div>
+</header>

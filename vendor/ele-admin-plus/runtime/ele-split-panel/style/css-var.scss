@@ -1,0 +1,8 @@
+@use '../../style/util.scss' as *;
+
+/* 分割面板主题变量 */
+@mixin set-split-panel-var($var) {
+  .ele-split-panel {
+    @include set-ele-var('split-panel', $var);
+  }
+}

@@ -1,0 +1,36 @@
+@use '../../style/util.scss' as *;
+
+/* 导航菜单主题变量 */
+@mixin set-menus-var($var) {
+  .ele-menu {
+    @include set-ele-var('menu', $var);
+  }
+
+  .ele-menu.el-menu--horizontal {
+    @include set-ele-var('menu-horizontal', $var);
+  }
+
+  .ele-menu > .el-menu--popup {
+    @include set-ele-var('menu-popup', $var);
+  }
+
+  .ele-menu .el-menu-item-group__title {
+    @include set-ele-var('menu-group', $var);
+  }
+
+  .ele-menu.ele-menu-colorful {
+    @include set-ele-var('menu-colorful', $var);
+  }
+
+  .ele-menu.ele-menu-dark {
+    @include set-ele-var('menu-dark', $var);
+  }
+
+  .ele-menu > .el-menu--popup-container > .el-menu--popup {
+    @include set-ele-var('menu-thumb', $var);
+  }
+
+  .ele-menu.ele-menu-dark > .el-menu--popup-container > .el-menu--popup {
+    @include set-ele-var('menu-dark-thumb', $var);
+  }
+}

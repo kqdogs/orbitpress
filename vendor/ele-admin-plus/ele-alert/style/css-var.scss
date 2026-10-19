@@ -1,0 +1,12 @@
+@use '../../style/util.scss' as *;
+
+/* 警告提示主题变量 */
+@mixin set-alert-var($var) {
+  .ele-alert {
+    @include set-ele-var('alert', $var);
+  }
+
+  .ele-alert.is-dark {
+    @include set-ele-var('alert-dark', $var);
+  }
+}

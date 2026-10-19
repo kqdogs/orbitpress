@@ -1,0 +1,8 @@
+@use '../../style/util.scss' as *;
+
+/* 内容预览主题变量 */
+@mixin set-viewer-var($var) {
+  .ele-viewer {
+    @include set-ele-var('viewer', $var);
+  }
+}

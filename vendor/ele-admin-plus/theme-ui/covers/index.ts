@@ -1,0 +1,26 @@
+/** 预设常用布局封面 */
+export { default as CoverDefault } from './cover-default.vue';
+export { default as CoverMixedSidebar } from './cover-mixed-sidebar.vue';
+export { default as CoverCompactSidebar } from './cover-compact-sidebar.vue';
+export { default as CoverTabInHeader } from './cover-tab-in-header.vue';
+export { default as CoverVerticalLayout } from './cover-vertical-layout.vue';
+export { default as CoverTopBarLayout } from './cover-top-bar-layout.vue';
+export { default as CoverLimitedWidth } from './cover-limited-width.vue';
+export { default as CoverCardLayout } from './cover-card-layout.vue';
+export { default as CoverCardSidebar } from './cover-card-sidebar.vue';
+export { default as CoverCardMixedSidebar } from './cover-card-mixed-sidebar.vue';
+export { default as CoverCompactMixSidebar } from './cover-compact-mix-sidebar.vue';
+export { default as CoverCompactLayout } from './cover-compact-layout.vue';
+export { default as CoverColorfulSidebar } from './cover-colorful-sidebar.vue';
+export { default as CoverModernDefault } from './cover-modern-default.vue';
+export { default as CoverModernMixedSidebar } from './cover-modern-mixed-sidebar.vue';
+export { default as CoverModernCompactMixed } from './cover-modern-compact-mixed.vue';
+export { default as CoverModernCompactSidebar } from './cover-modern-compact-sidebar.vue';
+export { default as CoverModernCardTab } from './cover-modern-card-tab.vue';
+export { default as CoverModernRow } from './cover-modern-row.vue';
+export { default as CoverModernRowMixed } from './cover-modern-row-mixed.vue';
+export { default as CoverModernRowHeader } from './cover-modern-row-header.vue';
+export { default as CoverSimple } from './cover-simple.vue';
+export { default as CoverSimpleDark } from './cover-simple-dark.vue';
+export { default as CoverPlainHeader } from './cover-plain-header.vue';
+export { default as CoverPlainCompactHeader } from './cover-plain-compact-header.vue';

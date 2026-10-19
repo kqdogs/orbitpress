@@ -1,0 +1,16 @@
+@use '../../../../style/util.scss' as *;
+
+/* ElDatepicker 主题变量 */
+@mixin set-el-date-picker-var($var) {
+  // Datepicker
+  .el-date-picker,
+  .el-date-range-picker {
+    @include set-ele-var('datepicker', $var);
+  }
+
+  // Timepicker
+  .el-time-panel,
+  .el-time-range-picker {
+    @include set-ele-var('timepicker', $var);
+  }
+}

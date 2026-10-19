@@ -1,0 +1,8 @@
+@use '../../../../style/util.scss' as *;
+
+/* ElMessageBox 主题变量 */
+@mixin set-el-message-box-var($var) {
+  .el-message-box {
+    @include set-ele-var('message-box', $var);
+  }
+}

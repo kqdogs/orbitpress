@@ -1,0 +1,81 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+
+.ele-dashboard {
+  --ele-dashboard-space: 18px;
+  --ele-dashboard-color: #{elVar('color-primary')};
+  width: 170px;
+  height: 170px;
+  display: inline-block;
+  padding: var(--ele-dashboard-space);
+  box-sizing: border-box;
+  position: relative;
+
+  &.is-success {
+    --ele-dashboard-color: #{elVar('color-success')};
+  }
+
+  &.is-warning {
+    --ele-dashboard-color: #{elVar('color-warning')};
+  }
+
+  &.is-danger {
+    --ele-dashboard-color: #{elVar('color-danger')};
+  }
+}
+
+.ele-dashboard-inner {
+  width: 100%;
+  height: 100%;
+  color: var(--ele-dashboard-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.ele-dashboard-outer {
+  width: calc(100% - var(--ele-dashboard-space));
+  height: calc(100% - var(--ele-dashboard-space));
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  & > .ele-dashboard-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    border: calc(var(--ele-dashboard-space) / 2) solid
+      var(--ele-dashboard-color);
+    animation: eleAnimDashboard 8s infinite linear;
+    border-radius: 46% 46% 42% 44%;
+    opacity: 0.3;
+
+    &:first-child {
+      animation: eleAnimDashboard 12s infinite linear;
+      border-radius: 56% 56% 52% 54%;
+      opacity: 0.8;
+    }
+
+    &:last-child {
+      animation: eleAnimDashboard 10s infinite linear;
+      border-radius: 44% 44% 42% 46%;
+      opacity: 0.5;
+    }
+  }
+}
+
+@keyframes eleAnimDashboard {
+  to {
+    transform: rotate(360deg);
+  }
+}

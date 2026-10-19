@@ -1,0 +1,8 @@
+@use '../../style/util.scss' as *;
+
+/* 标签页主题变量 */
+@mixin set-tab-var($var) {
+  .ele-tabs-wrap {
+    @include set-ele-var('tab', $var);
+  }
+}

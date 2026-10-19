@@ -1,0 +1,8 @@
+@use '../../../style/util.scss' as *;
+
+/* 消息提示主题变量 */
+@mixin set-message-var($var) {
+  .ele-message {
+    @include set-ele-var('message', $var);
+  }
+}

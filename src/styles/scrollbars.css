@@ -1,0 +1,15 @@
+/* Shared by the public site, studio and their preview documents. Keep scrolling. */
+html,
+body,
+* {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none;
+}
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+.el-scrollbar__bar {
+  display: none !important;
+}

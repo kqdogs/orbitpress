@@ -1,0 +1,9 @@
+@use '../../style/util.scss' as *;
+
+/* 表单构建器主题变量 */
+@mixin set-pro-form-builder-var($var) {
+  .ele-pro-form-builder-wrapper,
+  .ele-pro-form-builder-component-picker {
+    @include set-ele-var('pro-form-builder', $var);
+  }
+}

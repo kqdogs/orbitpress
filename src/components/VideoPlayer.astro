@@ -1,0 +1,12 @@
+---
+import Icon from './Icon.astro';
+import {youtubeUrl} from '../lib/video-embed';
+interface Props {id:string;cover?:string}
+const {id,cover}=Astro.props;
+const embed=youtubeUrl(id,0,Astro.url.origin);
+---
+<div class="video-player" data-video-id={id} data-video-start="0">
+ <div class="video-stage"><button type="button" class="video-play" aria-label="播放 YouTube 视频" data-embed={embed}><img src={cover||'/images/ai-cover.svg'} alt="视频封面" width="1280" height="720"/><span><Icon name="play" size={29}/></span></button></div>
+ <p class="video-fallback"><a href={`https://www.youtube.com/watch?v=${id}`} target="_blank" rel="noopener noreferrer">在 YouTube 打开 ↗</a><button class="video-alternate" type="button">切换隐私播放模式</button></p>
+ <p>若播放器提示登录，请在 YouTube 完成验证；也可继续阅读图文步骤。</p>
+</div>

@@ -1,0 +1,8 @@
+@use '../../style/util.scss' as *;
+
+/* 聊天主题变量 */
+@mixin set-chat-var($var) {
+  .ele-chat-wrapper {
+    @include set-ele-var('chat', $var);
+  }
+}

@@ -1,0 +1,8 @@
+@use '../../style/util.scss' as *;
+
+/* 加载中主题变量 */
+@mixin set-loading-var($var) {
+  .ele-loading {
+    @include set-ele-var('loading', $var);
+  }
+}

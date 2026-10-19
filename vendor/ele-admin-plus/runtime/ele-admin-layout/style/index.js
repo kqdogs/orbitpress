@@ -1,0 +1,9 @@
+import "element-plus/es/components/scrollbar/style/index";
+import "element-plus/es/components/icon/style/index";
+import "../../ele-menus/style/index";
+import "../../ele-breadcrumb/style/index";
+import "../../ele-backtop/style/index";
+import "../../ele-tab-wrap/style/index";
+import "../../ele-tab-tool/style/index";
+import "../../ele-tabs/style/index";
+import "./index.scss";

@@ -1,0 +1,8 @@
+---
+import elementSvg from '../lib/element-icon-svg.json';
+import {elementCategoryIcon} from '../lib/category-icons';
+interface Props {name:string;size?:number;class?:string}
+const {name,size=22,class:className}=Astro.props;
+const paths:Record<string,string>={card:'M3 7h18v12H3z M3 11h18 M6 15h4',bank:'m3 9 9-5 9 5 M5 10v9 M10 10v9 M15 10v9 M20 10v9 M3 21h18',chart:'m3 19 5-7 5 4 8-11 M15 5h6v6',sparkles:'m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5z',phone:'M7 2h10v20H7z M10 6h4v5h-4z M11 18h2',sim:'M7 3h7l4 4v14H6V3z M9 10h6v7H9z',apple:'M16 3c0 3-3 4-4 4 0-3 2-4 4-4 M12 9c-5-4-10 1-7 7 3 7 5 4 7 4s5 3 8-5c-4-2-3-5-1-6-3-3-5 0-7 0',globe:'M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0 M3 12h18 M12 3c-5 5-5 13 0 18 5-5 5-13 0-18',search:'M15.5 15.5 21 21 M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0',arrow:'M4 12h16 M14 6l6 6-6 6',menu:'M4 6h16 M4 12h16 M4 18h16',play:'m8 5 11 7-11 7z',youtube:'M3 5h18v14H3z m7 4 6 3-6 3z',telegram:'m3 11 18-8-4 18-6-6-4 3 1-6 9-6-11 7z'};
+---
+{name.startsWith('ep:')&&elementCategoryIcon(name)?<svg class={className} width={size} height={size} viewBox="0 0 1024 1024" fill="currentColor" aria-hidden="true" set:html={elementSvg[name.slice(3) as keyof typeof elementSvg]}/>:<svg class={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={paths[name]||paths.globe}/></svg>}

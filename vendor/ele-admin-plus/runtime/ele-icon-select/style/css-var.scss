@@ -1,0 +1,8 @@
+@use '../../style/util.scss' as *;
+
+/* 图标选择主题变量 */
+@mixin set-icon-var($var) {
+  .ele-icon-select-popper {
+    @include set-ele-var('icon', $var);
+  }
+}

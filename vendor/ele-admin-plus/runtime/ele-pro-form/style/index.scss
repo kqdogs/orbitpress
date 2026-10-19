@@ -1,0 +1,343 @@
+@use 'sass:list';
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-pro-form-var($ele);
+
+/* 构建表单内对部分组件排除禁用 */
+$enable-selectors: (
+  '.el-tabs__header',
+  '.el-tabs__item',
+  '.ele-tab-title',
+  '.el-tabs__nav-prev',
+  '.el-tabs__nav-next',
+  '.el-collapse-item__header',
+  '.el-carousel__arrow',
+  '.el-carousel__button'
+) !default;
+/* 构建表单内排除禁用的元素 */
+$exclude-disabled-selectors: list.join(
+  (
+    '.ele-pro-form-builder-item-wrapper',
+    '.ele-pro-form-builder-grid-item-wrapper',
+    '.ele-pro-form-builder-container-wrapper',
+    '.ele-pro-form-builder-grid-container-wrapper',
+    '.ele-pro-form-builder-item-tool-wrapper',
+    '.ele-pro-form-builder-item-handle',
+    '.ele-pro-form-builder-item-tools',
+    '.ele-pro-form-builder-tool-button'
+  ),
+  $enable-selectors
+) !default;
+
+/* 构建移动手柄 */
+.ele-pro-form-builder-item-handle {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  display: flex;
+  align-items: center;
+  color: eleVar('pro-form', 'handle-color');
+  font-size: eleVar('pro-form', 'handle-font-size');
+  height: eleVar('pro-form', 'handle-height');
+  line-height: eleVar('pro-form', 'handle-height');
+  padding: eleVar('pro-form', 'handle-padding');
+  background: eleVar('pro-form', 'handle-bg');
+  box-shadow: eleVar('pro-form', 'handle-shadow');
+  z-index: eleVar('pro-form', 'handle-index');
+  box-sizing: border-box;
+  cursor: move;
+
+  &.is-disabled {
+    pointer-events: none;
+  }
+}
+
+.ele-pro-form-builder-item-handle-icon.el-icon {
+  margin-right: eleVar('pro-form', 'handle-space');
+}
+
+.ele-pro-form-builder-item-tools {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  bottom: -2px;
+  right: -1px;
+}
+
+.ele-pro-form-builder-item-tool-wrapper {
+  font-weight: normal;
+  position: static;
+  overflow: visible;
+}
+
+.ele-pro-form-builder-item-wrapper:not(.is-active),
+.ele-pro-form-builder-container-wrapper:not(.is-active) {
+  & > .ele-pro-form-builder-item-tool-wrapper {
+    display: none;
+  }
+}
+
+/* 构建容器 */
+.ele-pro-form-builder-item-wrapper,
+.ele-pro-form-builder-container-wrapper {
+  border: eleVar('pro-form', 'item-wrapper-padding') solid transparent;
+  outline: eleVar('pro-form', 'item-wrapper-border');
+  box-sizing: border-box;
+  pointer-events: auto;
+  position: relative;
+}
+
+.ele-pro-form-builder-item-wrapper,
+.ele-pro-form-builder-container-wrapper.is-selectable {
+  &:hover {
+    outline: eleVar('pro-form', 'item-wrapper-hover-border');
+  }
+
+  &.is-active {
+    outline: eleVar('pro-form', 'item-wrapper-active-border');
+    outline-offset: eleVar('pro-form', 'item-wrapper-active-border-offset');
+    z-index: eleVar('pro-form', 'item-wrapper-active-index');
+  }
+}
+
+.ele-pro-form-builder-container-wrapper {
+  min-height: eleVar('pro-form', 'container-wrapper-min-height');
+  outline-offset: eleVar('pro-form', 'container-wrapper-border-offset');
+}
+
+.ele-pro-form-builder-container-wrapper.is-selectable.is-active {
+  outline-offset: eleVar('pro-form', 'container-wrapper-active-border-offset');
+}
+
+.ele-pro-form-builder-item-wrapper.is-div-type {
+  min-height: eleVar('pro-form', 'container-div-min-height');
+}
+
+.ele-pro-form-builder-grid-container-wrapper.el-row {
+  align-content: flex-start;
+}
+
+/* 构建表单组件特殊处理 */
+.ele-pro-form.is-editable {
+  user-select: none !important;
+
+  * {
+    user-select: none !important;
+  }
+
+  & > .ele-pro-form-builder-container-wrapper {
+    border: none;
+    outline: none;
+  }
+
+  #{joinNotSelectors($exclude-disabled-selectors)} {
+    pointer-events: none !important;
+    transition: none !important;
+  }
+
+  #{$enable-selectors} {
+    pointer-events: auto !important;
+    transition: none !important;
+  }
+
+  .ele-pro-form-builder-item-wrapper > table.ele-table {
+    width: 100%;
+    height: 100%;
+    #{eleVarName('table', 'tr-hover-bg')}: eleVar('table', 'tr-bg');
+
+    &.is-stripe > tr:nth-child(even),
+    &.is-stripe > tbody > tr:nth-child(even) {
+      #{eleVarName('table', 'tr-hover-bg')}: eleVar('table', 'even-bg');
+    }
+
+    td > .ele-pro-form-builder-container-wrapper,
+    td > .ele-pro-form-builder-grid-container-wrapper {
+      height: 100%;
+    }
+  }
+
+  .el-descriptions__cell > .ele-pro-form-builder-container-wrapper,
+  .el-descriptions__cell > .ele-pro-form-builder-grid-container-wrapper {
+    min-height: eleVar('pro-form', 'container-description-min-height');
+  }
+
+  .ele-pro-form-builder-item-wrapper > .el-descriptions {
+    & > .el-descriptions__body > table.el-descriptions__table {
+      width: 100%;
+      height: 100%;
+
+      td > .ele-pro-form-builder-container-wrapper,
+      td > .ele-pro-form-builder-grid-container-wrapper {
+        height: 100%;
+      }
+    }
+  }
+
+  .el-carousel__item > .ele-pro-form-builder-container-wrapper,
+  .el-carousel__item > .ele-pro-form-builder-grid-container-wrapper {
+    height: 100%;
+  }
+}
+
+/* 搜索表单底栏展开样式 */
+.ele-pro-form-footer-body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+
+  & > .el-link {
+    white-space: nowrap;
+  }
+}
+
+.ele-pro-form-footer.is-search-expand > .el-form-item__content {
+  & > .ele-pro-form-footer-body {
+    justify-content: flex-end;
+  }
+}
+
+/* 快捷栅格布局拖动时样式优化 */
+.ele-pro-form-builder-container-wrapper:not(.el-row) {
+  & > .ele-pro-form-builder-grid-item-wrapper {
+    max-width: none;
+  }
+}
+
+/* 表单必填星号辅助类 */
+.ele-pro-form-required-asterisk::before {
+  content: '*';
+  color: elVar('color-error');
+  margin-right: 4px;
+}
+
+/* 描述列表组件辅助类 */
+.ele-pro-form-descriptions-details.el-descriptions {
+  .el-descriptions__cell.el-descriptions__label {
+    width: eleVar('pro-form', 'descriptions-label-wdith');
+    font-weight: normal;
+  }
+}
+
+/* 边框色辅助类 */
+.ele-icon-border-color-base {
+  border-color: elVar('border-color');
+}
+
+.ele-icon-border-color-light {
+  border-color: elVar('border-color', 'light');
+}
+
+.ele-icon-border-color-lighter {
+  border-color: elVar('border-color', 'lighter');
+}
+
+.ele-icon-border-color-extra-light {
+  border-color: elVar('border-color', 'extra-light');
+}
+
+.ele-icon-border-color-primary {
+  border-color: elVar('color-primary');
+}
+
+.ele-icon-border-color-primary5 {
+  border-color: elVar('color-primary', 'light-5');
+}
+
+.ele-icon-border-color-text {
+  border-color: elVar('text-color', 'primary');
+}
+
+.ele-icon-border-color-text-light {
+  border-color: elVar('text-color', 'placeholder');
+}
+
+/* 背景色辅助类 */
+.ele-icon-bg-primary {
+  background: elVar('color-primary');
+}
+
+.ele-icon-bg-primary7 {
+  background: elVar('color-primary', 'light-7');
+}
+
+.ele-icon-bg-primary9 {
+  background: elVar('color-primary', 'light-9');
+}
+
+.ele-icon-bg-base {
+  background: elVar('bg-color');
+}
+
+.ele-icon-bg-fill {
+  background: elVar('fill-color');
+}
+
+.ele-icon-bg-fill-light {
+  background: elVar('border-color', 'light');
+}
+
+.ele-icon-bg-fill-lighter {
+  background: elVar('fill-color', 'light');
+}
+
+.ele-icon-bg-fill-extra-light {
+  background: elVar('fill-color', 'lighter');
+}
+
+.ele-icon-bg-fill-extra-lighter {
+  background: elVar('fill-color', 'extra-light');
+}
+
+.ele-icon-bg-fill-blank {
+  background: elVar('fill-color', 'blank');
+}
+
+.ele-icon-bg-fill-dark {
+  background: elVar('border-color');
+}
+
+.ele-icon-bg-white {
+  background: #fff;
+}
+
+.ele-icon-bg-calendar {
+  background-image: radial-gradient(
+    elVar('border-color', 'light') 50%,
+    transparent 50%
+  );
+}
+
+/* 文字色辅助类 */
+.ele-icon-color-base {
+  color: elVar('text-color', 'regular');
+}
+
+.ele-icon-color-secondary {
+  color: elVar('text-color', 'secondary');
+}
+
+.ele-icon-color-placeholder {
+  color: elVar('text-color', 'placeholder');
+}
+
+.ele-icon-color-light {
+  color: elVar('border-color');
+}
+
+.ele-icon-color-lighter {
+  color: elVar('border-color', 'light');
+}
+
+.ele-icon-color-primary {
+  color: elVar('color-primary');
+}
+
+.ele-icon-color-primary5 {
+  color: elVar('color-primary', 'light-5');
+}
+
+.ele-icon-color-success {
+  color: elVar('color-success');
+}

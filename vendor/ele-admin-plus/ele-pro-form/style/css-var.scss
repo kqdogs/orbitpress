@@ -1,0 +1,8 @@
+@use '../../style/util.scss' as *;
+
+/* 高级表单主题变量 */
+@mixin set-pro-form-var($var) {
+  .ele-pro-form {
+    @include set-ele-var('pro-form', $var);
+  }
+}

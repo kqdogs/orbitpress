@@ -1,0 +1,8 @@
+@use '../../../../style/util.scss' as *;
+
+/* ElRadio 主题变量 */
+@mixin set-el-radio-var($var) {
+  .el-radio {
+    @include set-ele-var('radio', $var);
+  }
+}

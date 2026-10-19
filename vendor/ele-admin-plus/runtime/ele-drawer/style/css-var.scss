@@ -1,0 +1,8 @@
+@use '../../style/util.scss' as *;
+
+/* 抽屉主题变量 */
+@mixin set-drawer-var($var) {
+  .ele-drawer {
+    @include set-ele-var('drawer', $var);
+  }
+}

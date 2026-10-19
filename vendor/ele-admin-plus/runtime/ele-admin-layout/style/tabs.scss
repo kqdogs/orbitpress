@@ -1,0 +1,50 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+
+/* 页签栏 */
+.ele-admin-tabs {
+  flex-shrink: 0;
+  background: eleVar('header', 'bg');
+  box-shadow: eleVar('header', 'shadow');
+  z-index: calc(#{eleVar('layout', 'index')} + 1);
+  $padding: eleVar('page', 'padding', #{eleVar('header', 'tools-padding')});
+
+  &:not(.is-fixed-home) .el-tabs__nav-wrap:not(.is-scrollable) .el-tabs__nav {
+    padding-left: $padding;
+  }
+
+  /* 固定的主页页签 */
+  &.is-fixed-home {
+    padding-left: $padding;
+
+    &.is-tag .el-tabs__nav-wrap:not(.is-scrollable) .el-tabs__nav {
+      padding-left: eleVar('tab', 'tag-space');
+    }
+
+    &.is-button .el-tabs__nav-wrap:not(.is-scrollable) .el-tabs__nav {
+      padding-left: eleVar('tab', 'button-space');
+    }
+  }
+
+  /* 标签风格页签栏 */
+  &.is-tag {
+    padding-right: eleVar('tab', 'tag-space');
+  }
+
+  /* 卡片风格页签栏 */
+  &.is-button {
+    padding-right: $padding;
+    background: eleVar('layout', 'bg');
+    box-shadow: none;
+  }
+
+  /* 固定页签栏 */
+  &.is-fixed {
+    position: sticky;
+    top: eleVar('header', 'height');
+  }
+
+  &.is-fixed-top {
+    top: 0;
+  }
+}

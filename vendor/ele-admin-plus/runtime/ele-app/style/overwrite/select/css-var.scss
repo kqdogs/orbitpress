@@ -1,0 +1,8 @@
+@use '../../../../style/util.scss' as *;
+
+/* ElSelect 主题变量 */
+@mixin set-el-select-var($var) {
+  .el-select__popper {
+    @include set-ele-var('select', $var);
+  }
+}

@@ -1,0 +1,20 @@
+---
+import { env } from 'cloudflare:workers';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import HomePage from '../../components/HomePage.astro';
+import { settingsInput } from '../../lib/schema';
+import { ApiError, readBody } from '../../lib/http';
+import { authenticate } from '../../lib/security';
+if (Astro.request.method !== 'POST') return new Response('请从首页装修打开预览', { status:405, headers:{Allow:'POST','Cache-Control':'no-store'} });
+let settings;
+try {
+  settings=await readBody(Astro.request,settingsInput,140000);
+  await authenticate(Astro.request,env.DB,'admin');
+} catch(error) {
+  const known=error instanceof ApiError;
+  return new Response(JSON.stringify({error:{code:known?error.code:'INTERNAL',message:known?error.message:'预览生成失败'}}),{status:known?error.status:500,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'}});
+}
+Astro.response.headers.set('Cache-Control','no-store');
+Astro.response.headers.set('X-Robots-Tag','noindex, nofollow');
+---
+<SiteLayout preview settingsOverride={settings}><HomePage settings={settings} builder /></SiteLayout>

@@ -1,0 +1,129 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-timeline-var($ele);
+
+.ele-time-line-list {
+  box-sizing: border-box;
+}
+
+.ele-time-line-row {
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+
+  &.is-even-row {
+    flex-direction: row-reverse;
+  }
+}
+
+.ele-time-line-item {
+  flex: 1;
+  text-align: center;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* 内容 */
+.ele-time-line-item-body {
+  padding: eleVar('timeline', 'body-padding');
+  box-sizing: border-box;
+}
+
+/* 标题 */
+.ele-time-line-item-title {
+  font-size: eleVar('timeline', 'title-font-size');
+  margin-bottom: eleVar('timeline', 'title-margin');
+}
+
+/* 描述 */
+.ele-time-line-item-description {
+  font-size: eleVar('timeline', 'description-font-size');
+}
+
+/* 图标 */
+.ele-time-line-item-icon {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.ele-time-line-item-icon-status.el-icon {
+  flex-shrink: 0;
+  margin: eleVar('timeline', 'icon-margin');
+  font-size: eleVar('timeline', 'icon-font-size');
+  color: eleVar('timeline', 'icon-color');
+}
+
+.ele-time-line-item.is-primary,
+.ele-time-line-item.is-primary .ele-time-line-item-icon-status {
+  color: elVar('color-primary');
+}
+
+.ele-time-line-item.is-danger,
+.ele-time-line-item.is-danger .ele-time-line-item-icon-status {
+  color: elVar('color-danger');
+}
+
+/* 线条 */
+.ele-time-line-item-line {
+  flex: 1;
+  border: 0 solid transparent;
+  border-top-width: eleVar('timeline', 'line-size');
+  border-top-color: eleVar('timeline', 'line-color');
+  box-sizing: border-box;
+  pointer-events: none;
+
+  &.is-primary-line {
+    border-color: elVar('color-primary');
+  }
+
+  &.is-danger-line {
+    border-color: elVar('color-danger');
+  }
+}
+
+.ele-time-line-row.is-even-row .ele-time-line-item-icon {
+  flex-direction: row-reverse;
+}
+
+.ele-time-line-row > .ele-time-line-item {
+  &.is-first .ele-time-line-item-line.is-start,
+  &.is-last .ele-time-line-item-line.is-end {
+    visibility: hidden;
+  }
+}
+
+/* 转折线条 */
+.ele-time-line-item-line-turn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  border: 0 solid transparent;
+  border-left-width: eleVar('timeline', 'line-size');
+  border-left-color: eleVar('timeline', 'line-color');
+  transform: translateY(#{eleVar('timeline', 'turn-line-offset')});
+  box-sizing: border-box;
+  pointer-events: none;
+
+  &.is-primary-line {
+    border-color: elVar('color-primary');
+  }
+
+  &.is-danger-line {
+    border-color: elVar('color-danger');
+  }
+}
+
+.ele-time-line-row {
+  & > .ele-time-line-item:not(:last-child) .ele-time-line-item-line-turn {
+    display: none;
+  }
+
+  &.is-even-row .ele-time-line-item-line-turn {
+    left: 0;
+    right: auto;
+  }
+}

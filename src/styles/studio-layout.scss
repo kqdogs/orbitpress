@@ -1,0 +1,352 @@
+/** 布局样式 */
+@use "ele-admin-plus/es/style/util.scss" as *;
+
+/* 全局页脚 */
+.ele-footer {
+  padding: 16px 0;
+  text-align: center;
+
+  a {
+    transition: color 0.2s;
+    #{elVarName('text-color', 'regular')}: elVar("text-color", "placeholder");
+  }
+
+  & > div + div {
+    margin-top: 8px;
+    word-break: break-all;
+  }
+}
+
+/* 退出内容全屏按钮 */
+.ele-layout-fullscreen-icon {
+  width: 28px;
+  height: 28px;
+  color: #fff;
+  font-size: 15px;
+  border-radius: 0 0 0 100%;
+  background: hsla(0, 0%, 40%, 0.8);
+  box-shadow: 0 0 2px 0 rgba(255, 255, 255, 0.6);
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 4px 4px 0 0;
+  box-sizing: border-box;
+  transition: all 0.3s;
+  z-index: 180;
+  position: fixed;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+
+  &:hover {
+    background: hsla(0, 0%, 60%, 0.8);
+  }
+}
+
+/* 顶栏暗黑主题切换开关 */
+.ele-dark-switch {
+  padding: 0 6px;
+  position: relative;
+
+  .el-switch {
+    height: 22px;
+    line-height: 22px;
+    position: static;
+
+    .el-switch__core {
+      #{elVarName('switch', 'off-color')}: elVar("border-color", "extra-light");
+      #{elVarName('switch', 'on-color')}: elVar("fill-color");
+      height: 22px;
+      border-radius: 11px;
+      border: 1px solid elVar("border-color");
+
+      .el-switch__action {
+        color: elVar("text-color", "regular");
+        background: elVar("bg-color");
+        width: 18px;
+        height: 18px;
+        font-size: 12px;
+        left: 1.35px;
+      }
+    }
+
+    &.is-checked .el-switch__core .el-switch__action {
+      left: calc(100% - 19.35px);
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+  }
+}
+
+/* 暗色和主色顶栏下暗黑主题切换开关颜色调整 */
+.ele-admin-header.is-dark .ele-dark-switch .el-switch,
+.ele-admin-header.is-primary .ele-dark-switch .el-switch {
+  .el-switch__core {
+    border: none;
+    background: rgba(255, 255, 255, 0.38);
+
+    .el-switch__action {
+      left: 2.65px;
+    }
+  }
+
+  &.is-checked .el-switch__core .el-switch__action {
+    left: calc(100% - 20px);
+  }
+}
+
+.ele-admin-header.is-dark .ele-dark-switch .el-switch .el-switch__core {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* 主色顶栏 logo 增加白色滤镜 */
+.ele-admin-header.is-primary .ele-admin-logo img {
+  filter: contrast(0%) brightness(1000%);
+}
+
+/* 卡片风格布局 */
+.layout-card-style.ele-admin-layout.ele-pro-layout {
+  & > .ele-admin-main {
+    & > .ele-admin-header {
+      border-radius: 8px;
+      margin: 16px 16px 0 16px;
+
+      &.show-divider {
+        border-radius: 8px 8px 0 0;
+      }
+    }
+
+    & > .ele-admin-body > .ele-admin-tabs:not(.is-button) {
+      border-radius: 0 0 8px 8px;
+      width: calc(100% - 32px);
+      margin-right: auto;
+      margin-left: auto;
+    }
+
+    & > .ele-admin-body > .ele-admin-wrapper > .ele-admin-iframe-wrap {
+      left: 16px;
+      right: 16px;
+      bottom: 16px;
+      border-radius: 8px;
+    }
+
+    & > .ele-admin-body > .ele-admin-wrapper > .ele-bottom-bar {
+      border-radius: 8px;
+      width: calc(100% - 32px);
+      margin-right: auto;
+      margin-left: auto;
+      bottom: 16px;
+    }
+  }
+
+  & > .ele-admin-header.is-primary,
+  & > .ele-admin-main > .ele-admin-header.is-primary {
+    & > .ele-admin-tabs.is-simple,
+    & > .ele-admin-tabs.is-indicator {
+      #{eleVarName('tab', 'simple-active-bg')}: eleVar("layout", "bg");
+    }
+  }
+
+  &.layout-mix-card-style > .ele-admin-side {
+    & > .ele-admin-sidebox {
+      &.show-divider {
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+      }
+
+      & + .ele-admin-sidebar {
+        border-top-left-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
+      }
+    }
+
+    & > .ele-admin-sidebar:first-child {
+      margin-left: 16px;
+    }
+  }
+}
+
+/* 主题抽屉去掉遮罩层 */
+body .ele-setting-drawer {
+  background: none;
+  pointer-events: none;
+
+  & > .el-drawer {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  .ele-drawer-close {
+    &::after {
+      content: "";
+      position: absolute;
+      top: calc(50vh - 18px);
+      left: -36px;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px 0 0 8px;
+      background-color: elVar("color-primary");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M10 10 38 38M10 38 38 10' stroke='%23FFF' stroke-width='4'/%3E%3C/svg%3E");
+      background-size: 20px;
+      background-position: center;
+      background-repeat: no-repeat;
+      transition: background-color 0.2s;
+    }
+
+    &:hover::after {
+      background-color: elVar("color-primary", "light-3");
+    }
+  }
+}
+
+/* 顶栏菜单搜索 */
+.ele-layout-menu-search {
+  width: 148px;
+  margin-right: 6px;
+  #{eleVarName('input', 'radius')}: 32px;
+
+  .el-select__suffix > .el-icon.el-select__icon {
+    width: auto;
+    height: 15px;
+    padding: 0 2px;
+    font-size: 12px;
+    font-style: normal;
+    color: elVar("text-color", "placeholder");
+    border-radius: elVar("border-radius", "base");
+    border: 1px solid elVar("border-color", "light");
+    background: elVar("fill-color", "light");
+    transform: none;
+  }
+}
+
+.ele-layout-menu-search-item {
+  width: 100%;
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+
+  & > img,
+  & > .ele-layout-menu-search-item-icon {
+    font-size: 16px;
+    margin-right: 12px;
+    transition: color 0.2s;
+  }
+
+  .ele-layout-menu-search-item-body {
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .ele-layout-menu-search-item-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: color 0.2s;
+  }
+
+  .ele-layout-menu-search-item-path {
+    font-size: elVar("font-size", "extra-small");
+    color: elVar("text-color", "secondary");
+    margin-left: 6px;
+    transition: color 0.2s;
+  }
+
+  .ele-layout-menu-search-item-text {
+    font-size: elVar("font-size", "extra-small");
+    color: elVar("text-color", "placeholder");
+    margin-top: 8px;
+    transition: color 0.2s;
+  }
+
+  .ele-layout-menu-search-item-suffix {
+    font-size: elVar("font-size", "small");
+    margin: 16px 0 0 -10px;
+    visibility: hidden;
+  }
+}
+
+.ele-layout-menu-search-popper {
+  min-width: 336px;
+  padding: 8px 0;
+  #{eleVarName('select', 'item-height')}: 58px;
+  #{eleVarName('select', 'item-radius')}: elVar("border-radius", "base");
+  #{eleVarName('select', 'item-margin')}: 6px;
+  #{eleVarName('select', 'padding')}: 0 8px;
+
+  .el-select-dropdown__wrap {
+    max-height: 506px;
+  }
+
+  .el-select-dropdown__item {
+    border: 1px solid elVar("border-color", "light");
+
+    &.is-hovering {
+      background: elVar("color-primary", "light-9");
+      border-color: elVar("color-primary", "light-5");
+
+      & > .ele-layout-menu-search-item {
+        color: elVar("color-primary");
+
+        .ele-layout-menu-search-item-text,
+        .ele-layout-menu-search-item-path {
+          color: elVar("color-primary", "light-5");
+        }
+
+        .ele-layout-menu-search-item-suffix {
+          visibility: visible;
+        }
+      }
+    }
+  }
+}
+
+.ele-admin-header.is-primary .ele-layout-menu-search,
+.ele-admin-header.is-dark .ele-layout-menu-search {
+  #{eleVarName('input', 'border')}: 1px solid rgba(255, 255, 255, 0.6);
+  #{eleVarName('input', 'hover-border')}: 1px solid #fff;
+  #{eleVarName('input', 'focus-border')}: 1px solid #fff;
+  #{eleVarName('input', 'focus-shadow')}: 0 0 0 2px rgba(255, 255, 255, 0.2);
+  #{elVarName('text-color', 'placeholder')}: rgba(255, 255, 255, 0.68);
+  #{elVarName('text-color', 'regular')}: #fff;
+  #{elVarName('fill-color', 'light')}: rgba(255, 255, 255, 0.08);
+  #{elVarName('border-color', 'light')}: rgba(255, 255, 255, 0.48);
+}
+
+/* 主题配置提示 */
+.ele-theme-setting-tip {
+  display: flex;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  pointer-events: none;
+
+  & > div {
+    position: absolute;
+    top: 36px;
+    right: -10px;
+    height: 34px;
+    width: 152px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background: elVar("bg-color");
+    box-shadow: elVar("box-shadow", "light");
+    line-height: 18px;
+    font-size: 13px;
+    color: elVar("text-color", "primary");
+    padding: 8px 8px 0 14px;
+
+    & > svg {
+      position: absolute;
+      inset: 0;
+    }
+  }
+}

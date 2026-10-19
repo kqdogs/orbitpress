@@ -1,0 +1,6 @@
+@use '../../style/util.scss' as *;
+
+body > .ele-modal-render-loading.ele-loading {
+  position: fixed;
+  background: none;
+}

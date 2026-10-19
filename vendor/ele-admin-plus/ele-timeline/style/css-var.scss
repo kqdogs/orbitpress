@@ -1,0 +1,8 @@
+@use '../../style/util.scss' as *;
+
+/* 时间线主题变量 */
+@mixin set-timeline-var($var) {
+  .ele-time-line-list {
+    @include set-ele-var('timeline', $var);
+  }
+}

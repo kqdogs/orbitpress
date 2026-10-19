@@ -1,0 +1,153 @@
+/** 简约主题(css-var 模式) */
+@use 'sass:map';
+@use 'element-plus/theme-chalk/src/mixins/_var.scss' as el;
+@use 'ele-admin-plus/es/style/util.scss' as *;
+@use 'ele-admin-plus/es/style/themes/theme-util.scss' as *;
+$theme-simple-selector: 'html.ele-theme-simple' !default;
+
+$ele-simple: () !default;
+$ele-simple: map.deep-merge(
+  (
+    'card': (
+      'radius': 12px
+    ),
+    'modal': (
+      'radius': 12px
+    ),
+    'chat': (
+      'file-tool-border': none,
+      'file-tool-hover-border': none,
+      'backbottom-border': none
+    ),
+    'popper': (
+      'arrow-bg': transparent,
+      'arrow-shadow': none
+    ),
+    'tooltip': (
+      'color': elVar('text-color', 'primary'),
+      'padding': 4px 12px,
+      'bg': elVar('bg-color', 'overlay'),
+      'shadow': eleVar('popper', 'shadow'),
+      'arrow-bg': transparent,
+      'arrow-shadow': none
+    ),
+    'tooltip-light': (
+      'arrow-bg': transparent,
+      'arrow-shadow': none
+    )
+  ),
+  $ele-simple
+);
+
+@include set-theme-var($theme-simple-selector, $ele-simple);
+
+#{$theme-simple-selector} {
+  & {
+    @include el.set-component-css-var(
+      'box-shadow',
+      (
+        '': (
+          0 12px 32px rgba(0, 0, 0, 0.1),
+          0 2px 6px rgba(0, 0, 0, 0.08),
+          0 0 0 0.6px elVar('border-color', 'extra-light')
+        ),
+        'light': (
+          0 12px 32px rgba(0, 0, 0, 0.1),
+          0 2px 6px rgba(0, 0, 0, 0.08),
+          0 0 0 0.6px elVar('border-color', 'extra-light')
+        ),
+        'lighter': (
+          0 12px 32px rgba(0, 0, 0, 0.1),
+          0 2px 6px rgba(0, 0, 0, 0.08),
+          0 0 0 0.6px elVar('border-color', 'extra-light')
+        )
+      )
+    );
+  }
+
+  .el-overlay > .el-overlay-dialog > .el-dialog {
+    #{elVarName('dialog', 'box-shadow')}: (
+      0 12px 32px rgba(0, 0, 0, 0.1),
+      0 2px 6px rgba(0, 0, 0, 0.08)
+    );
+  }
+
+  body {
+    background: repeating-linear-gradient(
+      103deg,
+      #e5f4fc 3%,
+      #eaf4fc 10%,
+      #ece5f9 30%,
+      #eaf5fb 50%
+    );
+  }
+
+  .ele-pro-layout {
+    #{eleVarName('layout', 'bg')}: transparent;
+    #{eleVarName('layout', 'button-tab-page-pt')}: 12px;
+    #{eleVarName('header', 'bg')}: transparent;
+    #{eleVarName('header', 'height')}: 52px;
+    #{eleVarName('header', 'line-color')}: transparent;
+    #{eleVarName('header', 'shadow')}: none;
+    #{eleVarName('header', 'ghost-bg')}: transparent;
+    #{eleVarName('sidebar', 'bg')}: transparent;
+    #{eleVarName('sidebar', 'shadow')}: none;
+    #{eleVarName('sidebar', 'mobile-bg')}: #e9edf7;
+    #{eleVarName('sidebar', 'ghost-bg')}: transparent;
+    #{eleVarName('sidebar', 'collapse-width')}: 60px;
+
+    & > .ele-admin-header,
+    & > .ele-admin-main > .ele-admin-header {
+      backdrop-filter: blur(48px);
+    }
+
+    & > .ele-admin-side,
+    & > .ele-admin-main > .ele-admin-side {
+      #{elVarName('fill-color', 'light')}: eleVar('header', 'tool-hover-bg');
+      #{eleVarName('header', 'line-color')}: rgba(0, 0, 0, 0.04);
+
+      & > .ele-admin-sidebar .ele-menu {
+        #{eleVarName('menu', 'child-bg')}: transparent;
+        #{eleVarName('menu', 'item-active-bg')}: linear-gradient(
+          160deg,
+          #{elVar('color-primary', 'light-7')} -8%,
+          #{elVar('color-primary', 'light-9')} 28%,
+          #fff 36%,
+          #{elVar('color-primary', 'light-9')} 66%,
+          #{elVar('color-primary', 'light-7')} 126%
+        );
+        #{eleVarName('menu', 'arrow-size')}: 12px;
+      }
+
+      & > .ele-admin-sidebox {
+        backdrop-filter: blur(80px);
+
+        .ele-menu {
+          #{eleVarName('menu', 'item-active-bg')}: linear-gradient(
+            160deg,
+            #{elVar('color-primary', 'light-7')} -8%,
+            #{elVar('color-primary', 'light-9')} 28%,
+            #fff 36%,
+            #{elVar('color-primary', 'light-9')} 66%,
+            #{elVar('color-primary', 'light-7')} 126%
+          );
+          #{eleVarName('menu', 'compact-item-padding')}: 10px 0;
+        }
+      }
+    }
+
+    & > .ele-admin-main > .ele-admin-body > .ele-admin-tabs {
+      backdrop-filter: blur(8px);
+      #{eleVarName('tab', 'height')}: 38px;
+      #{eleVarName('tab', 'button-padding')}: 4px;
+      #{eleVarName('tab', 'button-space')}: 12px;
+    }
+
+    & > .ele-admin-header.is-ghost + .ele-admin-main > .ele-admin-body,
+    & > .ele-admin-main > .ele-admin-header.is-ghost + .ele-admin-body {
+      & > .ele-admin-wrapper > .ele-admin-content > .ele-page:first-child {
+        padding-top: 6px;
+      }
+    }
+  }
+}

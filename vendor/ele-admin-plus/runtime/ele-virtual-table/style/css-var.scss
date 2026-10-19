@@ -1,0 +1,101 @@
+@use '../../style/util.scss' as *;
+
+/* 虚拟表格主题变量 */
+@mixin set-virtual-table-var($var) {
+  .ele-virtual-table {
+    @include set-ele-var('table', $var);
+  }
+
+  .ele-table-filter-popper {
+    @include set-ele-var('table-filter', $var);
+  }
+}
+
+/* 虚拟表格全部容器 */
+@mixin virtual-table-wrap {
+  & > .el-table-v2,
+  & > .el-table-v2 > .el-table-v2__main,
+  & > .el-table-v2 > .el-table-v2__main > .el-table-v2__header-wrapper,
+  & > .el-table-v2 .el-table-v2__body > div:not(.el-virtual-scrollbar) {
+    @content;
+  }
+}
+
+/* 虚拟表格全部行 */
+@mixin virtual-table-tr {
+  & > .el-table-v2 {
+    &
+      > .el-table-v2__main
+      > .el-table-v2__body
+      > div:not(.el-virtual-scrollbar)
+      > div
+      > .ele-table-tr,
+    &
+      > .el-table-v2__main
+      > .el-table-v2__header-wrapper
+      > .el-table-v2__header
+      > .ele-table-head-tr,
+    & > .el-table-v2__footer > .ele-table-foot-tr {
+      @content;
+    }
+  }
+}
+
+/* 虚拟表格全部行单元格 */
+@mixin virtual-table-td {
+  @include virtual-table-tr {
+    & > .ele-table-td {
+      @content;
+    }
+  }
+}
+
+/* 虚拟表格单元格间距 */
+@mixin virtual-table-padding($padding) {
+  @include virtual-table-td {
+    padding: $padding;
+    padding-right: 0;
+    padding-left: 0;
+
+    & > .ele-table-cell {
+      padding: $padding;
+      padding-bottom: 0;
+      padding-top: 0;
+    }
+  }
+}
+
+/* 虚拟表格圆角 */
+@mixin virtual-table-radius($radius) {
+  & > .el-table-v2 > .el-table-v2__main > .el-table-v2__header-wrapper,
+  &.is-border > .el-table-v2::after,
+  &.is-border.hide-header
+    > .el-table-v2
+    > .el-table-v2__main
+    > .el-table-v2__body
+    > div:not(.el-virtual-scrollbar) {
+    border-top-left-radius: $radius;
+    border-top-right-radius: $radius;
+  }
+
+  & > .el-table-v2 > .el-table-v2__footer,
+  &.is-border > .el-table-v2::before,
+  &.is-border:not(.has-footer)
+    > .el-table-v2
+    > .el-table-v2__main
+    > .el-table-v2__body
+    > div:not(.el-virtual-scrollbar) {
+    border-bottom-left-radius: $radius;
+    border-bottom-right-radius: $radius;
+  }
+
+  &.is-border::before {
+    border-bottom-left-radius: $radius;
+    border-top-left-radius: $radius;
+  }
+
+  &.is-border::after {
+    border-bottom-right-radius: $radius;
+    border-top-right-radius: $radius;
+  }
+}

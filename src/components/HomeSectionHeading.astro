@@ -1,0 +1,6 @@
+---
+import type { Settings } from '../lib/schema';
+interface Props {section:Pick<Settings['homeSections'][number],'title'|'subtitle'>;href?:string;linkText?:string}
+const {section,href,linkText}=Astro.props;
+---
+<div class="section-heading"><div><h2>{section.title}</h2>{section.subtitle&&<p>{section.subtitle}</p>}</div>{href&&<a href={href}>{linkText}</a>}</div>

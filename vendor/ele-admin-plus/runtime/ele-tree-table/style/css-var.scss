@@ -1,0 +1,8 @@
+@use '../../style/util.scss' as *;
+
+/* 树表格主题变量 */
+@mixin set-tree-table-var($var) {
+  .ele-tree-table-wrapper {
+    @include set-ele-var('table', $var);
+  }
+}

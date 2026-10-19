@@ -1,0 +1,12 @@
+@use '../../style/util.scss' as *;
+
+/* 工具栏主题变量 */
+@mixin set-toolbar-var($var) {
+  .ele-toolbar {
+    @include set-ele-var('toolbar', $var);
+  }
+
+  .ele-toolbar.is-plain {
+    @include set-ele-var('toolbar-plain', $var);
+  }
+}

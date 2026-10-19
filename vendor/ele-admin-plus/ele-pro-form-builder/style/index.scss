@@ -1,0 +1,1223 @@
+@use 'sass:list';
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-pro-form-builder-var($ele);
+
+/* 左右面板 */
+.ele-pro-form-builder-wrapper.ele-split-panel,
+.ele-pro-form-builder-main-wrapper.ele-split-panel {
+  height: 100%;
+
+  & > .ele-split-panel-wrap {
+    & > .ele-split-panel-side {
+      display: flex;
+      flex-direction: column;
+
+      & > .ele-tab-bar {
+        flex-shrink: 0;
+        padding: 0 16px;
+
+        .ele-tab-item + .ele-tab-item {
+          margin-left: 22px;
+        }
+      }
+
+      & > .ele-pro-form-builder-tab-body {
+        flex: 1 1 60px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        position: relative;
+      }
+    }
+
+    & > .ele-split-panel-tools > .ele-split-panel-collapse-btn {
+      z-index: 99;
+    }
+  }
+}
+
+.ele-pro-form-builder-wrapper.ele-split-panel {
+  & > .ele-split-panel-wrap > .ele-split-panel-side {
+    border-width: 0 1px 0 0;
+  }
+}
+
+.ele-pro-form-builder-main-wrapper.ele-split-panel {
+  & > .ele-split-panel-wrap > .ele-split-panel-side {
+    border-width: 0 0 0 1px;
+  }
+}
+
+/* 主体 */
+.ele-pro-form-builder-body-wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.ele-pro-form-builder-body {
+  flex: 1 1 60px;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  max-width: 100%;
+  box-sizing: border-box;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.ele-pro-form-builder-preview.ele-modal-body {
+  padding: 12px;
+  max-width: 100%;
+  max-height: 100%;
+  min-height: 100%;
+  height: calc(100vh - 120px);
+  height: calc(100dvh - 120px);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.ele-pro-form-builder-body.is-pad,
+.ele-pro-form-builder-body.is-phone,
+.ele-pro-form-builder-preview.is-pad,
+.ele-pro-form-builder-preview.is-phone {
+  width: 796px;
+  padding: 2px;
+  outline: 6px solid #3c3c3c;
+  outline-offset: -12px;
+  border: 12px solid transparent;
+  border-radius: 18px;
+  margin: 0 auto;
+}
+
+.ele-pro-form-builder-body.is-phone,
+.ele-pro-form-builder-preview.is-phone {
+  width: 418px;
+}
+
+/* 顶栏 */
+.ele-pro-form-builder-header {
+  flex-shrink: 0;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid elVar('border-color', 'light');
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+.ele-pro-form-builder-header-tool.el-icon {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  font-size: 16px;
+  border-radius: elVar('border-radius', 'small');
+  transition: all $transition-base;
+  user-select: none;
+  cursor: pointer;
+
+  &:hover {
+    background: elVar('fill-color', 'light');
+  }
+}
+
+/* 屏幕尺寸切换图标 */
+.ele-pro-form-builder-screen-radio {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  box-sizing: border-box;
+  position: relative;
+
+  .ele-pro-form-builder-screen-icon.is-active {
+    color: elVar('color-primary');
+  }
+}
+
+.ele-pro-form-builder-header > .ele-pro-form-builder-screen-radio:before {
+  content: '';
+  width: 0;
+  height: 12px;
+  border-left: 1px solid elVar('border-color');
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.ele-modal-header > .ele-modal-title > .ele-pro-form-builder-screen-radio {
+  margin-top: -6px;
+  margin-bottom: -6px;
+  padding: 0;
+}
+
+/* 顶栏左侧操作按钮 */
+.ele-pro-form-builder-header-left {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 0 0 8px;
+  box-sizing: border-box;
+  position: relative;
+
+  .ele-pro-form-builder-header-tool-undo,
+  .ele-pro-form-builder-header-tool-redo {
+    font-size: 14px;
+
+    &.is-disabled {
+      color: elVar('disabled-text-color');
+      background: none;
+      cursor: not-allowed;
+    }
+  }
+}
+
+/* 顶栏右侧操作按钮 */
+.ele-pro-form-builder-header-tools {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  margin: 0 0 0 auto;
+  padding: 0 12px 0 0;
+  box-sizing: border-box;
+
+  .el-button {
+    flex-shrink: 0;
+    height: 28px;
+    line-height: 28px;
+    font-size: 13px;
+    padding: 0 6px 0 7px;
+    margin: 0 0 0 4px;
+
+    &:not(.is-text) {
+      padding: 0 8px 0 6px;
+    }
+
+    & > .el-icon {
+      font-size: 12px;
+
+      & + span {
+        margin-left: 3px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: #{$pad-max-width}) {
+  .ele-pro-form-builder-header > .ele-pro-form-builder-screen-radio {
+    display: none;
+  }
+
+  .ele-pro-form-builder-header-tools .el-button {
+    padding: 0 4px 0 5px;
+    margin: 0 0 0 2px;
+
+    &:not(.is-text) {
+      padding: 0 6px 0 4px;
+    }
+
+    & > .el-icon + span {
+      margin-left: 2px;
+    }
+  }
+}
+
+/* 构建表单 */
+.ele-pro-form-builder-body-form {
+  flex: auto;
+  width: 100%;
+  box-sizing: border-box;
+  user-select: none;
+
+  & > .ele-pro-form-builder-container-wrapper,
+  & > .ele-pro-form-builder-grid-container-wrapper {
+    min-height: 100%;
+  }
+
+  /* 构建操作按钮 */
+  .ele-pro-form-builder-tool-button {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    box-shadow: 0 0 2px 0 rgba(255, 255, 255, 0.6);
+    padding: 0;
+
+    & + .ele-pro-form-builder-tool-button {
+      margin-left: 3px;
+    }
+  }
+
+  /* 新拖进来的组件 */
+  .ele-pro-form-builder-component-item {
+    height: 0px !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+    position: relative !important;
+    z-index: 9 !important;
+
+    * {
+      display: none !important;
+    }
+
+    &::before {
+      content: '';
+      display: block !important;
+      position: absolute;
+      top: -2px;
+      left: 0;
+      height: 5px;
+      width: 100%;
+      background: elVar('color-primary');
+    }
+  }
+
+  .el-row > .ele-pro-form-builder-component-item {
+    width: 0px !important;
+    height: auto !important;
+
+    &::before {
+      top: 0;
+      left: -2px;
+      height: 100%;
+      width: 7px;
+    }
+  }
+}
+
+/* 组件库列表 */
+.ele-pro-form-builder-component-wrapper {
+  flex: 1;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+.ele-pro-form-builder-component-group-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: elVar('color-primary');
+  background: eleVar('pro-form-builder', 'group-label-bg');
+  backdrop-filter: eleVar('pro-form-builder', 'group-label-backdrop-filter');
+  padding: 10px 0 4px 20px;
+  box-sizing: border-box;
+  user-select: none;
+  cursor: pointer;
+  position: sticky;
+  top: 0;
+  z-index: 9;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    width: 3px;
+    height: 12px;
+    margin-top: -4px;
+    background: elVar('color-primary');
+    border-radius: 2px;
+  }
+}
+
+.ele-pro-form-builder-component-list {
+  display: grid;
+  grid-gap: 8px;
+  grid-template-columns: repeat(2, 1fr);
+  padding: 6px 10px 10px 10px;
+  box-sizing: border-box;
+}
+
+/* 组件卡片 */
+.ele-pro-form-builder-component-item {
+  padding: 2px 6px;
+  border: 1px solid elVar('border-color');
+  border-radius: elVar('border-radius', 'base');
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  box-sizing: border-box;
+  transition: all $transition-base;
+  position: relative;
+  user-select: none;
+  overflow: hidden;
+  cursor: pointer;
+
+  &:hover {
+    border-color: transparent;
+    outline-color: elVar('color-primary');
+    transform: translateY(-4px);
+  }
+
+  * {
+    pointer-events: none !important;
+  }
+
+  &.sortable-fallback {
+    transition: none;
+  }
+
+  &.is-selected {
+    border-color: transparent;
+    outline-color: elVar('color-primary');
+  }
+}
+
+.ele-pro-form-builder-component-item-label {
+  font-size: 13px;
+}
+
+.ele-pro-form-builder-component-item-body {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.ele-pro-form-builder-component-item-cover {
+  flex-shrink: 0;
+  width: 96%;
+}
+
+/* 模板卡片 */
+.ele-pro-form-builder-template-wrapper {
+  flex: 1;
+  padding: 12px;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+.ele-pro-form-builder-template-item {
+  border: 1px solid elVar('border-color');
+  border-radius: elVar('border-radius', 'base');
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  box-sizing: border-box;
+  transition: all $transition-base;
+  position: relative;
+  user-select: none;
+  overflow: hidden;
+  cursor: pointer;
+
+  &:hover {
+    border-color: transparent;
+    outline-color: elVar('color-primary');
+    transform: translateY(-4px);
+  }
+
+  & + .ele-pro-form-builder-template-item {
+    margin-top: 12px;
+  }
+}
+
+.ele-pro-form-builder-template-item-label {
+  font-size: 13px;
+  padding: 10px 10px 4px 10px;
+  box-sizing: border-box;
+}
+
+.ele-pro-form-builder-template-item-body {
+  height: 160px;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.ele-pro-form-builder-template-item-cover {
+  flex-shrink: 0;
+  width: 88%;
+}
+
+/* 大纲列表 */
+.ele-pro-form-builder-outline {
+  padding: 6px 0;
+  box-sizing: border-box;
+  position: relative;
+  user-select: none;
+}
+
+.ele-pro-form-builder-outline-item {
+  display: flex;
+  flex-direction: column-reverse;
+  border-radius: elVar('border-radius', 'base');
+  position: relative;
+
+  & + .ele-pro-form-builder-outline-item {
+    margin-top: 6px;
+  }
+}
+
+.ele-pro-form-builder-outline-item-border {
+  border: 1px solid elVar('border-color');
+  border-radius: elVar('border-radius', 'base');
+  transition: border-color $transition-base;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.ele-pro-form-builder-outline-item-arrow.el-icon {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  left: 2px;
+  top: 50%;
+  margin-top: -8px;
+  color: elVar('text-color', 'secondary');
+  font-size: 12px;
+  border-radius: elVar('border-radius', 'small');
+  box-sizing: border-box;
+  transition: all $transition-base;
+  cursor: pointer;
+  z-index: 4;
+
+  &:hover {
+    background: hsla(0, 0%, 60%, 0.15);
+  }
+
+  & > svg {
+    transition: all $transition-base;
+  }
+}
+
+.ele-pro-form-builder-outline-item-tool.el-icon,
+.ele-pro-form-builder-outline-item-handle.el-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  color: elVar('color-primary');
+  border-radius: elVar('border-radius', 'small');
+  box-sizing: border-box;
+  transition: all $transition-base;
+  cursor: pointer;
+  z-index: 4;
+
+  &:hover {
+    background: hsla(0, 0%, 60%, 0.15);
+  }
+
+  &.is-danger {
+    color: elVar('color-danger');
+  }
+}
+
+.ele-pro-form-builder-outline-item-handle.el-icon {
+  cursor: move;
+}
+
+.ele-pro-form-builder-outline-item-content {
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  word-break: break-all;
+  text-overflow: ellipsis;
+}
+
+.ele-pro-form-builder-outline-item-prop,
+.ele-pro-form-builder-outline-item-label {
+  font-size: 13px;
+  margin-left: 4px;
+}
+
+.ele-pro-form-builder-outline-item-body {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 6px 0 18px;
+  border: 1px solid transparent;
+  border-bottom-color: elVar('border-color');
+  border-top-left-radius: elVar('border-radius', 'base');
+  border-top-right-radius: elVar('border-radius', 'base');
+  transition: (
+    border-color $transition-base,
+    background-color $transition-base
+  );
+  box-sizing: border-box;
+  position: relative;
+  cursor: pointer;
+
+  &:not(:hover) .ele-pro-form-builder-outline-item-tool,
+  &:not(:hover) .ele-pro-form-builder-outline-item-handle {
+    display: none;
+  }
+
+  &:hover {
+    border-bottom-color: elVar('color-primary');
+
+    & + .ele-pro-form-builder-outline-item-border {
+      border-color: elVar('color-primary');
+    }
+  }
+}
+
+.ele-pro-form-builder-outline-item > .ele-pro-form-builder-outline {
+  padding-left: 10px;
+  padding-right: 6px;
+
+  &:empty {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    border-top-width: 0px;
+  }
+}
+
+.ele-pro-form-builder-outline-item {
+  &.is-collapse > .ele-pro-form-builder-outline-item-body,
+  &.is-form-item > .ele-pro-form-builder-outline-item-body,
+  &
+    > .ele-pro-form-builder-outline:empty
+    + .ele-pro-form-builder-outline-item-body {
+    border-bottom-color: transparent;
+    border-bottom-left-radius: elVar('border-radius', 'base');
+    border-bottom-right-radius: elVar('border-radius', 'base');
+  }
+
+  &.is-collapse > .ele-pro-form-builder-outline {
+    display: none;
+  }
+
+  &.is-collapse > .ele-pro-form-builder-outline-item-body {
+    & > .ele-pro-form-builder-outline-item-arrow > svg {
+      transform: rotate(-90deg);
+    }
+  }
+}
+
+.ele-pro-form-builder-outline-item.is-active {
+  & > .ele-pro-form-builder-outline-item-border {
+    border-color: elVar('color-primary');
+  }
+
+  & > .ele-pro-form-builder-outline-item-body,
+  &.is-form-item > .ele-pro-form-builder-outline-item-body,
+  & > .ele-pro-form-builder-outline + .ele-pro-form-builder-outline-item-body {
+    background: elVar('color-primary', 'light-9');
+    border-color: elVar('color-primary');
+  }
+}
+
+.ele-pro-form-builder-outline-item-type-tag {
+  color: elVar('color-primary');
+  font-size: 12px;
+  line-height: 14px;
+  padding: 1px 3px;
+  border: 1px dashed elVar('color-primary');
+  border-radius: elVar('border-radius', 'small');
+  box-sizing: border-box;
+  vertical-align: 1px;
+}
+
+.ele-pro-form-builder-outline-item-table-tool-trigger {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.ele-pro-form-builder-outline-item.sortable-ghost {
+  & > .ele-pro-form-builder-outline-item-border {
+    border-color: elVar('color-primary');
+    border-style: dashed;
+  }
+
+  & > .ele-pro-form-builder-outline-item-body * {
+    display: none;
+  }
+}
+
+.ele-pro-form-builder-outline-item.sortable-ghost,
+.ele-pro-form-builder-outline-item.sortable-fallback {
+  & > .ele-pro-form-builder-outline-item-body,
+  &.is-form-item > .ele-pro-form-builder-outline-item-body,
+  & > .ele-pro-form-builder-outline + .ele-pro-form-builder-outline-item-body {
+    border-color: transparent;
+    background: none;
+  }
+
+  & > .ele-pro-form-builder-outline {
+    visibility: hidden;
+  }
+
+  &
+    > .ele-pro-form-builder-outline-item-body
+    .ele-pro-form-builder-outline-item-tool,
+  & > .ele-pro-form-builder-outline .ele-pro-form-builder-outline-item-body * {
+    display: none;
+  }
+}
+
+.ele-pro-form-builder-outline-item.sortable-fallback {
+  background: elVar('color-primary', 'light-9');
+
+  & > .ele-pro-form-builder-outline-item-border {
+    border-color: elVar('color-primary');
+  }
+
+  & > .ele-pro-form-builder-outline-item-body {
+    .ele-pro-form-builder-outline-item-handle {
+      display: inline-flex;
+    }
+  }
+}
+
+.ele-pro-form-builder-tab-body > .ele-pro-form-builder-outline {
+  flex: 1;
+  overflow: auto;
+  padding: 10px;
+
+  &:has(.ele-pro-form-builder-outline-item.sortable-ghost) {
+    cursor: move;
+
+    .ele-pro-form-builder-outline-item-body {
+      cursor: move;
+    }
+
+    .ele-pro-form-builder-outline-item-arrow,
+    .ele-pro-form-builder-outline-item-tool {
+      pointer-events: none;
+    }
+
+    .ele-pro-form-builder-outline-item.is-active {
+      &:not(.sortable-ghost):not(.sortable-fallback) {
+        & > .ele-pro-form-builder-outline-item-border,
+        & > .ele-pro-form-builder-outline-item-body {
+          background: none;
+          border-color: elVar('border-color');
+        }
+      }
+    }
+  }
+}
+
+/* 属性设置表单 */
+.ele-pro-form-builder-props-form {
+  flex: 1;
+  overflow: auto;
+  padding: 0 10px;
+  box-sizing: border-box;
+
+  .el-form-item {
+    margin-bottom: 12px;
+  }
+
+  .el-form-item__label {
+    margin-bottom: 2px;
+    pointer-events: none;
+  }
+}
+
+.ele-pro-form-builder-props-group-label.ele-text {
+  font-size: 12px;
+  font-weight: 500;
+  color: elVar('color-primary');
+  padding: 10px 0 6px 10px;
+  box-sizing: border-box;
+  position: relative;
+  user-select: none;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 3px;
+    height: 12px;
+    margin-top: -4px;
+    background: elVar('color-primary');
+    border-radius: 2px;
+  }
+}
+
+.ele-pro-form-builder-props-options-check-card {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 6px 8px;
+
+  .ele-check-card {
+    font-size: 12px;
+    line-height: 14px;
+    padding: 4px 0;
+    text-align: center;
+
+    .ele-check-card-arrow {
+      top: 2px;
+      right: 2px;
+      border-width: 5px;
+    }
+  }
+
+  &.is-loose {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  &.is-single {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+.ele-pro-form-builder-props-fluid-btn.el-button {
+  width: 100%;
+  font-weight: normal;
+  border-style: dashed;
+
+  &.is-small-icon > .el-icon {
+    transform: scale(0.9);
+    transform-origin: 0 0;
+  }
+}
+
+.ele-pro-form-builder-type-select-btn > span {
+  width: 100%;
+  box-sizing: border-box;
+
+  & > span {
+    flex: 1;
+    text-align: left;
+  }
+}
+
+/* 空视图 */
+.ele-pro-form-builder-form-empty.el-empty {
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+
+  .el-empty__description {
+    margin-top: 8px;
+
+    p {
+      font-size: 13px;
+      color: elVar('text-color', 'placeholder');
+    }
+  }
+}
+
+/* 添加子级时组件选择 */
+.ele-pro-form-builder-component-picker .ele-pro-form-builder-component-list {
+  grid-gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+}
+
+/* 生成代码弹窗 */
+.ele-pro-form-builder-code-preview .ele-modal-body {
+  padding: 6px;
+  max-height: 100%;
+  min-height: 100%;
+  height: calc(100vh - 120px);
+  height: calc(100dvh - 120px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.ele-pro-form-builder-code-view {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  border: 1px solid #000;
+  background: #1e1e1e;
+  border-radius: elVar('border-radius', 'base');
+
+  & > .ele-tab-bar {
+    flex-shrink: 0;
+    padding: 0 12px;
+    #{eleVarName('tab-bar', 'color')}: #e6edf3;
+    #{eleVarName('tab-bar', 'height')}: 32px;
+
+    .ele-tab-item {
+      font-weight: 500;
+      font-family: $code-family;
+    }
+
+    &::before {
+      border-color: #000;
+    }
+  }
+}
+
+.ele-pro-form-builder-code-body {
+  flex: 1;
+  overflow: auto;
+  color: #e6edf3;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  #{eleVarName('scrollbar', 'color')}: #5e5e5e;
+  #{eleVarName('scrollbar', 'hover-color')}: #707070;
+
+  & > .ele-code-viewer {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.ele-pro-form-builder-code-pre {
+  flex: 1;
+  margin: 0;
+  padding: 12px;
+  box-sizing: border-box;
+  font-family: $code-family;
+}
+
+.ele-pro-form-builder-code-line-numbers {
+  flex-shrink: 0;
+  color: #8b949e;
+  font-family: $code-family;
+  padding: 12px 0;
+  min-width: 38px;
+  background: #1e1e1e;
+  border-right: 1px solid #000;
+  box-sizing: border-box;
+  text-align: center;
+  user-select: none;
+  position: sticky;
+  left: 0;
+}
+
+.ele-pro-form-builder-code-icon-tool.el-icon {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  color: #d6dde3;
+  background: #424242;
+  margin-left: 8px;
+  border-radius: elVar('border-radius', 'small');
+  box-sizing: border-box;
+  transition: background-color $transition-slow;
+  cursor: pointer;
+
+  &:hover {
+    background: #4f4f4f;
+  }
+
+  &.is-copied {
+    color: elVar('color-success');
+  }
+}
+
+/* 表格更多操作下拉菜单 */
+.ele-pro-form-builder-table-tool-dropdown.ele-dropdown.ele-popper.ele-popover {
+  min-width: 128px;
+}
+
+/* 子级编辑列表 */
+.ele-pro-form-builder-children-edit-list {
+  width: 100%;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+.ele-pro-form-builder-children-edit-item {
+  display: flex;
+  align-items: center;
+  padding: 0 2px;
+  margin-bottom: 6px;
+  border: 1px solid elVar('border-color', 'light');
+  border-radius: elVar('border-radius', 'base');
+  transition: border-color $transition-base;
+  box-sizing: border-box;
+
+  &:has(.ele-pro-form-builder-children-edit-item-body.is-clickable:hover) {
+    border-color: elVar('color-primary');
+  }
+}
+
+.ele-pro-form-builder-children-edit-item-handle.el-icon {
+  color: elVar('text-color', 'secondary');
+  cursor: move;
+}
+
+.ele-pro-form-builder-children-edit-item-handle.el-icon,
+.ele-pro-form-builder-children-edit-item-del-btn.el-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  box-sizing: border-box;
+}
+
+.ele-pro-form-builder-children-edit-item-del-btn.el-icon {
+  color: elVar('color-danger');
+  border-radius: elVar('border-radius', 'small');
+  transition: all $transition-base;
+  cursor: pointer;
+
+  &:hover {
+    background: hsla(0, 0%, 60%, 0.15);
+  }
+}
+
+.ele-pro-form-builder-children-edit-item-body {
+  flex: 1;
+  font-size: 12px;
+  line-height: 20px;
+  padding: 3px 3px 3px 2px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  &.is-clickable {
+    cursor: pointer;
+  }
+
+  .el-input .el-input__inner {
+    height: 20px;
+    line-height: 20px;
+  }
+}
+
+.ele-pro-form-builder-children-edit-item-text {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  white-space: nowrap;
+}
+
+.ele-pro-form-builder-outline-item-type-tag {
+  & + .ele-pro-form-builder-children-edit-item-text {
+    margin-left: 4px;
+  }
+}
+
+/* 样式编辑列表 */
+.ele-pro-form-builder-style-edit-list {
+  width: 100%;
+  padding: 4px;
+  border: 1px solid elVar('border-color', 'light');
+  border-radius: elVar('border-radius', 'base');
+  box-sizing: border-box;
+  margin-bottom: 6px;
+}
+
+.ele-pro-form-builder-style-edit-item {
+  display: flex;
+  align-items: center;
+
+  & + .ele-pro-form-builder-style-edit-item {
+    margin-top: 4px;
+  }
+}
+
+.ele-pro-form-builder-style-edit-item-del-btn.el-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  color: elVar('color-danger');
+  border-radius: elVar('border-radius', 'small');
+  transition: all $transition-base;
+  box-sizing: border-box;
+  cursor: pointer;
+
+  &:hover {
+    background: hsla(0, 0%, 60%, 0.15);
+  }
+}
+
+.ele-pro-form-builder-style-edit-item-body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  margin-right: 3px;
+
+  .el-input .el-input__inner {
+    height: 20px;
+    line-height: 20px;
+  }
+}
+
+/* 数据编辑表格 */
+.ele-pro-form-builder-options-editer {
+  flex: 1;
+  margin-top: 8px;
+
+  & > .ele-tree-table {
+    height: 100%;
+  }
+
+  .ele-tree-table-cells > .ele-tree-table-cell {
+    padding: 6px 8px;
+  }
+
+  .ele-tree-table-cell.is-tree-index {
+    padding: 10px 0 0 0;
+  }
+
+  .ele-tree-table-header > .ele-tree-table-row > .ele-tree-table-cell {
+    padding-left: 0;
+    padding-right: 0;
+    white-space: nowrap;
+    word-break: break-all;
+  }
+
+  &.is-table-data {
+    .ele-tree-table-header > .ele-tree-table-row > .ele-tree-table-cell {
+      padding-left: 6px;
+      padding-right: 6px;
+      overflow: visible;
+    }
+  }
+}
+
+.ele-pro-form-builder-options-edit-cell {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .ele-pro-form-builder-tool-button {
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    padding: 0;
+
+    & + .ele-pro-form-builder-tool-button {
+      margin-left: 6px;
+    }
+  }
+}
+
+.ele-pro-form-builder-options-edit-th {
+  position: relative;
+
+  .ele-pro-form-builder-tool-button {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    padding: 0;
+    position: absolute;
+    top: 50%;
+    right: calc(100% - 10px);
+    transform: translateY(-50%);
+    transition: all 0.3s;
+    z-index: 99;
+  }
+
+  &:not(:hover) .ele-pro-form-builder-tool-button {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .el-input .el-input__wrapper .el-input__inner {
+    font-weight: 500;
+  }
+}
+
+/* 数据代码编辑框 */
+.ele-pro-form-builder-options-tabs.ele-tab-bar {
+  flex-shrink: 0;
+  overflow: visible;
+
+  & > .ele-tab-nav {
+    overflow: visible;
+  }
+
+  .ele-pro-form-builder-code-edit-icon.el-icon {
+    position: absolute;
+    right: -22px;
+    top: 50%;
+    margin: -7px 0 0 0;
+    font-size: 14px;
+    z-index: 9;
+
+    .ele-pro-form-builder-code-edit-tip {
+      top: -8px;
+      left: -128px;
+    }
+  }
+}
+
+/* 事件代码编辑框 */
+.ele-pro-form-builder-code-edit-wrapper {
+  flex: 1;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.ele-pro-form-builder-code-edit-header {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.ele-pro-form-builder-code-edit-icon.el-icon {
+  color: elVar('text-color', 'secondary');
+  margin-left: 8px;
+  position: static;
+  cursor: text;
+
+  .ele-pro-form-builder-code-edit-tip {
+    width: 420px;
+    max-width: calc(100vw - 32px);
+    font-size: 14px;
+    line-height: 18px;
+    color: #608b4e;
+    background: #1e1e1e;
+    font-family: $code-family;
+    padding: 8px;
+    border-radius: elVar('border-radius', 'small');
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-sizing: border-box;
+    white-space: pre-wrap;
+    user-select: text;
+    cursor: text;
+    transition: all $transition-base;
+    position: absolute;
+    top: 2px;
+    left: 6px;
+    z-index: 9;
+  }
+
+  &:not(:hover) .ele-pro-form-builder-code-edit-tip {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* 源码编辑框 */
+.ele-pro-form-builder-code-editer.el-textarea {
+  height: 100%;
+  display: block;
+
+  & > .el-textarea__inner {
+    height: 100%;
+    font-size: 14px;
+    color: #d4d4d4;
+    background: #1e1e1e;
+    font-family: $code-family;
+    border-radius: 0;
+    box-shadow: none;
+    border: none;
+    resize: none;
+  }
+}

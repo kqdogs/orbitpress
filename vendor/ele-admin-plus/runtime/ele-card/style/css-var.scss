@@ -1,0 +1,8 @@
+@use '../../style/util.scss' as *;
+
+/* 卡片主题变量 */
+@mixin set-card-var($var) {
+  .ele-card {
+    @include set-ele-var('card', $var);
+  }
+}

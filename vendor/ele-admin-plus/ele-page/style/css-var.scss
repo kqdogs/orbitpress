@@ -1,0 +1,9 @@
+@use '../../style/util.scss' as *;
+
+/* 页面容器主题变量 */
+@mixin set-page-var($var) {
+  .ele-page,
+  .ele-admin-tabs {
+    @include set-ele-var('page', $var);
+  }
+}

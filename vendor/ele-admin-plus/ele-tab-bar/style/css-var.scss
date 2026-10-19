@@ -1,0 +1,8 @@
+@use '../../style/util.scss' as *;
+
+/* 标签栏主题变量 */
+@mixin set-tab-bar-var($var) {
+  .ele-tab-bar {
+    @include set-ele-var('tab-bar', $var);
+  }
+}

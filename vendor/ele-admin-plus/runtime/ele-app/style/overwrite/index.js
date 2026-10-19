@@ -1,0 +1,16 @@
+import "./autocomplete/index";
+import "./backtop/index";
+import "./cascader/index";
+import "./checkbox/index";
+import "./color-picker/index";
+import "./date-picker/index";
+import "./descriptions/index";
+import "./input/index";
+import "./message-box/index";
+import "./notification/index";
+import "./popper/index";
+import "./radio/index";
+import "./select/index";
+import "./tag/index";
+import "./tree/index";
+import "./tree-select/index";

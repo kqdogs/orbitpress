@@ -1,0 +1,31 @@
+@use '../../style/themes/default.scss' as *;
+@use '../../style/util.scss' as *;
+@use './css-var.scss' as *;
+
+@include set-bottom-bar-var($ele);
+
+.ele-bottom-bar {
+  flex-shrink: 0;
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: eleVar('bottom-bar', 'padding');
+  background: eleVar('bottom-bar', 'bg');
+  box-shadow: eleVar('bottom-bar', 'shadow');
+  z-index: var(#{eleVarName('layout', 'index')}, 99);
+
+  .ele-bottom-bar-body {
+    flex: 1;
+    overflow: auto;
+  }
+
+  .ele-bottom-bar-extra {
+    flex-shrink: 0;
+  }
+
+  &.is-deactivated {
+    display: none;
+  }
+}
