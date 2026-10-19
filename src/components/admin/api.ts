@@ -19,6 +19,7 @@ function responseSchema(path: string, method: string) {
   if (pathname === '/api/auth/session' || pathname === '/api/auth/login') return sessionResponse;
   if (pathname === '/api/auth/logout' || pathname === '/api/auth/password') return z.object({ ok: z.boolean() });
   const [, , , resource, id, action] = pathname.split('/');
+  if ((resource === 'posts' || resource === 'pages') && method === 'DELETE') return z.object({ok:z.literal(true),id:z.string()});
   if (resource === 'posts') return method === 'GET' && !id ? z.object({ items: z.array(postResponse), nextCursor: z.string().nullable() }) : postResponse;
   if (resource === 'pages') return method === 'GET' && !id ? z.array(pageResponse) : pageResponse;
   if (resource === 'categories') return method === 'GET' ? z.array(categoryResponse) : z.object({ id: z.string() });

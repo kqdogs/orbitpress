@@ -91,6 +91,9 @@ describe('自动部署：资源、空内容、失败关闭', () => {
     await f.deploy();
     expect(await f.state.db.prepare('SELECT count(*) AS count FROM posts').first('count')).toBe(0);
     expect(await f.state.db.prepare('SELECT count(*) AS count FROM pages').first('count')).toBe(0);
+    expect(await f.state.db.prepare('SELECT count(*) AS count FROM categories').first('count')).toBe(0);
+    const empty = JSON.parse(await f.state.db.prepare('SELECT value FROM settings WHERE id=1').first('value'));
+    expect(empty.headerNav).toEqual([]);expect(empty.footerNav).toEqual([]);expect(empty.homeOptions.steps).toEqual([]);
     await f.state.db.exec("INSERT INTO categories(id,name,slug) VALUES('c','正式分类','category'); INSERT INTO posts(id,title,slug,category_id,created_at,updated_at,updated_by,last_operation) VALUES('p','正式文章','post','c','now','now','admin','op'); INSERT INTO pages(id,title,slug,created_at,updated_at,updated_by,last_operation) VALUES('g','正式页面','page','now','now','admin','op');");
     const secretsBefore = await readFile(join(f.root, '.deploy/secrets.json'), 'utf8');
     f.calls.length = 0; await f.deploy();

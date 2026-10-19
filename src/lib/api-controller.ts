@@ -36,6 +36,7 @@ import {
 import { writePost } from "./content-service";
 import { assertAdminPath } from "./content-path";
 import { writePage } from "./page-service";
+import { purgeContent } from './purge-service';
 import { renderMarkdown } from "./markdown";
 import {importArticle,importRequest} from './article-import';
 import {
@@ -296,6 +297,10 @@ export async function handleApi(request: Request, env: Env, path: string) {
       return json({ id: categoryId }, method === "POST" ? 201 : 200);
     }
   }
+  if ((resource==='posts'||resource==='pages')&&method==='DELETE'&&id&&!action) {
+    if(prefix!=='admin')throw new ApiError(403,'FORBIDDEN','自动化接口不支持彻底删除');
+    return json(await purgeContent(db,request,actor,resource,id,await readBody(request,versionInput)));
+  }
   if (resource === "posts") {
     if (method === "GET") {
       requireScope(actor, "content:read");
@@ -468,13 +473,14 @@ export async function handleApi(request: Request, env: Env, path: string) {
       const categorySlugs = configuredCategorySlugs(input);
       const result = await db
         .prepare(
-          "UPDATE settings SET value=?,version=version+1 WHERE id=1 AND version=? AND NOT EXISTS(SELECT 1 FROM json_each(?) nav WHERE NOT EXISTS(SELECT 1 FROM categories c WHERE c.slug=nav.value AND c.deleted_at IS NULL)) AND NOT EXISTS(SELECT 1 FROM json_each(?) ids WHERE NOT EXISTS(SELECT 1 FROM categories c WHERE c.id=ids.value AND c.deleted_at IS NULL))",
+          "UPDATE settings SET value=?,version=version+1 WHERE id=1 AND version=? AND NOT EXISTS(SELECT 1 FROM json_each(?) nav WHERE NOT EXISTS(SELECT 1 FROM categories c WHERE c.slug=nav.value AND c.deleted_at IS NULL)) AND NOT EXISTS(SELECT 1 FROM json_each(?) ids WHERE NOT EXISTS(SELECT 1 FROM categories c WHERE c.id=ids.value AND c.deleted_at IS NULL)) AND NOT EXISTS(SELECT 1 FROM json_each(?) ids WHERE NOT EXISTS(SELECT 1 FROM pages p WHERE p.id=ids.value))",
         )
         .bind(
           JSON.stringify(input),
           version,
           JSON.stringify(categorySlugs),
           JSON.stringify(input.homeOptions.categoryIds),
+          JSON.stringify(Object.keys(input.pageLayouts).filter(key=>key.startsWith('page:')).map(key=>key.slice(5))),
         )
         .run()
         .catch((error: unknown) => {
@@ -490,6 +496,7 @@ export async function handleApi(request: Request, env: Env, path: string) {
         const current = await siteSettings(db);
         if (current.version !== version)
           throw new ApiError(409, "VERSION_CONFLICT", "设置已变化，请刷新");
+        for(const key of Object.keys(input.pageLayouts))if(key.startsWith('page:')&&!await getPage(db,key.slice(5)))throw new ApiError(409,'PAGE_NOT_FOUND','布局关联的独立页面已被删除，请刷新');
         throw new ApiError(
           409,
           "CATEGORY_LINKED",

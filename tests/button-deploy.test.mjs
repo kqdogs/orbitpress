@@ -81,7 +81,9 @@ describe('免填写的 Cloudflare 按钮部署', () => {
     mf = new Miniflare(convertV4MiniflareOptions({ modules: true, script: 'export default {fetch(){return new Response("test")}}', compatibilityDate: '2026-10-18', d1Databases: ['DB'] }));
     f.state.db = await mf.getD1Database('DB');
     await f.deploy();
-    for (const table of ['posts', 'pages']) expect(await f.state.db.prepare(`SELECT count(*) AS count FROM ${table}`).first('count')).toBe(0);
+    for (const table of ['posts', 'pages', 'categories']) expect(await f.state.db.prepare(`SELECT count(*) AS count FROM ${table}`).first('count')).toBe(0);
+    const empty = JSON.parse(await f.state.db.prepare('SELECT value FROM settings WHERE id=1').first('value'));
+    expect(empty.headerNav).toEqual([]);expect(empty.homeOptions.steps).toEqual([]);
     const origin = 'https://orbitpress.example';
     async function api(path, body, auth = {}) {
       const response = await handleApi(new Request(origin + '/api/' + path, {

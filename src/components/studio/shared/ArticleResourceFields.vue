@@ -7,7 +7,8 @@ function update(patch:Partial<NonNullable<PostInput['resources']>>){emit('update
 function change(index:number,field:'label'|'url'|'code',value:string){update({items:(props.modelValue?.items||[]).map((item,i)=>i===index?{...item,[field]:value}:item)});}
 </script>
 <template>
- <EleCard header="视频相关链接">
+ <EleCard header="本期视频提到的链接">
+  <p class="field-help">文章右侧的资源卡片：添加链接、优惠码和视频简介，保存文章后生效。可切换预览查看。</p>
   <el-form label-position="top" :disabled="disabled">
    <el-form-item label="卡片标题"><el-input :model-value="modelValue?.title||emptyArticleResources.title" maxlength="80" @update:model-value="update({title:$event})"/></el-form-item>
    <template v-for="(item,index) in (modelValue?.items||[])" :key="index"><div class="article-resource-fields">
@@ -16,8 +17,8 @@ function change(index:number,field:'label'|'url'|'code',value:string){update({it
     <el-form-item label="优惠码（可选）"><el-input :model-value="item.code" maxlength="100" @update:model-value="change(index,'code',$event)"/></el-form-item>
     <el-button type="danger" text @click="update({items:modelValue!.items.filter((_,i)=>i!==index)})">删除此链接</el-button>
    </div></template>
-   <el-button :disabled="disabled||(modelValue?.items.length||0)>=12" @click="update({items:[...(modelValue?.items||[]),{label:'',url:'',code:''}]})">添加链接</el-button>
-   <el-form-item label="完整视频简介链接（可选）"><el-input :model-value="modelValue?.descriptionUrl||''" placeholder="https://www.youtube.com/watch?v=…" @update:model-value="update({descriptionUrl:$event})"/></el-form-item>
+   <el-button :disabled="disabled||(modelValue?.items.length||0)>=12" @click="update({items:[...(modelValue?.items||[]),{label:'',url:'',code:''}]})" type="primary">添加资源链接</el-button>
+   <el-form-item label="完整视频简介链接（可选）"><el-input :model-value="modelValue?.descriptionUrl||''" placeholder="填写完整视频简介的 HTTPS 地址" @update:model-value="update({descriptionUrl:$event})"/></el-form-item>
    <p class="field-help">不填写链接时隐藏卡片。支持多条链接和优惠码，单篇文章独立保存。</p>
   </el-form>
  </EleCard>

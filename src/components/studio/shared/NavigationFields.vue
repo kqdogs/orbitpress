@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Settings } from "../../../lib/schema";
 const model = defineModel<Settings["headerNav"]>({ required: true });
-withDefaults(defineProps<{compact?:boolean;minItems?:number}>(),{minItems:1});
+withDefaults(defineProps<{compact?:boolean;minItems?:number}>(),{minItems:0});
 function move(index: number, offset: number) {
   const rows = [...model.value],
     target = index + offset;

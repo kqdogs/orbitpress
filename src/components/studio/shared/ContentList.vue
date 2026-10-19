@@ -42,6 +42,7 @@ watch(
     );
   },
 );
+watch([filter, search, category], () => { selected.value = []; });
 const shown = computed(() =>
   visible.value.slice((page.value - 1) * 15, page.value * 15),
 );
@@ -65,7 +66,11 @@ function href(item: Post | Page) {
     ? postPath(item, data.settings.value)
     : `/${item.slug}/`;
 }
-async function transition(item: Post | Page, action: "trash" | "restore") {
+async function transition(item: Post | Page, action: "trash" | "restore" | "purge") {
+  if (busy.value) return;
+  if (action === "purge") {
+    try { await ElMessageBox.confirm(`彻底删除“${item.title}”？此操作无法恢复。共享图片和视频文件会保留。`, "彻底删除", { type:"warning", confirmButtonText:"彻底删除", cancelButtonText:"取消" }); } catch { return; }
+  }
   if (action === "trash") {
     try {
       await ElMessageBox.confirm(
@@ -83,8 +88,8 @@ async function transition(item: Post | Page, action: "trash" | "restore") {
   }
   await store.run(
     async () => {
-      await request(`/api/admin/${props.kind}/${item.id}/${action}`, {
-        method: "POST",
+      await request(`/api/admin/${props.kind}/${item.id}${action === "purge" ? "" : `/${action}`}`, {
+        method: action === "purge" ? "DELETE" : "POST",
         csrf: session.value!.csrf,
         body: { version: item.version },
         idempotent: true,
@@ -92,15 +97,16 @@ async function transition(item: Post | Page, action: "trash" | "restore") {
       await store.refresh();
       selected.value = [];
     },
-    action === "trash" ? "已移到回收站" : "已恢复为草稿",
+    action === "purge" ? "已彻底删除" : action === "trash" ? "已移到回收站" : "已恢复为草稿",
   );
 }
-async function bulk() {
-  if (!selected.value.length) return;
-  const action = filter.value === "trash" ? "restore" : "trash";
+async function bulk(purge = false) {
+  if (busy.value || !selected.value.length) return;
+  const targets = [...selected.value];
+  const action = purge ? "purge" : filter.value === "trash" ? "restore" : "trash";
   try {
     await ElMessageBox.confirm(
-      `确认${action === "trash" ? "移到回收站" : "恢复"}选中的 ${selected.value.length} 项内容？`,
+      `确认${action === "purge" ? "彻底删除" : action === "trash" ? "移到回收站" : "恢复"}选中的 ${targets.length} 项内容？${purge ? "此操作无法恢复。" : ""}`,
       "批量操作",
       { type: "warning" },
     );
@@ -108,14 +114,19 @@ async function bulk() {
     return;
   }
   await store.run(async () => {
+    let completed = 0;
     try {
-      for (const item of selected.value)
-        await request(`/api/admin/${props.kind}/${item.id}/${action}`, {
-          method: "POST",
+      for (const item of targets) {
+        await request(`/api/admin/${props.kind}/${item.id}${action === "purge" ? "" : `/${action}`}`, {
+          method: action === "purge" ? "DELETE" : "POST",
           csrf: session.value!.csrf,
           body: { version: item.version },
           idempotent: true,
         });
+        completed++;
+      }
+    } catch (cause) {
+      throw new Error(`已完成 ${completed}/${targets.length} 项，剩余项未处理：${cause instanceof Error ? cause.message : "操作失败"}`);
     } finally {
       selected.value = [];
       await store.refresh();
@@ -145,6 +156,7 @@ async function loadMore() {
         : '整理你的图文与视频内容。删除的内容可从回收站恢复。'
     "
   >
+    <el-button v-if="!isPage" @click="router.push('/editor?import=1')">采集文章</el-button>
     <el-button type="primary" @click="edit()">新建{{ label }}</el-button>
   </PageTitle>
   <EleCard>
@@ -175,9 +187,10 @@ async function loadMore() {
     </div>
     <div class="wp-list-tools">
       <div>
-        <el-button :disabled="busy || !selected.length" @click="bulk">
+        <el-button :disabled="busy || !selected.length" @click="bulk()">
           {{ filter === "trash" ? "批量恢复" : "批量移到回收站" }}
         </el-button>
+        <el-button v-if="filter === 'trash'" type="danger" :disabled="busy || !selected.length" @click="bulk(true)">批量彻底删除</el-button>
         <el-select
           v-if="!isPage"
           v-model="category"
@@ -243,13 +256,15 @@ async function loadMore() {
                   移至回收站
                 </button>
               </template>
+              <template v-else>
               <button
-                v-else
                 :disabled="busy"
                 @click="transition(row, 'restore')"
               >
                 恢复
               </button>
+              <button class="danger" :disabled="busy" @click="transition(row, 'purge')">彻底删除</button>
+              </template>
             </div>
           </div>
         </template>

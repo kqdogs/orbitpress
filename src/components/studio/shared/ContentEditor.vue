@@ -359,6 +359,7 @@ async function upload(event: Event) {
           </el-button>
         </div>
       </EleCard>
+      <ArticleResourceFields v-if="!isPage" v-model="draft.resources" :disabled="busy||loading"/>
       <EleCard :header="`${label}设置`">
         <el-form label-position="top" :disabled="busy || loading">
           <el-form-item label="访问路径">
@@ -401,7 +402,6 @@ async function upload(event: Event) {
         </el-form>
       </EleCard>
       <ArticleMetadataFields v-if="!isPage" ref="metadataFields" v-model:tags="draft.tags" v-model:highlights="highlights" :title="draft.title" :excerpt="draft.excerpt" :body="draft.body" :category="data.cats.find(cat=>cat.id===draft.categoryId)?.name" :disabled="busy||loading" @change="dirty=true"/>
-      <ArticleResourceFields v-if="!isPage" v-model="draft.resources" :disabled="busy||loading"/>
       <EleCard v-if="!isPage" header="特色图片与主视频">
         <el-form label-position="top" :disabled="busy || loading">
           <img

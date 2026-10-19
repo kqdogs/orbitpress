@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from "vue-router";
 import {
   House,
   Document,
+  Download,
   Files,
   Folder,
   Picture,
@@ -22,6 +23,7 @@ export const menuItems = [
     meta: { title: "内容管理", icon: Document },
     children: [
       { path: "/posts", meta: { title: "所有文章", icon: Document } },
+      { path: "/import", meta: { title: "文章采集", icon: Download } },
       { path: "/pages", meta: { title: "所有页面", icon: Files } },
       { path: "/categories", meta: { title: "分类目录", icon: Folder } },
       { path: "/media", meta: { title: "媒体库", icon: Picture } },
@@ -65,6 +67,7 @@ export function createStudioRouter() {
         component: () => import("./pages/Posts.vue"),
         meta: { title: "所有文章" },
       },
+      { path: "/import", component: () => import("./pages/Import.vue"), meta: { title: "文章采集" } },
       {
         path: "/pages",
         component: () => import("./pages/Pages.vue"),

@@ -15,7 +15,6 @@ export async function loadHomeComponentData(db:D1Database,settings:Settings,type
   types.has('home-tutorials')?listPosts(db,{kind:'text',limit:config.tutorialLimit}).then(result=>result.items):Promise.resolve([] as Post[]),
   needsHero?listPosts(db,{limit:1}).then(result=>result.items[0]||null):Promise.resolve(null),
  ]);
- const order=['virtual-cards','banking','esim-phones','brokerage','apple-us-id','ai-tools'];
- const visibleCats=config.categoryIds.length?config.categoryIds.map(id=>cats.find(cat=>cat.id===id)):order.map(slug=>cats.find(cat=>cat.slug===slug));
+ const visibleCats=config.categoryIds.length?config.categoryIds.map(id=>cats.find(cat=>cat.id===id)):cats.slice(0,12);
  return {categories:visibleCats.filter((cat):cat is Category=>!!cat),hero:selected||videos[0]||latest,videos,totalVideos,tutorials};
 }

@@ -90,14 +90,7 @@ export const permalinkCustomInput = z.string().trim().max(180).refine(value => {
 export const homeSectionId = z.enum(['hero','promo','categories','videos','tutorials','notice']);
 export const homeSection = z.object({id:homeSectionId,enabled:z.boolean(),order:z.number().int().min(0).max(20),title:z.string().trim().max(80),subtitle:z.string().trim().max(180)}).strict();
 export const homeHero = z.object({eyebrow:z.string().trim().max(40),title:z.string().trim().max(100),description:z.string().trim().max(180)}).strict();
-export const homeOptions = z.object({featuredPostId:z.string().max(80).default(''),columns:z.union([z.literal(2),z.literal(3),z.literal(4)]).default(4),videoLimit:z.number().int().min(1).max(12).default(8),tutorialLimit:z.number().int().min(1).max(12).default(3),categoryIds:z.array(z.string().min(1).max(80)).max(12).default([]),promoHref:navigationHref.default('/category/virtual-cards/'),steps:z.array(z.object({title:z.string().trim().min(1).max(60),description:z.string().max(120),href:navigationHref}).strict()).max(8).default([
- {title:'先学会买 USDT',description:'注册、付款、收币，入门币圈第一步',href:'/category/cryptocurrency/'},
- {title:'开一张虚拟卡',description:'Roogoo、BiyaPay、Gate，订阅 AI、绑 Apple Pay',href:'/category/virtual-cards/'},
- {title:'准备一个 eSIM 卡托',description:'普通手机也能用 eSIM，一张卡托写多个号',href:'/category/esim-adapters/'},
- {title:'办一个海外手机号',description:'DITO、爱沙尼亚乌龟卡，接码保号都便宜',href:'/category/esim-phones/'},
- {title:'开海外银行账户',description:'iFAST、Wise、N26，收款汇款多币种账户',href:'/category/banking/'},
- {title:'开海外券商账户',description:'嘉信理财、Bitget、BiyaPay，投资美股港股',href:'/category/brokerage/'}
-])}).strict();
+export const homeOptions = z.object({featuredPostId:z.string().max(80).default(''),columns:z.union([z.literal(2),z.literal(3),z.literal(4)]).default(4),videoLimit:z.number().int().min(1).max(12).default(8),tutorialLimit:z.number().int().min(1).max(12).default(3),categoryIds:z.array(z.string().min(1).max(80)).max(12).default([]),promoHref:navigationHref.default('/tutorials/'),steps:z.array(z.object({title:z.string().trim().min(1).max(60),description:z.string().max(120),href:navigationHref}).strict()).max(8).default([])}).strict();
 const defaultHomeHero = { eyebrow:'最新视频 · 视频 + 图文', title:'', description:'视频讲解 + 图文步骤，跟着操作更轻松' };
 const defaultHomeSections: Array<z.infer<typeof homeSection>> = [
   {id:'hero',enabled:true,order:0,title:'',subtitle:''},{id:'promo',enabled:true,order:1,title:'选卡不踩坑，一站了解全球虚拟卡',subtitle:'开卡费用、支持场景、使用体验，帮你找到适合自己的卡。'},
@@ -117,7 +110,7 @@ export const adminPathInput = z.string().regex(/^\/[a-z0-9]+(?:-[a-z0-9]+)*$/).m
 export const settingsInput = z.object({
  adminPath:adminPathInput.default('/admin'),
  communityCard:communityCardInput.nullable().default(null),
- title:z.string().trim().min(1).max(80),tagline:z.string().max(120),description:z.string().max(300),logo:siteAssetSchema,socialFollowText:z.string().trim().min(1).max(80),headerNav:z.array(headerNavItem).min(1).max(12),footerCopyright:z.string().trim().max(300).default(''),footerNav:z.array(footerNavItem).max(12).nullable().default(null),youtube:externalUrl,telegram:externalUrl,bilibili:externalUrl,twitter:externalUrl,notice:z.string().max(180),
+ title:z.string().trim().min(1).max(80),tagline:z.string().max(120),description:z.string().max(300),logo:siteAssetSchema,socialFollowText:z.string().trim().min(1).max(80),headerNav:z.array(headerNavItem).max(12),footerCopyright:z.string().trim().max(300).default(''),footerNav:z.array(footerNavItem).max(12).nullable().default(null),youtube:externalUrl,telegram:externalUrl,bilibili:externalUrl,twitter:externalUrl,notice:z.string().max(180),
  permalinkFormats:z.array(permalinkFormat).min(1).max(8).refine(values=>new Set(values).size===values.length,'格式不能重复').default(['postname']),permalinkCustom:permalinkCustomInput.default('/%postname%/'),homeHero:homeHero.default(defaultHomeHero),homeSections:z.array(homeSection).length(6).refine(values=>new Set(values.map(value=>value.id)).size===6&&new Set(values.map(value=>value.order)).size===6,'六个区块及排序不能重复').default(defaultHomeSections),homeOptions:homeOptions.prefault({}),articleDesign:articleDesign.prefault({}),aboutDesign:aboutDesign.prefault({}),pageLayouts:pageLayoutsInput.default({})
 }).strict();
 // New optional settings stay absent on old clients instead of overwriting saved designs.

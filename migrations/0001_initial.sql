@@ -24,4 +24,4 @@ CREATE INDEX idempotency_expiry ON idempotency(expires_at);
 CREATE TABLE rate_limits (id TEXT PRIMARY KEY,count INTEGER NOT NULL,reset_at INTEGER NOT NULL) STRICT;
 CREATE TABLE media (id TEXT PRIMARY KEY,name TEXT NOT NULL,mime TEXT NOT NULL,size INTEGER NOT NULL,created_at TEXT NOT NULL) STRICT;
 CREATE TABLE settings (id INTEGER PRIMARY KEY CHECK(id=1),value TEXT NOT NULL CHECK(json_valid(value)),version INTEGER NOT NULL DEFAULT 1) STRICT;
-INSERT INTO settings(id,value) VALUES(1,'{"title":"YaChin科技生活","tagline":"连接世界的科技频道","description":"分享海外账户、虚拟卡、eSIM 和 AI 工具的实用教程。","youtube":"","telegram":"","bilibili":"","twitter":"","notice":"本地演示站 · 内容与素材待确认后正式上线"}');
+INSERT INTO settings(id,value) VALUES(1,'{"title":"YaChin科技生活","tagline":"连接世界的科技频道","description":"分享海外账户、虚拟卡、eSIM 和 AI 工具的实用教程。","youtube":"","telegram":"","bilibili":"","twitter":"","notice":"","headerNav":[],"footerNav":[],"homeOptions":{"steps":[],"categoryIds":[],"promoHref":"/tutorials/"}}');
