@@ -1,4 +1,5 @@
 .featured-cover,.card-image{background:#e8eef7}.featured-cover img,.card-image img{object-fit:contain}
+.featured-cover img{display:block;aspect-ratio:auto}
 .article-video-links{box-shadow:0 16px 28px #102b5010;padding:20px}
 .article-video-links h2{display:flex;align-items:center;gap:9px;font-size:16px;margin:0 0 16px;line-height:1.5}
 .resource-play{background:#f32224;color:#fff;border-radius:50%;width:26px;height:26px;display:grid;place-items:center;flex-shrink:0}
