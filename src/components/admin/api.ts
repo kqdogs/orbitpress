@@ -22,6 +22,7 @@ function responseSchema(path: string, method: string) {
   if ((resource === 'posts' || resource === 'pages') && method === 'DELETE') return z.object({ok:z.literal(true),id:z.string()});
   if (resource === 'posts') return method === 'GET' && !id ? z.object({ items: z.array(postResponse), nextCursor: z.string().nullable() }) : postResponse;
   if (resource === 'pages') return method === 'GET' && !id ? z.array(pageResponse) : pageResponse;
+  if (resource === 'categories' && action === 'purge') return z.object({ok:z.literal(true),id:z.string()});
   if (resource === 'categories') return method === 'GET' ? z.array(categoryResponse) : z.object({ id: z.string() });
   if (resource === 'tags' && method === 'GET' && !id) return z.array(z.object({ name: z.string().min(1).max(30), count: z.number().int().positive() })).max(100);
   if (resource === 'settings') return z.object({ value: settingsInput, version: z.number().int().positive() });

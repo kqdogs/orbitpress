@@ -78,7 +78,26 @@ try{
 }finally{
  if(cookie&&snapshot){const current=(await call('/api/admin/settings',{admin:true})).data;assert.equal((await call('/api/admin/settings',{method:'PUT',admin:true,body:{...snapshot.value,version:current.version}})).status,200);}
  for(const {kind,id} of fixtures){let r=await call(`/api/admin/${kind}/${id}`,{admin:true});if(r.status===404)continue;assert.equal(r.status,200);if(r.data.status!=='trash')r=await call(`/api/admin/${kind}/${id}/trash`,{method:'POST',admin:true,body:{version:r.data.version},key:randomUUID()});assert.equal((await call(`/api/admin/${kind}/${id}`,{method:'DELETE',admin:true,body:{version:r.data.version},key:randomUUID()})).status,200);}
- if(category){const cats=(await call('/api/admin/categories',{admin:true})).data;const c=cats.find(x=>x.id===category);assert.equal((await call('/api/admin/categories/'+category,{method:'DELETE',admin:true,body:{version:c.version}})).status,200);}
+ if(category){
+  const cats=(await call('/api/admin/categories',{admin:true})).data;const c=cats.find(x=>x.id===category);
+  assert.equal((await call('/api/admin/categories/'+category,{method:'DELETE',admin:true,body:{version:c.version}})).status,200);
+  let cat=(await call('/api/admin/categories?includeTrash=1',{admin:true})).data.find(x=>x.id===category);
+  await test('分类回收站永久删除、权限、版本、并发恢复与别名释放',async()=>{
+   const path='/api/admin/categories/'+category+'/purge';
+   assert.equal((await call(path,{method:'POST',body:{version:cat.version},headers:{Origin:base},key:randomUUID()})).status,401);
+   assert.equal((await call(path,{method:'POST',body:{version:cat.version},headers:{Cookie:cookie,Origin:base},key:randomUUID()})).status,403);
+   assert.equal((await call('/api/v1/categories/'+category+'/purge',{method:'POST',body:{version:cat.version},headers:{Authorization:'Bearer '+bearer},key:randomUUID()})).status,403);
+   assert.equal((await call(path,{method:'POST',admin:true,body:{version:cat.version-1},key:randomUUID()})).status,409);
+   const race=await Promise.all([call('/api/admin/categories/'+category+'/restore',{method:'POST',admin:true,body:{version:cat.version}}),call(path,{method:'POST',admin:true,body:{version:cat.version},key:randomUUID()})]);
+   assert.equal(race.filter(x=>x.status===200).length,1);assert(race.every(x=>[200,404,409].includes(x.status)));
+   let current=(await call('/api/admin/categories?includeTrash=1',{admin:true})).data.find(x=>x.id===category);
+   if(!current){const r=await call('/api/admin/categories',{method:'POST',admin:true,body:{name:'分类验收重建',slug:unique,description:'',icon:'globe'}});assert.equal(r.status,201);category=r.data.id;current=(await call('/api/admin/categories',{admin:true})).data.find(x=>x.id===category);}
+   if(!current.deletedAt){assert.equal((await call('/api/admin/categories/'+category,{method:'DELETE',admin:true,body:{version:current.version}})).status,200);current=(await call('/api/admin/categories?includeTrash=1',{admin:true})).data.find(x=>x.id===category);}
+   const options={method:'POST',admin:true,body:{version:current.version},key:randomUUID()},url='/api/admin/categories/'+category+'/purge';
+   const purged=await call(url,options);assert.equal(purged.status,200);assert.deepEqual((await call(url,options)).data,purged.data);
+   assert(!(await call('/api/admin/categories?includeTrash=1',{admin:true})).data.some(x=>x.id===category));
+  });
+ }
  if(keyId)await call('/api/admin/keys/'+keyId+'/revoke',{method:'POST',admin:true});
  if(cookie)await call('/api/auth/logout',{method:'POST',admin:true});
  mkdirSync('test-results',{recursive:true});writeFileSync('test-results/empty-site-trash-integration.json',JSON.stringify({at:new Date().toISOString(),results},null,2));

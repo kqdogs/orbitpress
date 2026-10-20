@@ -55,28 +55,30 @@ async function save() {
     await store.refresh();
   }, "分类已保存");
 }
-async function transition(cat: Category) {
+async function transition(cat: Category, purge = false) {
+  if(busy.value)return;
   try {
     await ElMessageBox.confirm(
-      `${cat.deletedAt ? "恢复" : "删除"}分类“${cat.name}”？${cat.deletedAt ? "" : "有关联文章或导航的分类需要先移除引用。"}`,
+      `${purge ? "彻底删除" : cat.deletedAt ? "恢复" : "删除"}分类“${cat.name}”？${purge ? "此操作无法恢复，有关联文章或导航时无法删除。" : cat.deletedAt ? "" : "有关联文章或导航的分类需要先移除引用。"}`,
       "分类操作",
-      { type: "warning", confirmButtonText: "确认", cancelButtonText: "取消" },
+      { type: "warning", confirmButtonText: purge ? "彻底删除" : "确认", cancelButtonText: "取消" },
     );
   } catch {
     return;
   }
   await store.run(async () => {
     await request(
-      `/api/admin/categories/${cat.id}${cat.deletedAt ? "/restore" : ""}`,
+      `/api/admin/categories/${cat.id}${purge ? "/purge" : cat.deletedAt ? "/restore" : ""}`,
       {
         method: cat.deletedAt ? "POST" : "DELETE",
+        idempotent: purge,
         csrf: session.value!.csrf,
         body: { version: cat.version },
       },
     );
     if (editing.value?.id === cat.id) reset();
     await store.refresh();
-  }, "分类状态已更新");
+  }, purge ? "分类已彻底删除" : "分类状态已更新");
 }
 </script>
 <template>
@@ -143,10 +145,11 @@ async function transition(cat: Category) {
                 link
                 :type="row.deletedAt ? 'primary' : 'danger'"
                 :disabled="busy"
-                @click="transition(row)"
+                @click="transition(row, false)"
               >
                 {{ row.deletedAt ? "恢复" : "删除" }}
               </el-button>
+              <el-button v-if="row.deletedAt" link type="danger" :disabled="busy" @click="transition(row,true)">彻底删除</el-button>
             </div>
           </template>
         </el-table-column>

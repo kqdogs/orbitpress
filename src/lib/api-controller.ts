@@ -122,6 +122,10 @@ export async function handleApi(request: Request, env: Env, path: string) {
     if(url.searchParams.size)throw new ApiError(400,'VALIDATION','标签列表不接受额外参数');
     return json(await articleTags(db));
   }
+  if(resource==='categories'&&method==='POST'&&id&&action==='purge'){
+    if(prefix!=='admin')throw new ApiError(403,'FORBIDDEN','自动化接口不支持彻底删除');
+    return json(await purgeContent(db,request,actor,'categories',id,await readBody(request,versionInput)));
+  }
   if (resource === "categories") {
     if (method === "GET") {
       requireScope(actor, "content:read");

@@ -89,3 +89,28 @@ it('后台 DELETE 响应正确解析，不再套用文章或页面字段',async(
  vi.stubGlobal('fetch',vi.fn(async()=>new Response(JSON.stringify({data:{ok:true,id:'item'}}))));
  for(const kind of ['posts','pages'])expect(await request(`/api/admin/${kind}/item`,{method:'DELETE',body:{version:1},idempotent:true})).toEqual({ok:true,id:'item'});
 });
+describe('分类回收站永久删除',()=>{
+ it('删除回收站分类、释放别名、保留审计并支持相同键重放',async()=>{
+  const {sql,db}=fixture();sql.exec("INSERT INTO categories(id,name,slug,deleted_at) VALUES('item','分类','reusable','today')");
+  const req=new Request('http://localhost/api/admin/categories/item/purge',{method:'POST',headers:{'Idempotency-Key':'category-purge-key'}});
+  expect(await purgeContent(db,req,actor,'categories','item',{version:1})).toEqual({ok:true,id:'item'});
+  expect(sql.prepare("SELECT id FROM categories WHERE id='item'").get()).toBeUndefined();
+  expect(sql.prepare("SELECT action FROM audit WHERE resource_id='item'").get()!.action).toBe('purge.categories');
+  expect(await purgeContent(db,req,actor,'categories','item',{version:1})).toEqual({ok:true,id:'item'});
+  sql.exec("INSERT INTO categories(id,name,slug) VALUES('new','新分类','reusable')");
+ });
+ it('有效分类不能直接永久删除，旧版本及关联文章受到保护',async()=>{
+  const {sql,db}=fixture();sql.exec("INSERT INTO categories(id,name,slug) VALUES('item','分类','test')");
+  await expect(purgeContent(db,deletion('categories','item'),actor,'categories','item',{version:1})).rejects.toMatchObject({code:'INVALID_STATE'});
+  sql.exec("INSERT INTO posts(id,title,slug,category_id,created_at,updated_at,updated_by,last_operation) VALUES('post','文章','test-post','item','today','today','admin','seed'); UPDATE categories SET deleted_at='today',version=2 WHERE id='item'");
+  await expect(purgeContent(db,deletion('categories','item'),actor,'categories','item',{version:1})).rejects.toMatchObject({code:'VERSION_CONFLICT'});
+  await expect(purgeContent(db,deletion('categories','item'),actor,'categories','item',{version:2})).rejects.toMatchObject({code:'CATEGORY_IN_USE'});
+  expect(sql.prepare('SELECT count(*) n FROM posts').get()!.n).toBe(1);
+ });
+ it('已删除分类仍有旧导航引用时阻止永久删除',async()=>{
+  const {sql,db}=fixture();sql.exec("INSERT INTO categories(id,name,slug,deleted_at) VALUES('item','分类','test','today')");
+  const settings=(await siteSettings(db)).value;settings.headerNav=[{label:'分类',href:'/category/test/'}];sql.prepare('UPDATE settings SET value=?').run(JSON.stringify(settings));
+  await expect(purgeContent(db,deletion('categories','item'),actor,'categories','item',{version:1})).rejects.toMatchObject({code:'CATEGORY_LINKED'});
+  expect(sql.prepare('SELECT count(*) n FROM categories').get()!.n).toBe(1);
+ });
+});
