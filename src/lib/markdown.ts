@@ -58,7 +58,7 @@ const markdown = new Marked({
   ],
 });
 
-export function renderMarkdown(body: string) {
+export function renderMarkdown(body: string,options:{omitImage?:string}={}) {
   const raw = markdown.parse(body, { async: false, gfm: true, breaks: false });
   let index = 0;
   const toc: { id: string; text: string; level: number }[] = [];
@@ -104,6 +104,7 @@ export function renderMarkdown(body: string) {
     },
     allowedSchemes: ['https', 'http', 'mailto'],
     allowProtocolRelative: false,
+    exclusiveFilter: frame => frame.tag==='img'&&Boolean(options.omitImage)&&frame.attribs.src===options.omitImage,
     transformTags: {
       a: (_tag, attrs) => ({
         tagName: 'a',

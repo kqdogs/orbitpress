@@ -458,8 +458,8 @@ async function upload(event: Event) {
   </el-dialog>
   <el-dialog v-model="importOpen" title="采集文章到草稿" width="560" append-to-body :close-on-click-modal="!importing" :close-on-press-escape="!importing" :show-close="!importing">
    <el-form label-position="top" :disabled="importing" @submit.prevent="collectArticle">
-    <el-form-item label="原文地址"><el-input v-model="importUrl" placeholder="https://rinfinity.net/文章路径/" aria-label="采集文章地址"/></el-form-item>
-    <p class="field-help">导入标题、正文、站内图片与视频，保留原文来源。请仅导入你有权转载的内容，采集后检查草稿再发布。</p>
+    <el-form-item label="原文地址"><el-input v-model="importUrl" placeholder="请输入要采集的文章链接" aria-label="采集文章地址"/></el-form-item>
+    <p class="field-help">导入标题、亮点、标签、正文与视频，封面及正文图片会下载到本站媒体库。保留原文来源，采集后请检查草稿再发布。</p>
     <el-alert v-if="importError" :title="importError" type="error" :closable="false"/>
    </el-form>
    <template #footer><el-button :disabled="importing" @click="importOpen=false">取消</el-button><el-button type="primary" :loading="importing" :disabled="!importUrl.trim()" @click="collectArticle">一键采集</el-button></template>

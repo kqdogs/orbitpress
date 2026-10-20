@@ -42,6 +42,7 @@ describe('默认首页与文章媒体采集',()=>{
   const result=await importArticle(url,{} as Pick<Env,'MEDIA'|'DB'>);
   expect(result.article.cover).toBe('');expect(result.warnings.join(' ')).toContain('文章封面');expect(result.warnings.join(' ')).toContain('步骤图片');
   expect(result.article.body).not.toContain('ORBITPRESS_IMAGE_');
+  expect(result.article.body).not.toContain(photo);expect(result.article.body).not.toContain(cover);
  });
 });
 

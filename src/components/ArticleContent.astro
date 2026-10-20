@@ -11,7 +11,7 @@ import {resolveCommunityCard} from '../lib/community-card';
 import { resolvePageLayout } from '../lib/page-layouts';
 interface Props { post: Post; settings: Settings; builder?:boolean }
 const { post, settings, builder=false } = Astro.props;
-const markdown = renderMarkdown(post.body);
+const markdown = renderMarkdown(post.body,{omitImage:post.cover});
 const logo = brandLogo(settings);
 const layout = resolvePageLayout(settings,'article');
 const community=resolveCommunityCard(settings);

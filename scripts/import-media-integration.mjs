@@ -25,10 +25,10 @@ try{
  let article;
  await test('真实来源采集标题、5个标签、封面和9张正文图',async()=>{
   const r=await call('/api/admin/imports',{method:'POST',admin:true,body:{url:source}});assert.equal(r.status,200,JSON.stringify(r.error));article=r.data.article;
-  assert(article.title.startsWith('菲律宾 DITO eSIM申请教程'));assert.deepEqual(article.tags,['DITO','eSIM','海外手机号','菲律宾手机号','长期保号']);
+  assert.equal(article.title,'菲律宾 DITO eSIM申请教程');assert.deepEqual(article.highlights,['10元长期保号','大陆身份可申请','菲律宾第三大运营商']);assert.deepEqual(article.tags,['DITO','eSIM','海外手机号','菲律宾手机号','长期保号']);
   assert(article.slug.startsWith('import-'));assert.notEqual(article.slug,'philippines-dito-esim-application-guide');assert.equal(r.data.warnings.length,0,JSON.stringify(r.data.warnings));
-  // This source repeats its cover inside the article, followed by nine step images.
-  assert.match(article.cover,/^\/media\/import-[a-f0-9]{64}\.png$/);assert.equal([...article.body.matchAll(/!\[.*?\]\((\/media\/[^)]+)\)/g)].length,10);
+  // The cover is stored separately; the body keeps nine step images.
+  assert.match(article.cover,/^\/media\/import-[a-f0-9]{64}\.png$/);assert.equal([...article.body.matchAll(/!\[.*?\]\((\/media\/[^)]+)\)/g)].length,9);assert(!article.body.includes(article.cover));
   await mkdir('test-results',{recursive:true});await writeFile('test-results/import-media-article.json',JSON.stringify(article,null,2));
  });
  await test('每张采集图片HTTP200、正确类型和实体字节，ETag返回304',async()=>{
@@ -40,7 +40,7 @@ try{
  await test('采集草稿保存发布后使用本站ID.html，标签图片保持',async()=>{
   let r=await call('/api/admin/posts',{method:'POST',admin:true,body:{...article,categoryId:category.id},key:randomUUID()});assert.equal(r.status,201,JSON.stringify(r.error));post=r.data;
   r=await call('/api/admin/posts/'+post.id+'/publish',{method:'POST',admin:true,body:{version:post.version},key:randomUUID()});assert.equal(r.status,200);post=r.data;
-  const page=await call('/'+post.id+'.html');assert.equal(page.status,200);assert(page.text.includes(article.cover));assert(page.text.includes('菲律宾手机号'));assert(page.text.includes('video-stage'));assert(page.text.includes('播放 YouTube 视频'));
+  const page=await call('/'+post.id+'.html');assert.equal(page.status,200);assert.equal(post.title,article.title);assert.deepEqual(post.tags,article.tags);assert.deepEqual(post.highlights,article.highlights);assert(page.text.includes(article.cover));assert(page.text.includes('菲律宾手机号'));assert(page.text.includes('video-stage'));assert(page.text.includes('播放 YouTube 视频'));assert.equal(page.text.split(`src="${article.cover}"`).length-1,1,'封面仅用于视频海报，不在正文重复');
   await writeFile('test-results/import-media-fixture.json',JSON.stringify({id:post.id,path:'/'+post.id+'.html'},null,2));
  });
 }finally{
