@@ -117,6 +117,7 @@ function move(index: number, offset: number) {
       </template>
       <template v-if="page === 'header'">
         <el-divider content-position="left">页头导航</el-divider>
+        <p class="field-help">首页为系统默认入口，不依赖分类；未配置首页时会自动显示。可添加指向 / 的导航，自定义首页名称和位置。</p>
         <NavigationFields v-model="value.headerNav" />
       </template>
       <template v-if="page === 'footer'">

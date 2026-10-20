@@ -5,6 +5,12 @@
   if(!youtubeId.test(id)||!Number.isInteger(start)||start<0||start>86400)return;
   const frame=player.querySelector('iframe');
   if(frame)frame.src=youtubeUrl(id,start,new URL(document.baseURI).origin);
+  const cover=player.querySelector<HTMLImageElement>('.video-play img');
+  if(cover){
+   const fallback=()=>{if(!cover.src.endsWith('/images/ai-cover.svg'))cover.src='/images/ai-cover.svg';};
+   cover.addEventListener('error',fallback,{once:true});
+   if(cover.complete&&cover.naturalWidth===0)fallback();
+  }
   function play(privacy=false){
    const iframe=document.createElement('iframe');
    iframe.src=youtubeUrl(id,start,new URL(document.baseURI).origin,true,privacy);iframe.title='YouTube 教程视频';

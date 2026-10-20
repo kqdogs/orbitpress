@@ -13,7 +13,8 @@ describe('采集的来源与内容边界',()=>{
  it.each(['http://rinfinity.net/post/','https://rinfinity.net.evil.test/post/','https://rinfinity.net@127.0.0.1/post/','https://rinfinity.net:444/post/','https://rinfinity.net/wp-admin/','https://rinfinity.net/category/test/','https://rinfinity.net/example/?redirect=http://localhost','https://rinfinity.net/%E0%A4%A/'])('拒绝非文章或伪造 URL %s',input=>expect(()=>sourceUrl(input)).toThrow());
  it('转换标题、代码语言和空行，排除脚本、作者栏，保留多个视频与来源',()=>{
   const result=parseArticle(html,url);
-  expect(result.article).toMatchObject({title:'导入测试文章',slug:'example-article',excerpt:'文章摘要',videoId:'nd-Q0_XcCCk'});
+  expect(result.article).toMatchObject({title:'导入测试文章',excerpt:'文章摘要',videoId:'nd-Q0_XcCCk'});
+  expect(result.article.slug).toMatch(/^import-[a-f0-9-]{36}$/);
   expect(result.article.body).toContain('````brainfuck\n++ <script>\n\t[>++<-]\n\n```\n````');
   expect(result.article.body).toContain(':::youtube dQw4w9WgXcQ');
   expect(result.article.body).toContain(url);expect(result.article.body).not.toMatch(/window.bad|原站作者|javascript:/);

@@ -4,10 +4,11 @@ import Icon from './Icon.astro';
 import SocialLinks from './SocialLinks.astro';
 import { brandLogo } from '../lib/branding';
 import BrandBackdrop from './BrandBackdrop.astro';
+import {headerNavigation} from '../lib/header-navigation';
 interface Props { settings: Settings; pathname: string }
 const { settings, pathname } = Astro.props;
 const logo = brandLogo(settings);
-const navItems=settings.headerNav;
+const navItems=headerNavigation(settings);
 ---
 <header class="site-header"><BrandBackdrop/>
  <div class="brand-row container"><button class="mobile-menu icon-button" aria-label="打开导航" aria-expanded="false"><Icon name="menu"/></button><a class="brand" href="/"><img src={logo} alt="" width="64" height="64"/><div class="brand-copy"><strong>{settings.title}</strong><span>{settings.tagline}</span></div></a><SocialLinks settings={settings} variant="header"/><button class="mobile-search icon-button open-search" aria-label="搜索"><Icon name="search"/></button></div>
