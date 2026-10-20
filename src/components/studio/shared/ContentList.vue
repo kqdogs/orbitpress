@@ -274,10 +274,9 @@ async function loadMore() {
       </el-table-column>
       <el-table-column
         v-if="!isPage"
-        prop="categoryName"
         label="分类目录"
         min-width="130"
-      />
+      ><template #default="{row}">{{ row.categoryName || '未分配' }}</template></el-table-column>
       <el-table-column label="路径" min-width="160">
         <template #default="{ row }">
           <code>/{{ row.slug }}/</code>

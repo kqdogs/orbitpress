@@ -38,7 +38,8 @@ import { assertAdminPath } from "./content-path";
 import { writePage } from "./page-service";
 import { purgeContent } from './purge-service';
 import { renderMarkdown } from "./markdown";
-import {importArticle,importRequest} from './article-import';
+import {importArticle,importRequest,discoverArticles} from './article-import';
+import {discoverRequest} from './import-contract';
 import {
   createApiKey,
   listApiKeys,
@@ -448,8 +449,13 @@ export async function handleApi(request: Request, env: Env, path: string) {
     }
   }
   if (prefix !== "admin") throw new ApiError(404, "NOT_FOUND", "接口不存在");
+  if(resource==='imports'&&method==='POST'&&id==='discover'&&!action){
+    await rateLimit(db,`import-discover:${actor.id}`,10,60);
+    const input=await readBody(request,discoverRequest,4000);
+    return json(await discoverArticles(input.url,input.page));
+  }
   if(resource==='imports'&&method==='POST'&&!id){
-    await rateLimit(db,`import:${actor.id}`,4,60);
+    await rateLimit(db,`import:${actor.id}`,12,60);
     const input=await readBody(request,importRequest,4000);
     return json(await importArticle(input.url,env));
   }

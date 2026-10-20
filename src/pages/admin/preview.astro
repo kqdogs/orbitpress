@@ -28,6 +28,6 @@ const {value:settings}=await siteSettings(env.DB);
 const cats=await categories(env.DB);
 const category=cats.find(c=>c.id===input.categoryId);
 const post:Post={...input,title:input.title||'未命名文章',slug:'preview',id:'preview',featured:false,status:'draft',version:1,
- createdAt:'',updatedAt:'',publishedAt:input.publishedAt||null,categoryName:category?.name||'未分类',categorySlug:category?.slug||''};
+ createdAt:'',updatedAt:'',publishedAt:input.publishedAt||null,categoryName:category?.name||'',categorySlug:category?.slug||''};
 ---
 <SiteLayout title={post.title} description={post.excerpt} preview><ArticleContent post={post} settings={settings}/></SiteLayout>

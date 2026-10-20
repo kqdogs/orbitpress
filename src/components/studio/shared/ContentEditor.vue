@@ -34,7 +34,7 @@ const draft = ref<PostInput>({
   slug: "",
   excerpt: "",
   body: "",
-  categoryId: data.cats.find((cat) => !cat.deletedAt)?.id || "",
+  categoryId: "",
   cover: "",
   videoId: "",
   featured: false,
@@ -380,7 +380,11 @@ async function upload(event: Event) {
                 v-model="draft.categoryId"
                 aria-label="分类目录"
                 class="full-width"
+                placeholder="不分配分类"
+                clearable
+                :value-on-clear="''"
               >
+                <el-option label="不分配分类" value="" />
                 <el-option
                   v-for="cat in data.cats.filter((value) => !value.deletedAt)"
                   :key="cat.id"

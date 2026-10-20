@@ -17,13 +17,13 @@ export async function writePost(db:D1Database,request:Request,actor:Actor,input:
  let status=previous?.status||'draft';
  if(action!=='save'){const rule=transitions[action];if(!rule||(rule[0]!=='any'&&status!==rule[0])||status===rule[1])throw new ApiError(409,'INVALID_STATE','当前状态不支持此操作');status=rule[1] as Post['status'];}
  const content='title' in input?input:previous!;
- if(!await db.prepare('SELECT id FROM categories WHERE id=? AND deleted_at IS NULL').bind(content.categoryId).first())throw new ApiError(400,'CATEGORY','分类不存在或已删除');
+ if(content.categoryId&&!await db.prepare('SELECT id FROM categories WHERE id=? AND deleted_at IS NULL').bind(content.categoryId).first())throw new ApiError(400,'CATEGORY','分类不存在或已删除');
  if(status==='published'&&!content.body.trim())throw new ApiError(400,'EMPTY_CONTENT','发布前请填写正文');
  await assertContentSlug(db,content.slug,'posts');
  const timestamp=now();const operation=crypto.randomUUID();
  const next:Post={...content,highlights:content.highlights??previous?.highlights??[],resources:content.resources??previous?.resources??emptyArticleResources,id:previous?.id||crypto.randomUUID(),status,publishedAt:status==='published'?(previous?.publishedAt||timestamp):previous?.publishedAt||null,createdAt:previous?.createdAt||timestamp,updatedAt:timestamp,version:(previous?.version||0)+1};
  delete next.categoryName;delete next.categorySlug;
- const vals=[next.title,next.slug,next.excerpt,next.body,next.categoryId,next.cover,next.videoId,next.featured?1:0,JSON.stringify(next.tags),JSON.stringify(next.highlights),JSON.stringify(next.resources),next.status,next.publishedAt,next.createdAt,next.updatedAt,actor.id,next.version,operation];
+ const vals=[next.title,next.slug,next.excerpt,next.body,next.categoryId||null,next.cover,next.videoId,next.featured?1:0,JSON.stringify(next.tags),JSON.stringify(next.highlights),JSON.stringify(next.resources),next.status,next.publishedAt,next.createdAt,next.updatedAt,actor.id,next.version,operation];
  const mutation=previous?db.prepare('UPDATE posts SET title=?,slug=?,excerpt=?,body=?,category_id=?,cover=?,video_id=?,featured=?,tags=?,highlights=?,resources=?,status=?,published_at=?,created_at=?,updated_at=?,updated_by=?,version=?,last_operation=? WHERE id=? AND version=? RETURNING id').bind(...vals,next.id,previous.version):db.prepare('INSERT INTO posts(title,slug,excerpt,body,category_id,cover,video_id,featured,tags,highlights,resources,status,published_at,created_at,updated_at,updated_by,version,last_operation,id) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) RETURNING id').bind(...vals,next.id);
  const code=previous?200:201;
  try{

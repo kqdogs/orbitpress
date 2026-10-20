@@ -1,11 +1,11 @@
 import { z } from 'zod';
 import { categoryInput, pageInput, postInput, settingsInput } from '../../lib/schema';
-import {importResponse} from '../../lib/import-contract';
+import {importResponse,discoverResponse} from '../../lib/import-contract';
 
 export class RequestError extends Error {
   constructor(message: string, public status: number) { super(message); }
 }
-type Options = { method?: string; body?: unknown; csrf?: string; signal?: AbortSignal; idempotent?: boolean };
+type Options = { method?: string; body?: unknown; csrf?: string; signal?: AbortSignal; idempotent?: boolean; idempotencyKey?:string };
 const envelope = z.object({ data: z.unknown().optional(), error: z.object({ message: z.string().optional() }).optional() });
 const postResponse = postInput.extend({ id: z.string(), status: z.enum(['draft', 'published', 'trash']), publishedAt: z.string().nullable(), createdAt: z.string(), updatedAt: z.string(), version: z.number().int().positive(), categoryName: z.string().optional(), categorySlug: z.string().optional() });
 const pageResponse = pageInput.extend({ id: z.string(), status: z.enum(['draft', 'published', 'trash']), publishedAt: z.string().nullable(), createdAt: z.string(), updatedAt: z.string(), version: z.number().int().positive() });
@@ -26,7 +26,7 @@ function responseSchema(path: string, method: string) {
   if (resource === 'categories') return method === 'GET' ? z.array(categoryResponse) : z.object({ id: z.string() });
   if (resource === 'tags' && method === 'GET' && !id) return z.array(z.object({ name: z.string().min(1).max(30), count: z.number().int().positive() })).max(100);
   if (resource === 'settings') return z.object({ value: settingsInput, version: z.number().int().positive() });
-  if (resource === 'imports' && method === 'POST') return importResponse;
+  if (resource === 'imports' && method === 'POST') return id==='discover'?discoverResponse:importResponse;
   if (resource === 'media') return method === 'GET' ? z.array(mediaResponse) : z.object({ id: z.string(), url: z.string() });
   if (resource === 'keys') return method === 'GET' ? z.array(keyResponse) : action === 'revoke' ? z.object({ ok: z.boolean() }) : z.object({ id: z.string(), token: z.string() });
   if (resource === 'audit') return z.array(auditResponse);
@@ -43,7 +43,7 @@ export async function request<T>(path: string, options: Options = {}): Promise<T
   const headers: Record<string, string> = {};
   if (options.body !== undefined && !(options.body instanceof FormData)) headers['Content-Type'] = 'application/json';
   if (options.csrf) headers['X-CSRF-Token'] = options.csrf;
-  if (options.idempotent) headers['Idempotency-Key'] = crypto.randomUUID();
+  if (options.idempotencyKey||options.idempotent) headers['Idempotency-Key'] = options.idempotencyKey||crypto.randomUUID();
   try {
     const response = await fetch(path, {
       method: options.method || 'GET', headers, credentials: 'same-origin', signal: controller.signal,

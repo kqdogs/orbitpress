@@ -5,7 +5,7 @@ import { postPath } from "../lib/permalinks";
 export const GET: APIRoute = async ({ url }) => {
   const { value: settings } = await siteSettings(env.DB);
   const posts = await env.DB.prepare(
-    "SELECT p.*,c.slug category_slug FROM posts p JOIN categories c ON c.id=p.category_id WHERE p.status='published' ORDER BY p.id LIMIT 10000",
+    "SELECT p.*,c.slug category_slug FROM posts p LEFT JOIN categories c ON c.id=p.category_id WHERE p.status='published' ORDER BY p.id LIMIT 10000",
   ).all<Record<string, unknown>>();
   const pages = await listPages(env.DB, { limit: 10000 });
   const paths = [

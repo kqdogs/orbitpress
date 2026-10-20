@@ -15,7 +15,7 @@ export const articleResourcesInput = z.object({
 export const emptyArticleResources = {title:'本期视频提到的链接',items:[],descriptionUrl:''};
 export const postInput = z.object({
  title:z.string().trim().min(1).max(180),slug:slugSchema,excerpt:z.string().max(500),body:z.string().max(100000),
- categoryId:z.string().min(1).max(80),cover:coverSchema,videoId:z.string().regex(/^(?:[A-Za-z0-9_-]{11})?$/),
+ categoryId:z.string().max(80).default('').describe('分类ID；省略或空字符串表示不分配分类'),cover:coverSchema,videoId:z.string().regex(/^(?:[A-Za-z0-9_-]{11})?$/),
  featured:z.boolean(),tags:z.array(z.string().trim().min(1).max(30)).max(8),highlights:articleHighlightsInput.optional(),resources:articleResourcesInput.optional()
 }).strict();
 export const postUpdate = postInput.extend({version:z.number().int().positive()});

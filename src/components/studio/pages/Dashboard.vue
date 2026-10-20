@@ -13,7 +13,7 @@ const quick = ref({
   title: "",
   slug: "",
   body: "",
-  categoryId: data.cats.find((cat) => !cat.deletedAt)?.id || "",
+  categoryId: "",
 });
 const stats = computed(() => [
   {
@@ -105,7 +105,8 @@ async function save() {
           <el-input v-model="quick.slug" placeholder="my-new-post" />
         </el-form-item>
         <el-form-item label="分类">
-          <el-select v-model="quick.categoryId" class="full-width">
+          <el-select v-model="quick.categoryId" class="full-width" placeholder="不分配分类" clearable :value-on-clear="''">
+            <el-option label="不分配分类" value="" />
             <el-option
               v-for="cat in data.cats.filter((c) => !c.deletedAt)"
               :key="cat.id"
