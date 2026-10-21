@@ -1,4 +1,6 @@
 ---
+import {translator} from '../lib/i18n';
+const t=translator(Astro.locals.locale);
 import { env } from 'cloudflare:workers';
 import { siteSettings } from '../lib/repository';
 import SiteUtilities from '../components/SiteUtilities.astro';
@@ -15,8 +17,8 @@ const settings=Astro.props.settingsOverride||(await siteSettings(env.DB)).value;
 const {title=settings.title,description=settings.description,preview=false}=Astro.props;
 const pathname=Astro.url.pathname;
 ---
-<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>{title===settings.title?title:`${title} - ${settings.title}`}</title><meta name="description" content={description}/><link rel="icon" href="/favicon.svg"/><slot name="head"/>{preview&&<><meta name="robots" content="noindex,nofollow"/><style is:inline>body[data-preview] a,body[data-preview] button{pointer-events:none}</style></>}</head><body data-preview={preview||undefined}>
- <a class="skip-link" href="#main-content">跳至内容</a>
+<!doctype html><html lang={Astro.locals.locale}><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>{title===settings.title?title:`${title} - ${settings.title}`}</title><meta name="description" content={description}/><link rel="icon" href="/favicon.svg"/><slot name="head"/>{preview&&<><meta name="robots" content="noindex,nofollow"/><style is:inline>body[data-preview] a,body[data-preview] button{pointer-events:none}</style></>}</head><body data-preview={preview||undefined}>
+ <a class="skip-link" href="#main-content"> {t("跳至内容")} </a>
  <SiteHeader settings={settings} pathname={pathname}/>
  <main id="main-content"><slot/></main>
  <SiteFooter settings={settings}/>

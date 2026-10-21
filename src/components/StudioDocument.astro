@@ -1,3 +1,5 @@
 ---
+import {translator} from '../lib/i18n';
+const t=translator(Astro.locals.locale);
 ---
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="robots" content="noindex,nofollow"/><link rel="icon" href="/favicon.svg"/><title>内容工作台</title></head><body><div id="studio"></div><script>import './studio/entry';</script></body></html>
+<!doctype html><html lang={Astro.locals.locale}><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="robots" content="noindex,nofollow"/><link rel="icon" href="/favicon.svg"/><title> {t("内容工作台")} </title></head><body><div id="studio"></div><script>import './studio/entry';</script></body></html>

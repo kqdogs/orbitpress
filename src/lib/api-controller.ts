@@ -38,6 +38,7 @@ import { assertAdminPath } from "./content-path";
 import { writePage } from "./page-service";
 import { purgeContent } from './purge-service';
 import { renderMarkdown } from "./markdown";
+import {localeFromCookie} from './i18n';
 import {importArticle,importRequest,discoverArticles} from './article-import';
 import {discoverRequest} from './import-contract';
 import {
@@ -464,7 +465,7 @@ export async function handleApi(request: Request, env: Env, path: string) {
       request,
       z.object({ body: z.string().max(100000) }).strict(),
     );
-    return json(renderMarkdown(input.body));
+    return json(renderMarkdown(input.body,{locale:localeFromCookie(request.headers.get('cookie')||'')}));
   }
   if (resource === "settings") {
     if (method === "GET") return json(await siteSettings(db));

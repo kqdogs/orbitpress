@@ -1,3 +1,6 @@
+import {t} from '../../lib/i18n/client';
+import {currentLocale} from '../../lib/i18n/client';
+import {localizedError} from '../../lib/i18n/validation';
 import {
   inject,
   onBeforeUnmount,
@@ -92,7 +95,7 @@ export function createStudio() {
       if (!active) return;
       if (cause instanceof RequestError && cause.status === 401)
         session.value = null;
-      error.value = cause instanceof Error ? cause.message : "操作失败，请重试";
+      error.value = localizedError(cause,currentLocale(),"操作失败，请重试");
     } finally {
       if (active) busy.value = false;
     }
@@ -105,7 +108,7 @@ export function createStudio() {
       await refresh();
     } catch (cause) {
       if (!(cause instanceof RequestError && cause.status === 401))
-        error.value = cause instanceof Error ? cause.message : "连接失败";
+        error.value = cause instanceof Error ? cause.message : t("连接失败");
     } finally {
       if (active) booting.value = false;
     }

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import {t} from '../../../lib/i18n/client';
 import { ref } from 'vue';
 import { layoutBlockCatalog } from '../../../lib/page-layouts';
 import type { LayoutBlock, LayoutRegion } from '../../../lib/schema';
@@ -10,15 +11,15 @@ const icons={'home-hero':House,'home-promo':Promotion,'home-categories':Grid,'ho
 </script>
 <template>
  <div class="block-library">
-  <el-form-item label="添加到">
-   <el-select v-model="region" aria-label="组件添加位置" :disabled="disabled">
-    <el-option label="正文区域" value="main"/><el-option label="左侧栏" value="left"/><el-option label="右侧栏" value="right"/>
+  <el-form-item :label="t('添加到')">
+   <el-select v-model="region" :aria-label="t('组件添加位置')" :disabled="disabled">
+    <el-option :label="t('正文区域')" value="main"/><el-option :label="t('左侧栏')" value="left"/><el-option :label="t('右侧栏')" value="right"/>
    </el-select>
   </el-form-item>
   <div class="block-library-grid">
-   <el-tooltip v-for="item in layoutBlockCatalog" :key="item.type" :content="item.description" placement="right">
-    <button type="button" :disabled="disabled" :aria-label="`添加${item.name}`" @click="emit('add',item.type,region)">
-     <el-icon><component :is="icons[item.type as keyof typeof icons]||Plus"/></el-icon><span>{{ item.name }}</span>
+   <el-tooltip v-for="item in layoutBlockCatalog" :key="item.type" :content="t(item.description)" placement="right">
+    <button type="button" :disabled="disabled" :aria-label="t('添加{0}', [t(item.name)])" @click="emit('add',item.type,region)">
+     <el-icon><component :is="icons[item.type as keyof typeof icons]||Plus"/></el-icon><span>{{ t(item.name) }}</span>
     </button>
    </el-tooltip>
   </div>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import {t} from '../../../lib/i18n/client';
 import EleCard from "ele-admin-plus/es/ele-card";
 import { useStudio } from "../store";
 import { request } from "../../admin/api";
@@ -10,7 +11,7 @@ async function upload(event: Event) {
     file = target.files?.[0];
   if (!file) return;
   await store.run(async () => {
-    if (file.size > 5 * 1024 * 1024) throw new Error("图片不能超过 5MB");
+    if (file.size > 5 * 1024 * 1024) throw new Error(t("图片不能超过 5MB"));
     const body = new FormData();
     body.set("file", file);
     await request("/api/admin/media", {
@@ -19,23 +20,23 @@ async function upload(event: Event) {
       body,
     });
     await store.refresh();
-  }, "媒体已上传");
+  }, t("媒体已上传"));
   target.value = "";
 }
 async function copy(id: string) {
   await store.run(
     () => navigator.clipboard.writeText(`/media/${id}`),
-    "媒体路径已复制",
+    t("媒体路径已复制"),
   );
 }
 </script>
 <template>
   <PageTitle
-    title="媒体库"
-    description="上传图片后，可在文章、封面和站点标识中使用。"
+    :title="t('媒体库')"
+    :description="t('上传图片后，可在文章、封面和站点标识中使用。')"
   >
     <label class="upload-button primary">
-      <span>上传图片</span>
+      <span> {{ t("上传图片") }} </span>
       <input
         type="file"
         :disabled="busy"
@@ -58,11 +59,9 @@ async function copy(id: string) {
           {{ (item.size / 1024).toFixed(1) }} KB ·
           {{ item.createdAt.slice(0, 10) }}
         </span>
-        <el-button link type="primary" @click="copy(item.id)">
-          复制路径
-        </el-button>
+        <el-button link type="primary" @click="copy(item.id)"> {{ t("复制路径") }} </el-button>
       </article>
     </div>
-    <el-empty v-else description="还没有上传媒体" />
+    <el-empty v-else :description="t('还没有上传媒体')" />
   </EleCard>
 </template>

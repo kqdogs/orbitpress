@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import {t} from '../../../lib/i18n/client';
 import {ref} from 'vue';
 const model=defineModel<string[]>({required:true});
 const props=withDefaults(defineProps<{label:string;max:number;maxLength:number;disabled?:boolean;suggestions?:string[];warning?:boolean}>(),{suggestions:()=>[]});
@@ -9,9 +10,9 @@ function add(values=pending.value):boolean {
  const incoming=values.split(/[,，\n]/).map(value=>value.trim()).filter(Boolean);
  if(!incoming.length){error.value='';return true;}
  for(const value of incoming){
-  if(value.length>props.maxLength){error.value='每项最多 '+props.maxLength+' 个字符';return false;}
+  if(value.length>props.maxLength){error.value=t("每项最多 ")+props.maxLength+t(" 个字符");return false;}
   if(seen.has(value.toLocaleLowerCase()))continue;
-  if(next.length>=props.max){error.value='最多添加 '+props.max+' 项';return false;}
+  if(next.length>=props.max){error.value=t("最多添加 ")+props.max+t(" 项");return false;}
   next.push(value);seen.add(value.toLocaleLowerCase());
  }
  model.value=next;pending.value='';error.value='';return true;
@@ -25,16 +26,16 @@ defineExpose({prepare});
 <template>
  <div class="term-input">
   <div class="term-entry">
-   <el-input v-model="pending" :aria-label="label+'输入'" :disabled="disabled||model.length>=max" :placeholder="'输入后回车或点添加'" @keydown.enter.prevent="add()" @input="inputChanged"/>
-   <el-button :disabled="disabled||!pending.trim()||model.length>=max" @click="add()">添加</el-button>
+   <el-input v-model="pending" :aria-label="label+t('输入')" :disabled="disabled||model.length>=max" :placeholder="t('输入后回车或点添加')" @keydown.enter.prevent="add()" @input="inputChanged"/>
+   <el-button :disabled="disabled||!pending.trim()||model.length>=max" @click="add()"> {{ t("添加") }} </el-button>
   </div>
   <p v-if="error" class="term-error" role="alert">{{error}}</p>
-  <div v-if="model.length" class="term-chips" :aria-label="label+'列表'">
+  <div v-if="model.length" class="term-chips" :aria-label="label+t('列表')">
    <el-tag v-for="(value,index) in model" :key="value" :type="warning?'warning':'info'" :closable="!disabled" disable-transitions @close="remove(index)">{{value}}</el-tag>
   </div>
-  <p class="field-help">逗号分隔可批量添加；{{model.length}} / {{max}}，每项最多 {{maxLength}} 个字符。</p>
+  <p class="field-help"> {{ t("逗号分隔可批量添加；") }} {{model.length}} / {{max}} {{ t("，每项最多") }} {{maxLength}} {{ t("个字符。") }} </p>
   <div v-if="suggestions.length" class="term-suggestions">
-   <span>常用标签</span>
+   <span> {{ t("常用标签") }} </span>
    <el-button v-for="term in suggestions.filter(value=>!model.some(tag=>tag.toLocaleLowerCase()===value.toLocaleLowerCase())).slice(0,12)" :key="term" link :disabled="disabled||model.length>=max" @click="addSuggestion(term)">{{term}}</el-button>
   </div>
  </div>

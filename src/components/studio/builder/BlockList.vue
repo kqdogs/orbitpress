@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import {t} from '../../../lib/i18n/client';
 import { computed } from 'vue';
 import type { LayoutBlock, LayoutRegion } from '../../../lib/schema';
 import { blockName } from '../../../lib/page-layouts';
@@ -20,13 +21,13 @@ function drag(event:DragEvent,id:string){event.dataTransfer?.setData(transferTyp
   <h3>{{ title }} <small>{{ blocks.length }}</small></h3>
   <div class="builder-section-list">
    <button v-for="block in blocks" :key="block.id" :class="{selected:selected===block.id}" :draggable="!disabled" :disabled="disabled" type="button" @click="emit('select',block.id)" @dragstart="drag($event,block.id)" @dragover.prevent @drop="drop($event,block)">
-    <el-icon><Rank/></el-icon><span>{{ blockName(block) }}</span><small>{{ block.type==='content'?'正文':block.enabled?'显示':'隐藏' }}</small>
+    <el-icon><Rank/></el-icon><span>{{ blockName(block) }}</span><small>{{ block.type==='content'?t("正文"):block.enabled?t("显示"):t("隐藏") }}</small>
    </button>
   </div>
-  <p v-if="!blocks.length" class="builder-area-empty">拖入组件，或从组件库添加</p>
+  <p v-if="!blocks.length" class="builder-area-empty"> {{ t("拖入组件，或从组件库添加") }} </p>
   <div v-if="selectedIndex>=0" class="builder-order-actions">
-   <el-button :icon="ArrowUp" size="small" :disabled="disabled||selectedIndex===0" aria-label="上移组件" @click="emit('move',selected,region,blocks[selectedIndex-1].id)">上移</el-button>
-   <el-button :icon="ArrowDown" size="small" :disabled="disabled||selectedIndex===blocks.length-1" aria-label="下移组件" @click="emit('move',selected,region,blocks[selectedIndex+1].id,true)">下移</el-button>
+   <el-button :icon="ArrowUp" size="small" :disabled="disabled||selectedIndex===0" :aria-label="t('上移组件')" @click="emit('move',selected,region,blocks[selectedIndex-1].id)"> {{ t("上移") }} </el-button>
+   <el-button :icon="ArrowDown" size="small" :disabled="disabled||selectedIndex===blocks.length-1" :aria-label="t('下移组件')" @click="emit('move',selected,region,blocks[selectedIndex+1].id,true)"> {{ t("下移") }} </el-button>
   </div>
  </section>
 </template>

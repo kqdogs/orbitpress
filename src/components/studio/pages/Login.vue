@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import {t} from '../../../lib/i18n/client';
 import { ref } from "vue";
 import { useStudio } from "../store";
 import { request } from "../../admin/api";
 import type { Session } from "../types";
+import LanguageSwitch from '../shared/LanguageSwitch.vue';
 const store = useStudio(),
   { busy, error, message } = store;
 const username = ref(""),
@@ -21,26 +23,27 @@ function login() {
 <template>
   <div class="studio-login">
     <el-card>
+      <div style="text-align:right"><LanguageSwitch :disabled="busy"/></div>
       <img src="/images/yachin-mark.svg" width="48" height="48" alt="" />
-      <h1>内容工作台</h1>
-      <p>欢迎回来，继续你的创作。</p>
+      <h1> {{ t("内容工作台") }} </h1>
+      <p> {{ t("欢迎回来，继续你的创作。") }} </p>
       <el-alert v-if="error" :title="error" type="error" :closable="false" />
       <el-alert v-if="message" :title="message" type="success" :closable="false" />
       <el-form label-position="top" @submit.prevent="login">
-        <el-form-item label="用户名">
+        <el-form-item :label="t('用户名')">
           <el-input
             v-model="username"
             autocomplete="username"
-            aria-label="用户名"
+            :aria-label="t('用户名')"
           />
         </el-form-item>
-        <el-form-item label="密码">
+        <el-form-item :label="t('密码')">
           <el-input
             v-model="password"
             type="password"
             show-password
             autocomplete="current-password"
-            aria-label="密码"
+            :aria-label="t('密码')"
           />
         </el-form-item>
         <el-button
@@ -49,11 +52,9 @@ function login() {
           :loading="busy"
           :disabled="!username || !password"
           class="full-width"
-        >
-          登录工作台
-        </el-button>
+        > {{ t("登录工作台") }} </el-button>
       </el-form>
-      <a href="/">返回网站首页</a>
+      <a href="/"> {{ t("返回网站首页") }} </a>
     </el-card>
   </div>
 </template>

@@ -1,8 +1,10 @@
 ---
+import {translator} from '../lib/i18n';
+const t=translator(Astro.locals.locale);
 import Icon from './Icon.astro';
 import BackToTop from './BackToTop.astro';
 ---
-<dialog class="search-dialog" aria-label="搜索内容"><div class="search-surface"><button class="close-search" aria-label="关闭搜索">×</button><div class="search-panel"><form action="/" method="get"><input type="search" name="s" maxlength="100" placeholder="搜索教程、工具与实用指南" aria-label="搜索关键词" required/><button class="search-submit-button" aria-label="搜索" type="submit"><Icon name="search" size={25}/></button></form><div class="search-popular"><strong>热门搜索</strong><div>{['AI工具','Apple','Apple Pay','ChatGPT','DITO','eSIM','iFAST','Maya','Roogoo'].map(term=><a href={`/?s=${encodeURIComponent(term)}`}># {term}</a>)}</div></div></div></div></dialog>
+<dialog class="search-dialog" aria-label={t("搜索内容")}><div class="search-surface"><button class="close-search" aria-label={t("关闭搜索")}>×</button><div class="search-panel"><form action="/" method="get"><input type="search" name="s" maxlength="100" placeholder={t("搜索教程、工具与实用指南")} aria-label={t("搜索关键词")} required/><button class="search-submit-button" aria-label={t("搜索")} type="submit"><Icon name="search" size={25}/></button></form><div class="search-popular"><strong> {t("热门搜索")} </strong><div>{[t("AI工具"),'Apple','Apple Pay','ChatGPT','DITO','eSIM','iFAST','Maya','Roogoo'].map(term=><a href={`/?s=${encodeURIComponent(term)}`}># {term}</a>)}</div></div></div></div></dialog>
 <BackToTop/>
 <script>
  const dialog=document.querySelector<HTMLDialogElement>('.search-dialog')!;

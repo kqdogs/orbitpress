@@ -1,8 +1,10 @@
 ---
+import {translator} from '../../lib/i18n';
+const t=translator(Astro.locals.locale);
 import type { HomeComponentProps } from '../../lib/home-components';
 import PostCard from '../PostCard.astro';
 import HomeSectionHeading from '../HomeSectionHeading.astro';
 const {settings,block,data}=Astro.props as HomeComponentProps;
 const tutorials={items:data.tutorials};
 ---
-{true&&<section class="container content-section"><HomeSectionHeading section={{title:block.title,subtitle:block.text}} href="/tutorials/" linkText="全部教程 →"/><div class="post-grid tutorial-grid">{tutorials.items.map(post=><PostCard post={post} author={settings.title} settings={settings}/>)}</div></section>}
+{true&&<section class="container content-section"><HomeSectionHeading section={{title:block.title,subtitle:block.text}} href="/tutorials/" linkText={t("全部教程 →")}/><div class="post-grid tutorial-grid">{tutorials.items.map(post=><PostCard post={post} author={settings.title} settings={settings}/>)}</div></section>}

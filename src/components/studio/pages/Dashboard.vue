@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import {t} from '../../../lib/i18n/client';
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import EleCard from "ele-admin-plus/es/ele-card";
@@ -17,18 +18,18 @@ const quick = ref({
 });
 const stats = computed(() => [
   {
-    label: "已发布文章",
+    label: t("已发布文章"),
     value: data.posts.filter((p) => p.status === "published").length,
   },
   {
-    label: "草稿",
+    label: t("草稿"),
     value: data.posts.filter((p) => p.status === "draft").length,
   },
   {
-    label: "独立页面",
+    label: t("独立页面"),
     value: data.pages.filter((p) => p.status !== "trash").length,
   },
-  { label: "分类目录", value: data.cats.filter((p) => !p.deletedAt).length },
+  { label: t("分类目录"), value: data.cats.filter((p) => !p.deletedAt).length },
 ]);
 async function save() {
   await store.run(async () => {
@@ -48,18 +49,16 @@ async function save() {
     });
     await store.refresh();
     await router.push(`/editor/${post.id}`);
-  }, "快速草稿已保存");
+  }, t("快速草稿已保存"));
 }
 </script>
 <template>
   <PageTitle
-    title="概览"
-    :description="`欢迎回来，${session?.username}。从这里开始今天的创作。`"
+    :title="t('概览')"
+    :description="t('欢迎回来，{0}。从这里开始今天的创作。', [session?.username])"
   >
-    <el-button type="primary" @click="router.push('/editor')">
-      新建文章
-    </el-button>
-    <el-button @click="router.push('/page-editor')">新建页面</el-button>
+    <el-button type="primary" @click="router.push('/editor')"> {{ t("新建文章") }} </el-button>
+    <el-button @click="router.push('/page-editor')"> {{ t("新建页面") }} </el-button>
   </PageTitle>
   <div class="stat-grid">
     <EleCard v-for="stat in stats" :key="stat.label">
@@ -68,11 +67,11 @@ async function save() {
     </EleCard>
   </div>
   <div class="dashboard-grid">
-    <EleCard header="最近内容">
+    <EleCard :header="t('最近内容')">
       <el-table
         :data="data.posts.filter((p) => p.status !== 'trash').slice(0, 8)"
       >
-        <el-table-column label="标题" min-width="200">
+        <el-table-column :label="t('标题')" min-width="200">
           <template #default="{ row }">
             <el-button
               link
@@ -83,30 +82,30 @@ async function save() {
             </el-button>
           </template>
         </el-table-column>
-        <el-table-column label="状态" width="100">
+        <el-table-column :label="t('状态')" width="100">
           <template #default="{ row }">
             <el-tag :type="row.status === 'published' ? 'success' : 'info'">
-              {{ row.status === "published" ? "已发布" : "草稿" }}
+              {{ row.status === "published" ? t("已发布") : t("草稿") }}
             </el-tag>
           </template>
         </el-table-column>
       </el-table>
     </EleCard>
-    <EleCard header="快速草稿">
+    <EleCard :header="t('快速草稿')">
       <el-form label-position="top" :disabled="busy" @submit.prevent="save">
-        <el-form-item label="标题">
+        <el-form-item :label="t('标题')">
           <el-input
             v-model="quick.title"
-            placeholder="你的新想法"
+            :placeholder="t('你的新想法')"
             maxlength="180"
           />
         </el-form-item>
-        <el-form-item label="路径">
+        <el-form-item :label="t('路径')">
           <el-input v-model="quick.slug" placeholder="my-new-post" />
         </el-form-item>
-        <el-form-item label="分类">
-          <el-select v-model="quick.categoryId" class="full-width" placeholder="不分配分类" clearable :value-on-clear="''">
-            <el-option label="不分配分类" value="" />
+        <el-form-item :label="t('分类')">
+          <el-select v-model="quick.categoryId" class="full-width" :placeholder="t('不分配分类')" clearable :value-on-clear="''">
+            <el-option :label="t('不分配分类')" value="" />
             <el-option
               v-for="cat in data.cats.filter((c) => !c.deletedAt)"
               :key="cat.id"
@@ -115,17 +114,15 @@ async function save() {
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="正文">
+        <el-form-item :label="t('正文')">
           <el-input
             v-model="quick.body"
             type="textarea"
             :rows="4"
-            placeholder="写下灵感，稍后完善……"
+            :placeholder="t('写下灵感，稍后完善……')"
           />
         </el-form-item>
-        <el-button native-type="submit" type="primary" :loading="busy">
-          保存并继续编辑
-        </el-button>
+        <el-button native-type="submit" type="primary" :loading="busy"> {{ t("保存并继续编辑") }} </el-button>
       </el-form>
     </EleCard>
   </div>

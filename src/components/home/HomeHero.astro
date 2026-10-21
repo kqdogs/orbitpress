@@ -1,4 +1,6 @@
 ---
+import {translator} from '../../lib/i18n';
+const t=translator(Astro.locals.locale);
 import type { HomeComponentProps } from '../../lib/home-components';
 import Icon from '../Icon.astro';
 import { postPath } from '../../lib/permalinks';
@@ -8,6 +10,6 @@ const {settings,block,data}=Astro.props as HomeComponentProps;
 const hero=data.hero; const steps=settings.homeOptions.steps;
 ---
 {true&&<div class="home-glow"><section class="container hero-grid">
-   {hero&&<article class="featured-card"><a class="featured-cover" href={postPath(hero,settings)}><img src={hero.cover||'/images/ai-cover.svg'} alt={hero.title} width="1280" height="720" fetchpriority="high"/></a><div class="featured-content"><div class="featured-meta">{settings.homeHero.eyebrow} · {hero.categoryName} · {hero.publishedAt?.slice(0,10)}</div><h1><a href={postPath(hero,settings)}>{settings.homeHero.title||hero.title}</a></h1><div class="highlight-tags">{articleHighlights(hero).map(text=><span>{text}</span>)}</div><div class="featured-buttons"><a class="button primary" href={postPath(hero,settings)}><Icon name={hero.videoId?'play':'arrow'} size={16}/>{hero.videoId?'看视频 + 图文教程':'阅读图文教程'}</a><a class="button" href="/videos/">全部视频</a></div></div></article>}
-   <aside class="onboarding"><h2>{block.title||'新手从这里开始'}</h2><p>{block.text||'按这个顺序办，后面每一步都会用到前一步的东西。'}</p><ol>{steps.map((step,index)=><li><a href={step.href}><span class="step-number">{index+1}</span><div><strong>{step.title}</strong><span>{step.description}</span></div><span class="step-arrow">›</span></a></li>)}</ol><CommunityCard settings={settings}/></aside>
+   {hero&&<article class="featured-card"><a class="featured-cover" href={postPath(hero,settings)}><img src={hero.cover||'/images/ai-cover.svg'} alt={hero.title} width="1280" height="720" fetchpriority="high"/></a><div class="featured-content"><div class="featured-meta">{settings.homeHero.eyebrow} · {hero.categoryName} · {hero.publishedAt?.slice(0,10)}</div><h1><a href={postPath(hero,settings)}>{settings.homeHero.title||hero.title}</a></h1><div class="highlight-tags">{articleHighlights(hero).map(text=><span>{text}</span>)}</div><div class="featured-buttons"><a class="button primary" href={postPath(hero,settings)}><Icon name={hero.videoId?'play':'arrow'} size={16}/>{hero.videoId?t("看视频 + 图文教程"):t("阅读图文教程")}</a><a class="button" href="/videos/"> {t("全部视频")} </a></div></div></article>}
+   <aside class="onboarding"><h2>{block.title||t("新手从这里开始")}</h2><p>{block.text||t("按这个顺序办，后面每一步都会用到前一步的东西。")}</p><ol>{steps.map((step,index)=><li><a href={step.href}><span class="step-number">{index+1}</span><div><strong>{step.title}</strong><span>{step.description}</span></div><span class="step-arrow">›</span></a></li>)}</ol><CommunityCard settings={settings}/></aside>
   </section></div>}

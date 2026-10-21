@@ -1,8 +1,10 @@
 ---
+import {translator} from '../../lib/i18n';
+const t=translator(Astro.locals.locale);
 import type { HomeComponentProps } from '../../lib/home-components';
 import PostCard from '../PostCard.astro';
 import HomeSectionHeading from '../HomeSectionHeading.astro';
 const {settings,block,data}=Astro.props as HomeComponentProps;
 const videos={items:data.videos}; const totalVideos=data.totalVideos;
 ---
-{true&&<section class="container content-section"><HomeSectionHeading section={{title:block.title,subtitle:block.text}} href="/videos/" linkText={`全部 ${totalVideos} 个视频 →`}/><div class="post-grid home-video-grid">{videos.items.map(post=><PostCard post={post} author={settings.title} settings={settings}/>)}</div></section>}
+{true&&<section class="container content-section"><HomeSectionHeading section={{title:block.title,subtitle:block.text}} href="/videos/" linkText={t("全部 {0} 个视频 →", [totalVideos])}/><div class="post-grid home-video-grid">{videos.items.map(post=><PostCard post={post} author={settings.title} settings={settings}/>)}</div></section>}

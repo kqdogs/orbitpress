@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import {t} from '../../../lib/i18n/client';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { requestPreview } from "../../admin/api";
 import { useStudio } from "../store";
@@ -56,7 +57,7 @@ async function load() {
     }
   } catch (cause) {
     if (!signal.aborted)
-      error.value = cause instanceof Error ? cause.message : "预览失败";
+      error.value = cause instanceof Error ? cause.message : t("预览失败");
   } finally {
     if (!signal.aborted) loading.value = false;
   }
@@ -78,14 +79,12 @@ onBeforeUnmount(() => {
 </script>
 <template>
   <section class="studio-preview" v-loading="loading">
-    <div class="preview-caption">
-      真实前台预览 · 尚未保存的内容
-      <el-tag size="small" type="info">实时更新</el-tag>
-      <span class="preview-device">{{ mobile?'手机':'桌面' }} {{ screen.width }}px · {{ Math.round(screen.scale*100) }}%</span>
+    <div class="preview-caption"> {{ t("真实前台预览 · 尚未保存的内容") }} <el-tag size="small" type="info"> {{ t("实时更新") }} </el-tag>
+      <span class="preview-device">{{ mobile?t("手机"):t("桌面") }} {{ screen.width }}px · {{ Math.round(screen.scale*100) }}%</span>
       <slot />
     </div>
     <el-alert v-if="error" :title="error" type="error" :closable="false">
-      <el-button @click="load">重试</el-button>
+      <el-button @click="load"> {{ t("重试") }} </el-button>
     </el-alert>
     <div ref="viewport" class="preview-viewport">
      <iframe
@@ -95,7 +94,7 @@ onBeforeUnmount(() => {
       :style="screenStyle"
       :srcdoc="html"
       sandbox="allow-same-origin"
-      title="实时前台预览"
+      :title="t('实时前台预览')"
       @load="ready"
     />
     </div>

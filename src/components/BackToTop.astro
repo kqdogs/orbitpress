@@ -1,4 +1,8 @@
-<button class="back-to-top" type="button" aria-label="返回顶部" title="返回顶部 · 阅读进度 0%" data-scroll-progress="0">
+---
+import {translator} from '../lib/i18n';
+const t=translator(Astro.locals.locale);
+---
+<button class="back-to-top" type="button" aria-label={t("返回顶部")} title={t("返回顶部 · 阅读进度 0%")} data-scroll-progress="0">
  <svg class="reading-progress" viewBox="0 0 56 56" fill="none" aria-hidden="true">
   <circle class="progress-track" cx="28" cy="28" r="23"/>
   <circle class="progress-value" cx="28" cy="28" r="23" pathLength="100"/>
@@ -17,7 +21,9 @@
 </style>
 
 <script>
- const button=document.querySelector<HTMLButtonElement>('.back-to-top');
+
+import {t} from '../lib/i18n/client';
+const button=document.querySelector<HTMLButtonElement>('.back-to-top');
  const ring=button?.querySelector<SVGCircleElement>('.progress-value');
  if(button&&ring){
   let frame=0,disposed=false;
@@ -29,7 +35,7 @@
    const percent=Math.round(progress*100);
    ring!.style.strokeDashoffset=String(100-progress*100);
    button!.dataset.scrollProgress=String(percent);
-   button!.title=`返回顶部 · 阅读进度 ${percent}%`;
+   button!.title=t("返回顶部 · 阅读进度 {0}%", [percent]);
   }
   function schedule(){if(!disposed&&!frame)frame=requestAnimationFrame(update);}
   button.addEventListener('click',()=>window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'}));

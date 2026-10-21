@@ -1,5 +1,7 @@
 <script>
- import {youtubeId,youtubeUrl} from '../lib/video-embed';
+
+import {t} from '../lib/i18n/client';
+import {youtubeId,youtubeUrl} from '../lib/video-embed';
  document.querySelectorAll<HTMLElement>('[data-video-id]').forEach(player=>{
   const id=player.dataset.videoId||'',start=Number(player.dataset.videoStart||0);
   if(!youtubeId.test(id)||!Number.isInteger(start)||start<0||start>86400)return;
@@ -13,7 +15,7 @@
   }
   function play(privacy=false){
    const iframe=document.createElement('iframe');
-   iframe.src=youtubeUrl(id,start,new URL(document.baseURI).origin,true,privacy);iframe.title='YouTube 教程视频';
+   iframe.src=youtubeUrl(id,start,new URL(document.baseURI).origin,true,privacy);iframe.title=t("YouTube 教程视频");
    iframe.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen';
    iframe.referrerPolicy='strict-origin-when-cross-origin';iframe.allowFullscreen=true;
    player.querySelector('.video-stage')?.replaceChildren(iframe);
@@ -28,7 +30,7 @@
   const text=code?button.closest('.code-block')?.querySelector('code')?.textContent:button.dataset.copyValue;
   if(text==null)return;
   const status=code?button:button.closest('.article-video-links')?.querySelector('.resource-copy-status');
-  try {await navigator.clipboard.writeText(text);if(status)status.textContent=code?'已复制':'优惠码已复制';}
-  catch {if(status)status.textContent='复制失败，请手动选中文字复制';}
+  try {await navigator.clipboard.writeText(text);if(status)status.textContent=code?t("已复制"):t("优惠码已复制");}
+  catch {if(status)status.textContent=t("复制失败，请手动选中文字复制");}
  });
 </script>

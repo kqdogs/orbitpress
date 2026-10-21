@@ -1,3 +1,4 @@
+import {t} from '../../lib/i18n/client';
 import { z } from 'zod';
 import { categoryInput, pageInput, postInput, settingsInput } from '../../lib/schema';
 import {importResponse,discoverResponse} from '../../lib/import-contract';
@@ -30,7 +31,7 @@ function responseSchema(path: string, method: string) {
   if (resource === 'media') return method === 'GET' ? z.array(mediaResponse) : z.object({ id: z.string(), url: z.string() });
   if (resource === 'keys') return method === 'GET' ? z.array(keyResponse) : action === 'revoke' ? z.object({ ok: z.boolean() }) : z.object({ id: z.string(), token: z.string() });
   if (resource === 'audit') return z.array(auditResponse);
-  throw new Error('未注册的后台响应契约');
+  throw new Error(t("未注册的后台响应契约"));
 }
 
 /** Bounded requests, CSRF, cancellation and no implicit write retries. */
@@ -50,13 +51,13 @@ export async function request<T>(path: string, options: Options = {}): Promise<T
       body: options.body === undefined ? undefined : options.body instanceof FormData ? options.body : JSON.stringify(options.body),
     });
     const result = envelope.safeParse(await response.json().catch(() => null));
-    if (!result.success) throw new RequestError('服务器响应异常，请稍后重试', response.status);
-    if (!response.ok) throw new RequestError(result.data.error?.message || '操作失败', response.status);
+    if (!result.success) throw new RequestError(t("服务器响应异常，请稍后重试"), response.status);
+    if (!response.ok) throw new RequestError(t(result.data.error?.message || '操作失败'), response.status);
     const data = responseSchema(path, options.method || 'GET').safeParse(result.data.data);
-    if (!data.success) throw new RequestError('响应数据格式有误，请刷新重试', response.status);
+    if (!data.success) throw new RequestError(t("响应数据格式有误，请刷新重试"), response.status);
     return data.data as T;
   } catch (error) {
-    if (controller.signal.aborted && !options.signal?.aborted) throw new Error('请求超时，请刷新确认结果后再操作');
+    if (controller.signal.aborted && !options.signal?.aborted) throw new Error(t("请求超时，请刷新确认结果后再操作"));
     throw error;
   } finally { clearTimeout(timer); options.signal?.removeEventListener('abort', abort); }
 }
@@ -66,7 +67,7 @@ export async function requestPreview(body: unknown, csrf: string, signal: AbortS
     headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrf }, body: JSON.stringify(body) });
   if (!response.ok) {
     const result = envelope.safeParse(await response.json().catch(() => null));
-    throw new RequestError(result.success ? result.data.error?.message || '预览生成失败' : '预览生成失败', response.status);
+    throw new RequestError(result.success ? t(result.data.error?.message || '预览生成失败') : t('预览生成失败'), response.status);
   }
   return response.text();
 }

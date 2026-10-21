@@ -1,4 +1,6 @@
 ---
+import {translator} from '../lib/i18n';
+const t=translator(Astro.locals.locale);
 import type { Post, Settings } from '../lib/schema';
 import { renderMarkdown } from '../lib/markdown';
 import Icon from './Icon.astro';
@@ -11,7 +13,7 @@ import {resolveCommunityCard} from '../lib/community-card';
 import { resolvePageLayout } from '../lib/page-layouts';
 interface Props { post: Post; settings: Settings; builder?:boolean }
 const { post, settings, builder=false } = Astro.props;
-const markdown = renderMarkdown(post.body,{omitImage:post.cover});
+const markdown = renderMarkdown(post.body,{omitImage:post.cover,locale:Astro.locals.locale});
 const logo = brandLogo(settings);
 const layout = resolvePageLayout(settings,'article');
 const community=resolveCommunityCard(settings);
@@ -20,10 +22,12 @@ const design = layout ? {...settings.articleDesign,showToc:false,showResources:f
 ---
 <ArticleHeader post={post} settings={settings}/>
  <ContentLayout layout={layout} settings={settings} toc={markdown.toc} builder={builder}>
- <div class:list={["container","article-grid",{ "article-grid-no-toc": !design.showToc, "article-grid-no-resources": !design.showResources }]}>{design.showToc&&<aside class="article-toc"><h2>文章目录</h2><nav aria-label="文章目录">{markdown.toc.map(item=><a class:list={[{nested:item.level>2}]} href={`#${item.id}`}>{item.text}</a>)}</nav><a href="/tutorials/">← 返回教程列表</a></aside>}<article class="article-body" style={`--article-font-size:${design.fontSize}px`}>{post.videoId&&<VideoPlayer id={post.videoId} cover={post.cover}/>}<div class="prose" set:html={markdown.html}/>{!rightResources&&!design.showResources&&<ArticleResourceLinks resources={post.resources}/>}{design.showAuthor&&<div class="author-box"><img src={logo} width="60" height="60" alt=""/><div><strong>{settings.title}</strong><p>{settings.tagline}，分享实用教程与真实体验。</p></div></div>}</article>{design.showResources&&<aside class="article-resources"><ArticleResourceLinks resources={post.resources}/><div class="resource-card"><span class="eyebrow">QUICK LINKS</span><h2>{design.resourcesTitle}</h2><p>{design.resourcesDescription}</p><a class="button primary" href={post.categorySlug?`/category/${post.categorySlug}/`:'/tutorials/'}>浏览{post.categoryName||'全部教程'}</a></div>{community.enabled&&<div class="resource-card dark"><Icon name={community.icon} size={30}/><h2>{community.title}</h2><p>{community.description}</p><a class="button" href={community.href} target="_blank" rel="noopener noreferrer">{community.buttonLabel} ↗</a></div>}<button class="button copy-link">复制文章链接</button><p class="copy-status" role="status"></p></aside>}</div>
+ <div class:list={["container","article-grid",{ "article-grid-no-toc": !design.showToc, "article-grid-no-resources": !design.showResources }]}>{design.showToc&&<aside class="article-toc"><h2> {t("文章目录")} </h2><nav aria-label={t("文章目录")}>{markdown.toc.map(item=><a class:list={[{nested:item.level>2}]} href={`#${item.id}`}>{item.text}</a>)}</nav><a href="/tutorials/"> {t("← 返回教程列表")} </a></aside>}<article class="article-body" style={`--article-font-size:${design.fontSize}px`}>{post.videoId&&<VideoPlayer id={post.videoId} cover={post.cover}/>}<div class="prose" set:html={markdown.html}/>{!rightResources&&!design.showResources&&<ArticleResourceLinks resources={post.resources}/>}{design.showAuthor&&<div class="author-box"><img src={logo} width="60" height="60" alt=""/><div><strong>{settings.title}</strong><p>{settings.tagline} {t("，分享实用教程与真实体验。")} </p></div></div>}</article>{design.showResources&&<aside class="article-resources"><ArticleResourceLinks resources={post.resources}/><div class="resource-card"><span class="eyebrow">QUICK LINKS</span><h2>{design.resourcesTitle}</h2><p>{design.resourcesDescription}</p><a class="button primary" href={post.categorySlug?`/category/${post.categorySlug}/`:'/tutorials/'}> {t("浏览")} {post.categoryName||t("全部教程")}</a></div>{community.enabled&&<div class="resource-card dark"><Icon name={community.icon} size={30}/><h2>{community.title}</h2><p>{community.description}</p><a class="button" href={community.href} target="_blank" rel="noopener noreferrer">{community.buttonLabel} ↗</a></div>}<button class="button copy-link"> {t("复制文章链接")} </button><p class="copy-status" role="status"></p></aside>}</div>
  {rightResources&&<ArticleResourceLinks slot="right-start" resources={post.resources}/>}
  </ContentLayout>
  <script>
-  document.querySelector('.copy-link')?.addEventListener('click',async()=>{const status=document.querySelector('.copy-status')!;try{await navigator.clipboard.writeText(location.href);status.textContent='链接已复制';}catch{status.textContent='复制失败，请从地址栏复制链接';}});
+
+import {t} from '../lib/i18n/client';
+document.querySelector('.copy-link')?.addEventListener('click',async()=>{const status=document.querySelector('.copy-status')!;try{await navigator.clipboard.writeText(location.href);status.textContent=t("链接已复制");}catch{status.textContent=t("复制失败，请从地址栏复制链接");}});
  </script>
 

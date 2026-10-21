@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import {t} from '../../../lib/i18n/client';
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { Fold, Expand, Refresh } from "@element-plus/icons-vue";
@@ -9,6 +10,7 @@ import { useStudio } from "../store";
 import { useTheme } from "./theme";
 import StudioTopbar from "./StudioTopbar.vue";
 import ThemeSettings from "./ThemeSettings.vue";
+import {currentLocale} from '../../../lib/i18n/client';
 type Tab = {
   key?: string;
   fullPath?: string;
@@ -42,15 +44,16 @@ async function removeTab(option: { key?: string }) {
 function reload() {
   if (dirty.value) {
     void run(async () => {
-      throw new Error("请先保存当前内容，再刷新数据");
+      throw new Error(t("请先保存当前内容，再刷新数据"));
     });
     return;
   }
-  void run(refresh, "内容已刷新");
+  void run(refresh, t("内容已刷新"));
 }
 </script>
 <template>
   <EleProLayout
+    :locale="currentLocale()"
     :menus="menuItems"
     :tabs="tabs"
     v-model:collapse="theme.collapse"
@@ -96,16 +99,16 @@ function reload() {
       />
     </template>
     <template #logoTitle>
-      <h1>{{ data.settings?.value.title || "内容工作台" }}</h1>
+      <h1>{{ data.settings?.value.title || t("内容工作台") }}</h1>
     </template>
     <template #left>
-      <LayoutTool title="折叠侧栏" @click="theme.collapse = !theme.collapse">
+      <LayoutTool :title="t('折叠侧栏')" @click="theme.collapse = !theme.collapse">
         <el-icon>
           <Expand v-if="theme.collapse" />
           <Fold v-else />
         </el-icon>
       </LayoutTool>
-      <LayoutTool title="刷新当前内容" @click="reload">
+      <LayoutTool :title="t('刷新当前内容')" @click="reload">
         <el-icon><Refresh /></el-icon>
       </LayoutTool>
     </template>
@@ -116,7 +119,7 @@ function reload() {
   </EleProLayout>
   <el-drawer
     v-model="settingsOpen"
-    title="主题设置"
+    :title="t('主题设置')"
     :size="288"
     class="studio-theme-drawer"
     append-to-body

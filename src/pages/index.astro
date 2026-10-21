@@ -1,4 +1,6 @@
 ---
+import {translator} from '../lib/i18n';
+const t=translator(Astro.locals.locale);
 import { env } from 'cloudflare:workers';
 import SiteLayout from '../layouts/SiteLayout.astro';
 import HomePage from '../components/HomePage.astro';
@@ -19,17 +21,17 @@ const articleLocation=plainPost?canonicalPostLocation(Astro.url,plainPost,settin
 if(articleLocation)return Astro.redirect(articleLocation,301);
 if(plainId&&!plainPost)Astro.response.status=404;
 let all:{items:Post[];nextCursor:string|null}|null=q||tag||invalidTag?{items:[],nextCursor:null}:null;
-let searchError=invalidTag?'标签无效，请使用1至30个字符的标签。':'';
+let searchError=invalidTag?t("标签无效，请使用1至30个字符的标签。"):'';
 if(invalidTag)Astro.response.status=400;
 if(!invalidTag&&(q||tag))try{all=await listPosts(env.DB,{limit:24,q,tag,cursor:Astro.url.searchParams.get('cursor')||undefined});}catch(error){
  if(!(error instanceof ApiError))throw error;
  Astro.response.status=error.status;searchError=error.message;
 }
-const resultsTitle=tag?'标签：'+tag:'搜索结果：'+q;
+const resultsTitle=tag?t("标签：")+tag:t("搜索结果：")+q;
 const browseQuery=new URLSearchParams();if(q)browseQuery.set('s',q);if(tag)browseQuery.set('tag',tag);
 const retryHref='/?'+browseQuery.toString();if(all?.nextCursor)browseQuery.set('cursor',all.nextCursor);
 ---
-<SiteLayout title={plainId?plainPost?.title||'页面未找到':(q||tag||invalidTag)?resultsTitle:undefined} description={plainPost?.excerpt}>
+<SiteLayout title={plainId?plainPost?.title||t("页面未找到"):(q||tag||invalidTag)?resultsTitle:undefined} description={plainPost?.excerpt}>
  {plainPost&&<link slot="head" rel="canonical" href={new URL(postPath(plainPost,settings),Astro.url.origin).href}/>}
- {plainId ? plainPost ? <ArticleContent post={plainPost} settings={settings}/> : <div class="container empty-state"><h1>文章未找到</h1><a href="/">返回首页</a></div> : all ? <div class="container listing search-results-page"><div class="listing-heading"><span class="eyebrow">{tag?'TAG ARCHIVE':'SEARCH RESULTS'}</span><h1>{resultsTitle}</h1></div><div class="post-grid search-results-grid">{all.items.map(post=><PostCard post={post} author={settings.title} settings={settings} search/>)}</div>{!all.items.length&&<div class="empty-state"><Icon name="search" size={42}/><h2>{searchError||'没有找到相关内容'}</h2><p>{searchError?'请返回第一页继续搜索。':'试试其他关键词。'}</p><a class="button" href={searchError?retryHref:'/'}>{searchError?'重新搜索':'返回首页'}</a></div>}{all.nextCursor&&<a class="button load-more" href={'/?'+browseQuery.toString()}>查看更多结果 ↓</a>}</div> : <HomePage settings={settings}/>} 
+ {plainId ? plainPost ? <ArticleContent post={plainPost} settings={settings}/> : <div class="container empty-state"><h1> {t("文章未找到")} </h1><a href="/"> {t("返回首页")} </a></div> : all ? <div class="container listing search-results-page"><div class="listing-heading"><span class="eyebrow">{tag?'TAG ARCHIVE':'SEARCH RESULTS'}</span><h1>{resultsTitle}</h1></div><div class="post-grid search-results-grid">{all.items.map(post=><PostCard post={post} author={settings.title} settings={settings} search/>)}</div>{!all.items.length&&<div class="empty-state"><Icon name="search" size={42}/><h2>{searchError||t("没有找到相关内容")}</h2><p>{searchError?t("请返回第一页继续搜索。"):t("试试其他关键词。")}</p><a class="button" href={searchError?retryHref:'/'}>{searchError?t("重新搜索"):t("返回首页")}</a></div>}{all.nextCursor&&<a class="button load-more" href={'/?'+browseQuery.toString()}> {t("查看更多结果 ↓")} </a>}</div> : <HomePage settings={settings}/>}
 </SiteLayout>

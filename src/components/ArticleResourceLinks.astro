@@ -1,4 +1,6 @@
 ---
+import {translator} from '../lib/i18n';
+const t=translator(Astro.locals.locale);
 import type {Post} from '../lib/schema';
 import Icon from './Icon.astro';
 interface Props {resources:Post['resources']}
@@ -6,7 +8,7 @@ const {resources}=Astro.props;
 ---
 {resources&&(resources.items.length>0||resources.descriptionUrl)&&<section class="resource-card article-video-links" aria-label={resources.title}>
  <h2><span class="resource-play"><Icon name="play" size={15}/></span>{resources.title}</h2>
- <ul>{resources.items.map(item=><li><span>{item.label}：</span><a href={item.url} target="_blank" rel="noopener noreferrer">{item.url}</a>{item.code&&<button type="button" class="coupon-copy" data-copy-value={item.code}>复制优惠码 {item.code}</button>}</li>)}</ul>
- {resources.descriptionUrl&&<a class="video-description-link" href={resources.descriptionUrl} target="_blank" rel="noopener noreferrer">查看完整视频简介 →</a>}
+ <ul>{resources.items.map(item=><li><span>{item.label}：</span><a href={item.url} target="_blank" rel="noopener noreferrer">{item.url}</a>{item.code&&<button type="button" class="coupon-copy" data-copy-value={item.code}> {t("复制优惠码")} {item.code}</button>}</li>)}</ul>
+ {resources.descriptionUrl&&<a class="video-description-link" href={resources.descriptionUrl} target="_blank" rel="noopener noreferrer"> {t("查看完整视频简介 →")} </a>}
  <span class="resource-copy-status" role="status" aria-live="polite"></span>
 </section>}

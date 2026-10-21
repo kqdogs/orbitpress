@@ -1,3 +1,4 @@
+import {t} from '../../lib/i18n/client';
 import type {PostInput} from '../../lib/schema';
 import type {ImportedArticle} from '../../lib/import-contract';
 export type ImportRow={url:string;title:string;status:'pending'|'importing'|'saving'|'success'|'error';error:string;warnings:string[];postId?:string;payload?:PostInput;key:string};
@@ -18,7 +19,7 @@ export async function runImportQueue(rows:ImportRow[],categoryId:string,signal:A
    row.status='saving';const result=await deps.save(row.payload,row.key,signal);
    row.postId=result.id;row.status='success';
   }catch(error){
-   row.status='error';row.error=signal.aborted?(row.payload?'已停止；保存结果待确认，重试会沿用幂等键':'已停止，可重试'):error instanceof Error?error.message:'采集失败';
+   row.status='error';row.error=signal.aborted?(row.payload?t("已停止；保存结果待确认，重试会沿用幂等键"):t("已停止，可重试")):error instanceof Error?error.message:t("采集失败");
    if(signal.aborted)break;
   }
  }

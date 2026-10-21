@@ -1,16 +1,19 @@
 import { Marked } from 'marked';
 import sanitize from 'sanitize-html';
 import {escapeHtml,youtubeMarkup} from './video-embed';
+import {translator,type Locale} from './i18n';
 
 const youtubeEmbed = /^https:\/\/www\.youtube(?:-nocookie)?\.com\/embed\/[A-Za-z0-9_-]{11}(?:\?(?:playsinline=1|rel=0|start=\d+)(?:&(?:playsinline=1|rel=0|start=\d+))*)?$/;
 const bilibiliEmbed =
   /^https:\/\/player\.bilibili\.com\/player\.html\?(?:bvid=BV[A-Za-z0-9]{10}|aid=\d{1,20})&page=[1-9]\d{0,2}&autoplay=0$/;
 
-const markdown = new Marked({
+function createMarkdown(locale:Locale) {
+ const t=translator(locale);
+ return new Marked({
   renderer: {
     code({text,lang}) {
       const language=(lang||'text').split(/\s/)[0].slice(0,80)||'text';
-      return `<div class="code-block"><div class="code-toolbar"><span>${escapeHtml(language)}</span><button type="button" data-copy-code="true" aria-label="复制代码">复制代码</button></div><pre><code class="language-${escapeHtml(language)}">${escapeHtml(text)}</code></pre></div>\n`;
+      return `<div class="code-block"><div class="code-toolbar"><span>${escapeHtml(language)}</span><button type="button" data-copy-code="true" aria-label="${t('复制代码')}">${t('复制代码')}</button></div><pre><code class="language-${escapeHtml(language)}">${escapeHtml(text)}</code></pre></div>\n`;
     }
   },
   extensions: [
@@ -35,7 +38,7 @@ const markdown = new Marked({
         const provider = String(token.provider),
           id = String(token.id),
           page = String(token.page);
-        if(provider==='youtube')return youtubeMarkup(id,Number(token.start));
+        if(provider==='youtube')return youtubeMarkup(id,Number(token.start),locale);
         const src =
           provider === 'youtube'
             ? 'https://www.youtube-nocookie.com/embed/' + id
@@ -50,15 +53,17 @@ const markdown = new Marked({
           '"><iframe src="' +
           src +
           '" title="' +
-          (provider === 'youtube' ? 'YouTube 视频' : '哔哩哔哩视频') +
+          t(provider === 'youtube' ? 'YouTube 视频' : '哔哩哔哩视频') +
           '" loading="lazy" allow="encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>\n'
         );
       },
     },
   ],
 });
+}
 
-export function renderMarkdown(body: string,options:{omitImage?:string}={}) {
+export function renderMarkdown(body: string,options:{omitImage?:string;locale?:Locale}={}) {
+  const markdown=createMarkdown(options.locale||'zh-CN');
   const raw = markdown.parse(body, { async: false, gfm: true, breaks: false });
   let index = 0;
   const toc: { id: string; text: string; level: number }[] = [];

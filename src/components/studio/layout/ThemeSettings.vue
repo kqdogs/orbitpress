@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import {t} from '../../../lib/i18n/client';
 import { ref, type Component } from "vue";
 import { Check } from "@element-plus/icons-vue";
 import SettingItem from "../../../../vendor/ele-admin-plus/theme-ui/SettingItem.vue";
@@ -20,20 +21,20 @@ const colors = [
   "#fa8c16",
 ];
 const layoutNames: Record<string, string> = {
-  default: "经典布局",
-  mixedSidebar: "双侧栏",
-  compactMixSidebar: "紧凑双侧栏",
-  compactSidebar: "图标侧栏",
-  colorfulSidebar: "彩色侧栏",
-  tabInHeader: "顶栏页签",
-  plainHeader: "简洁顶栏",
-  plainCompactHeader: "紧凑顶栏",
-  cardLayout: "卡片布局",
-  cardSidebar: "卡片侧栏",
-  cardMixedSidebar: "卡片双侧栏",
-  verticalLayout: "纵向布局",
-  topBarLayout: "顶部导航",
-  limitedWidth: "内容定宽",
+  default: t("经典布局"),
+  mixedSidebar: t("双侧栏"),
+  compactMixSidebar: t("紧凑双侧栏"),
+  compactSidebar: t("图标侧栏"),
+  colorfulSidebar: t("彩色侧栏"),
+  tabInHeader: t("顶栏页签"),
+  plainHeader: t("简洁顶栏"),
+  plainCompactHeader: t("紧凑顶栏"),
+  cardLayout: t("卡片布局"),
+  cardSidebar: t("卡片侧栏"),
+  cardMixedSidebar: t("卡片双侧栏"),
+  verticalLayout: t("纵向布局"),
+  topBarLayout: t("顶部导航"),
+  limitedWidth: t("内容定宽"),
 };
 const layoutCovers: Record<string, Component> = covers;
 function selectLayout(item: (typeof layoutPresets)[number]) {
@@ -56,8 +57,8 @@ function setSecondSidebarDark(value: boolean | string | number) {
       <el-segmented
         v-model="tab"
         :options="[
-          { label: '主题', value: 'theme' },
-          { label: '布局', value: 'layout' },
+          { label: t('主题'), value: 'theme' },
+          { label: t('布局'), value: 'layout' },
         ]"
         block
       />
@@ -75,7 +76,7 @@ function setSecondSidebarDark(value: boolean | string | number) {
                 'ele-setting-theme-item-cover',
                 `ele-setting-side-${item}`,
               ]"
-              :aria-label="`${item === 'light' ? '亮色' : '暗色'}侧栏`"
+              :aria-label="t('{0}侧栏', [item === 'light' ? t('亮色') : t('暗色')])"
               @click="theme.sidebarStyle = item"
             >
               <el-icon
@@ -85,7 +86,7 @@ function setSecondSidebarDark(value: boolean | string | number) {
                 <Check />
               </el-icon>
             </button>
-            <div>{{ item === "light" ? "亮色侧栏" : "暗色侧栏" }}</div>
+            <div>{{ item === "light" ? t("亮色侧栏") : t("暗色侧栏") }}</div>
           </div>
         </div>
         <div class="ele-setting-theme">
@@ -99,7 +100,7 @@ function setSecondSidebarDark(value: boolean | string | number) {
                 'ele-setting-theme-item-cover',
                 `ele-setting-head-${item}`,
               ]"
-              :aria-label="`${item} 顶栏`"
+              :aria-label="t('{0} 顶栏', [item])"
               @click="theme.headerStyle = item"
             >
               <el-icon
@@ -111,7 +112,7 @@ function setSecondSidebarDark(value: boolean | string | number) {
             </button>
             <div>
               {{
-                { light: "亮色顶栏", dark: "暗色顶栏", primary: "主色顶栏" }[
+                { light: t("亮色顶栏"), dark: t("暗色顶栏"), primary: t("主色顶栏") }[
                   item
                 ]
               }}
@@ -124,7 +125,7 @@ function setSecondSidebarDark(value: boolean | string | number) {
             :key="color"
             class="ele-setting-color-item"
             :style="{ backgroundColor: color, color }"
-            :aria-label="`主题色 ${color}`"
+            :aria-label="t('主题色 {0}', [color])"
             @click="theme.color = color"
           >
             <el-icon v-if="theme.color === color"><Check /></el-icon>
@@ -136,18 +137,18 @@ function setSecondSidebarDark(value: boolean | string | number) {
             @change="setColor"
           />
         </div>
-        <SettingItem title="暗黑模式">
-          <el-switch v-model="theme.dark" aria-label="暗黑模式" size="small" />
+        <SettingItem :title="t('暗黑模式')">
+          <el-switch v-model="theme.dark" :aria-label="t('暗黑模式')" size="small" />
         </SettingItem>
-        <SettingItem title="圆角主题">
+        <SettingItem :title="t('圆角主题')">
           <el-switch
             v-model="theme.rounded"
-            aria-label="圆角主题"
+            :aria-label="t('圆角主题')"
             size="small"
           />
         </SettingItem>
         <el-divider />
-        <div class="ele-setting-title muted">导航布局</div>
+        <div class="ele-setting-title muted"> {{ t("导航布局") }} </div>
         <div class="ele-setting-theme">
           <div
             v-for="item in ['default', 'top', 'mix'] as const"
@@ -163,7 +164,7 @@ function setSecondSidebarDark(value: boolean | string | number) {
                     ? 'ele-setting-head-dark ele-setting-layout-top'
                     : 'ele-setting-layout-mix',
               ]"
-              :aria-label="`${item} 导航布局`"
+              :aria-label="t('{0} 导航布局', [item])"
               @click="theme.layout = item"
             >
               <el-icon
@@ -175,12 +176,12 @@ function setSecondSidebarDark(value: boolean | string | number) {
             </button>
             <div>
               {{
-                { default: "侧栏导航", top: "顶部导航", mix: "混合导航" }[item]
+                { default: t("侧栏导航"), top: t("顶部导航"), mix: t("混合导航") }[item]
               }}
             </div>
           </div>
         </div>
-        <SettingItem title="双侧栏">
+        <SettingItem :title="t('双侧栏')">
           <el-switch
             :model-value="theme.sidebarLayout === 'mix'"
             :disabled="theme.layout === 'top'"
@@ -188,7 +189,7 @@ function setSecondSidebarDark(value: boolean | string | number) {
             @update:model-value="setDoubleSidebar"
           />
         </SettingItem>
-        <SettingItem title="二级暗色侧栏">
+        <SettingItem :title="t('二级暗色侧栏')">
           <el-switch
             :model-value="theme.mixSidebarStyle === 'dark'"
             :disabled="theme.sidebarLayout !== 'mix'"
@@ -197,51 +198,51 @@ function setSecondSidebarDark(value: boolean | string | number) {
           />
         </SettingItem>
         <el-divider />
-        <SettingItem title="固定主体">
+        <SettingItem :title="t('固定主体')">
           <el-switch v-model="theme.fixedBody" size="small" />
         </SettingItem>
-        <SettingItem title="固定顶栏">
+        <SettingItem :title="t('固定顶栏')">
           <el-switch
             v-model="theme.fixedHeader"
             :disabled="theme.fixedBody"
             size="small"
           />
         </SettingItem>
-        <SettingItem title="固定侧栏">
+        <SettingItem :title="t('固定侧栏')">
           <el-switch
             v-model="theme.fixedSidebar"
             :disabled="theme.fixedBody || theme.layout === 'top'"
             size="small"
           />
         </SettingItem>
-        <SettingItem title="Logo 置于顶栏">
+        <SettingItem :title="t('Logo 置于顶栏')">
           <el-switch
             v-model="theme.logoInHeader"
             :disabled="theme.layout === 'top'"
             size="small"
           />
         </SettingItem>
-        <SettingItem title="彩色菜单图标">
+        <SettingItem :title="t('彩色菜单图标')">
           <el-switch v-model="theme.colorfulIcon" size="small" />
         </SettingItem>
-        <SettingItem title="菜单排他展开">
+        <SettingItem :title="t('菜单排他展开')">
           <el-switch v-model="theme.uniqueOpened" size="small" />
         </SettingItem>
-        <SettingItem title="内容区域铺满">
+        <SettingItem :title="t('内容区域铺满')">
           <el-switch v-model="theme.fluid" size="small" />
         </SettingItem>
         <el-divider />
-        <SettingItem title="显示页签">
+        <SettingItem :title="t('显示页签')">
           <el-switch v-model="theme.tabBar" size="small" />
         </SettingItem>
-        <SettingItem title="页签置于顶栏">
+        <SettingItem :title="t('页签置于顶栏')">
           <el-switch
             v-model="theme.tabInHeader"
             :disabled="!theme.tabBar"
             size="small"
           />
         </SettingItem>
-        <SettingItem title="页签风格">
+        <SettingItem :title="t('页签风格')">
           <el-select
             v-model="theme.tabStyle"
             :disabled="!theme.tabBar"
@@ -251,10 +252,10 @@ function setSecondSidebarDark(value: boolean | string | number) {
           >
             <el-option
               v-for="(label, key) in {
-                simple: '默认',
-                indicator: '圆点',
-                tag: '标签',
-                button: '卡片',
+                simple: t('默认'),
+                indicator: t('圆点'),
+                tag: t('标签'),
+                button: t('卡片'),
               }"
               :key="key"
               :value="key"
@@ -287,9 +288,7 @@ function setSecondSidebarDark(value: boolean | string | number) {
             $emit('reset');
             activeLayout = '';
           "
-        >
-          重置主题设置
-        </el-button>
+        > {{ t("重置主题设置") }} </el-button>
       </div>
     </div>
   </div>

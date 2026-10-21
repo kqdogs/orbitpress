@@ -1,4 +1,5 @@
 import { onBeforeUnmount, ref, watch, toRaw } from "vue";
+import {t} from '../../../lib/i18n/client';
 import { communityCardInput, settingsInput, type Settings } from "../../../lib/schema";
 import { request } from "../../admin/api";
 import { useStudio } from "../store";
@@ -20,7 +21,7 @@ export function useSettingsDraft() {
   });
   async function save() {
     const card = communityCardInput.nullable().safeParse(value.value.communityCard);
-    if (!card.success) throw new Error('请检查首页交流群卡片：标题、图标和按钮文字不能为空，链接须为本站路径或 HTTPS 链接。');
+    if (!card.success) throw new Error(t('请检查首页交流群卡片：标题、图标和按钮文字不能为空，链接须为本站路径或 HTTPS 链接。'));
     const input = settingsInput.parse(value.value);
     const saved = await request<SettingRecord>("/api/admin/settings", {
       method: "PUT",

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import {t} from '../../../lib/i18n/client';
 import { ref } from "vue";
 import { useRouter } from 'vue-router';
 import { ElMessageBox } from "element-plus";
@@ -16,6 +17,7 @@ import LayoutTool from "ele-admin-plus/es/ele-admin-layout/components/layout-too
 import { useStudio } from "../store";
 import { request } from "../../admin/api";
 import type { Theme } from "./theme";
+import LanguageSwitch from '../shared/LanguageSwitch.vue';
 defineProps<{ theme: Theme }>();
 defineEmits<{ settings: [] }>();
 const store = useStudio(),
@@ -36,7 +38,7 @@ async function toggleFullscreen() {
       fullscreen.value = true;
     }
   } catch {
-    store.error.value = "浏览器未允许全屏";
+    store.error.value = t("浏览器未允许全屏");
   }
 }
 async function logout() {
@@ -44,9 +46,9 @@ async function logout() {
   try {
     await ElMessageBox.confirm(
       store.dirty.value
-        ? "有未保存的内容，退出会丢失修改。"
-        : "确认退出当前账号？",
-      "退出登录",
+        ? t("有未保存的内容，退出会丢失修改。")
+        : t("确认退出当前账号？"),
+      t("退出登录"),
       { type: "warning" },
     );
   } catch {
@@ -63,12 +65,13 @@ async function logout() {
 }
 </script>
 <template>
-  <LayoutTool title="查看网站">
-    <a href="/" target="_blank" rel="noopener noreferrer" aria-label="查看网站">
+  <LayoutTool><LanguageSwitch :dirty="store.dirty.value" :disabled="busy" @before-reload="store.dirty.value=false"/></LayoutTool>
+  <LayoutTool :title="t('查看网站')">
+    <a href="/" target="_blank" rel="noopener noreferrer" :aria-label="t('查看网站')">
       <el-icon><Link /></el-icon>
     </a>
   </LayoutTool>
-  <LayoutTool title="全屏切换" class="hidden-xs" @click="toggleFullscreen">
+  <LayoutTool :title="t('全屏切换')" class="hidden-xs" @click="toggleFullscreen">
     <el-icon><FullScreen /></el-icon>
   </LayoutTool>
   <LayoutTool>
@@ -82,10 +85,8 @@ async function logout() {
       </div>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item command="password" :icon="Lock" :disabled="busy">修改密码</el-dropdown-item>
-          <el-dropdown-item command="logout" :icon="SwitchButton" :disabled="busy">
-            退出登录
-          </el-dropdown-item>
+          <el-dropdown-item command="password" :icon="Lock" :disabled="busy"> {{ t("修改密码") }} </el-dropdown-item>
+          <el-dropdown-item command="logout" :icon="SwitchButton" :disabled="busy"> {{ t("退出登录") }} </el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>
@@ -95,10 +96,10 @@ async function logout() {
       v-model="theme.dark"
       :active-action-icon="Moon"
       :inactive-action-icon="Sunny"
-      aria-label="切换明暗主题"
+      :aria-label="t('切换明暗主题')"
     />
   </LayoutTool>
-  <LayoutTool title="主题设置" @click="$emit('settings')">
+  <LayoutTool :title="t('主题设置')" @click="$emit('settings')">
     <el-icon><MoreFilled /></el-icon>
   </LayoutTool>
 </template>
