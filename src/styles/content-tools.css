@@ -17,5 +17,7 @@
 .code-toolbar button{padding:3px 9px;border:1px solid #344960;border-radius:5px;background:#ffffff09;color:#c1d7ec;font:12px/1.5 inherit}
 .prose .code-block pre{margin:0;border:0;border-radius:0;background:transparent;padding:16px 18px;overflow:auto;tab-size:4;white-space:pre;line-height:1.75}
 .prose .code-block code{font-family:Consolas,'Cascadia Code',monospace;font-size:13px;white-space:pre;overflow-wrap:normal}
-@media(max-width:1150px){.article-resources{display:block;position:static;grid-column:2;min-width:0}.article-grid-no-toc .article-resources{grid-column:1}}
+@media(min-width:761px){.article-toc,.article-resources{display:block;position:sticky;top:24px;max-height:calc(100dvh - 48px);overflow-y:auto;overscroll-behavior:contain}.article-grid:not(.article-grid-no-resources){grid-template-columns:150px minmax(0,1fr) 220px}.article-grid.article-grid-no-toc:not(.article-grid-no-resources){grid-template-columns:minmax(0,1fr) 220px}}
+@media(min-width:761px) and (max-width:1000px){.article-grid:not(.article-grid-no-resources){grid-template-columns:130px minmax(0,1fr) 190px;gap:16px}}
+@media(max-width:760px){.article-resources{display:block;position:static;grid-column:1;min-width:0}.article-toc{max-height:300px;overflow-y:auto}}
 @media(max-width:760px){.article-resources{grid-column:1}.article-video-links{padding:17px}.article-video-links li{font-size:14px}}

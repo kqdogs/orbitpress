@@ -1,3 +1,4 @@
+import {mockImportFetch} from './import-fetch-fixture';
 import {afterEach,describe,expect,it,vi} from 'vitest';
 import {parseArticle,importArticle} from '../src/lib/article-import';
 import {headerNavigation} from '../src/lib/header-navigation';
@@ -27,8 +28,8 @@ describe('默认首页与文章媒体采集',()=>{
  });
  it('封面和正文图片写入本站媒体，重复图片只下载一次，失败不会伪报成功',async()=>{
   const bytes=new Uint8Array([137,80,78,71,13,10,26,10,0]);
-  const fetcher=vi.fn(async(input:URL)=>new Response(input.href===url?fixture:bytes,{headers:{'Content-Type':input.href===url?'text/html':'image/png'}}));
-  vi.stubGlobal('fetch',fetcher);
+  const fetcher=vi.fn(async(input:Parameters<typeof fetch>[0])=>new Response(String(input)===url?fixture:bytes,{headers:{'Content-Type':String(input)===url?'text/html':'image/png'}}));
+  mockImportFetch(fetcher);
   const put=vi.fn(async()=>({})),run=vi.fn(async()=>({success:true}));
   const env={MEDIA:{put},DB:{prepare:()=>({bind:()=>({run})})}} as unknown as Pick<Env,'MEDIA'|'DB'>;
   const result=await importArticle(url,env);
@@ -38,7 +39,7 @@ describe('默认首页与文章媒体采集',()=>{
   expect(result.warnings).toEqual([]);expect(fetcher).toHaveBeenCalledTimes(3);expect(put).toHaveBeenCalledTimes(2);expect(run).toHaveBeenCalledTimes(2);
  });
  it('图片失败时列出可辨认的图片名，其他图片仍可导入',async()=>{
-  vi.stubGlobal('fetch',vi.fn(async(input:URL)=>new Response(input.href===url?fixture:null,{status:input.href===url?200:404,headers:{'Content-Type':'text/html'}})));
+  mockImportFetch(vi.fn(async(input:Parameters<typeof fetch>[0])=>new Response(String(input)===url?fixture:null,{status:String(input)===url?200:404,headers:{'Content-Type':'text/html'}})));
   const result=await importArticle(url,{} as Pick<Env,'MEDIA'|'DB'>);
   expect(result.article.cover).toBe('');expect(result.warnings.join(' ')).toContain('文章封面');expect(result.warnings.join(' ')).toContain('步骤图片');
   expect(result.article.body).not.toContain('ORBITPRESS_IMAGE_');

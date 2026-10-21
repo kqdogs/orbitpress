@@ -71,7 +71,7 @@ onBeforeUnmount(()=>{active=false;stop();window.removeEventListener('beforeunloa
     <el-form-item label="目标站网址"><el-input v-model="url" placeholder="请输入目标站的首页地址" aria-label="目标站网址" clearable/></el-form-item>
     <el-form-item label="保存到分类（可选）"><el-select v-model="categoryId" aria-label="批量采集分类" placeholder="不分配分类" clearable :value-on-clear="''" style="width:100%"><el-option label="不分配分类" value=""/><el-option v-for="cat in data.cats.filter(cat=>!cat.deletedAt)" :key="cat.id" :value="cat.id" :label="cat.name"/></el-select></el-form-item>
    </div>
-   <p class="field-help">目前支持 rinfinity.net。输入首页即可读取文章目录；标题、标签、封面及正文图片会一并采集，图片下载到本站媒体库。分类默认留空，可统一选择或稍后逐篇修改。</p>
+   <p class="field-help">输入博客首页即可查找文章；标题、标签、封面及正文图片会一并采集，图片下载到本站媒体库。分类默认留空，可统一选择或稍后逐篇修改。</p>
    <el-button native-type="submit" type="primary" :disabled="working||!url.trim()" :loading="scanning">查找文章</el-button>
   </el-form>
   <el-button v-if="scanning" type="danger" style="margin-top:12px" @click="stop">停止扫描</el-button>

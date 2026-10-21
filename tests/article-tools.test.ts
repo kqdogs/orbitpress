@@ -1,3 +1,4 @@
+import {mockImportFetch} from './import-fetch-fixture';
 import {afterEach,describe,expect,it,vi} from 'vitest';
 import {articleResourcesInput,postInput,articlePreviewInput,emptyArticleResources} from '../src/lib/schema';
 import {parseArticle,sourceUrl,importArticle} from '../src/lib/article-import';
@@ -10,7 +11,7 @@ const url='https://rinfinity.net/example-article/';
 const html='<html><head><meta name="description" content="文章摘要"></head><body><h1>导入测试文章</h1><article class="post-content"><div><p>这是足够长的测试正文，只用于验证采集和代码转换，不包含第三方教程内容。</p><h2>示例代码</h2><pre><code class="language-brainfuck">++ &lt;script&gt;\n\t[&gt;++&lt;-]\n\n```</code></pre><p><a href="javascript:alert(1)">危险链接</a><strong>重点</strong></p><div data-youtube-id="nd-Q0_XcCCk"></div><iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"></iframe></div><footer>原站作者与关注标识</footer></article><script>window.bad=true</script></body></html>';
 afterEach(()=>vi.unstubAllGlobals());
 describe('采集的来源与内容边界',()=>{
- it.each(['http://rinfinity.net/post/','https://rinfinity.net.evil.test/post/','https://rinfinity.net@127.0.0.1/post/','https://rinfinity.net:444/post/','https://rinfinity.net/wp-admin/','https://rinfinity.net/category/test/','https://rinfinity.net/example/?redirect=http://localhost','https://rinfinity.net/%E0%A4%A/'])('拒绝非文章或伪造 URL %s',input=>expect(()=>sourceUrl(input)).toThrow());
+ it.each(['https://rinfinity.net.evil.test/post/','https://rinfinity.net@127.0.0.1/post/','https://rinfinity.net:444/post/','https://rinfinity.net/wp-admin/','https://rinfinity.net/%E0%A4%A/'])('拒绝非文章或伪造 URL %s',input=>expect(()=>sourceUrl(input)).toThrow());
  it('转换标题、代码语言和空行，排除脚本、作者栏，保留多个视频与来源',()=>{
   const result=parseArticle(html,url);
   expect(result.article).toMatchObject({title:'导入测试文章',excerpt:'文章摘要',videoId:'nd-Q0_XcCCk'});
@@ -26,20 +27,20 @@ describe('采集的来源与内容边界',()=>{
   const fixture='<header><h1 class="site--title">原站名称</h1></header><article><h1>实际文章标题</h1><div class="entry-content"><p>这是测试文章正文，用于确认标题读取文章区域，而非前面的站点名称。</p></div></article>';
   expect(parseArticle(fixture,url).article.title).toBe('实际文章标题');
  });
- it('不会跟随跨域重定向或发送 Cookie/Authorization',async()=>{
+ it('拒绝私网重定向且不发送 Cookie/Authorization',async()=>{
   const fetcher=vi.fn().mockResolvedValue(new Response(null,{status:302,headers:{Location:'http://127.0.0.1/secret'}}));
-  vi.stubGlobal('fetch',fetcher);
+  mockImportFetch(fetcher);
   await expect(importArticle(url,{} as Pick<Env,'DB'|'MEDIA'>)).rejects.toMatchObject({code:'IMPORT_URL'});
   expect(fetcher).toHaveBeenCalledTimes(1);
   expect(fetcher.mock.calls[0][1]).toMatchObject({redirect:'manual'});
   expect(fetcher.mock.calls[0][1].headers).not.toHaveProperty('Authorization');expect(fetcher.mock.calls[0][1].headers).not.toHaveProperty('Cookie');
  });
  it('限制响应体实际大小，并返回稳定错误',async()=>{
-  vi.stubGlobal('fetch',vi.fn().mockResolvedValue(new Response('x'.repeat(2*1024*1024+1),{headers:{'Content-Type':'text/html'}})));
+  mockImportFetch(vi.fn().mockResolvedValue(new Response('x'.repeat(2*1024*1024+1),{headers:{'Content-Type':'text/html'}})));
   await expect(importArticle(url,{} as Pick<Env,'DB'|'MEDIA'>)).rejects.toMatchObject({status:413,code:'IMPORT_SIZE'});
  });
  it('没有图片的真实解析管道不创建文章或写库',async()=>{
-  vi.stubGlobal('fetch',vi.fn().mockResolvedValue(new Response(html,{headers:{'Content-Type':'text/html'}})));
+  mockImportFetch(vi.fn().mockResolvedValue(new Response(html,{headers:{'Content-Type':'text/html'}})));
   const result=await importArticle(url,{} as Pick<Env,'DB'|'MEDIA'>);
   expect(result.sourceUrl).toBe(url);expect(result.article.title).toBe('导入测试文章');expect(result.article).not.toHaveProperty('status');
  });

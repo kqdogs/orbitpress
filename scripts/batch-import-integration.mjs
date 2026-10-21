@@ -18,7 +18,7 @@ async function state(){const s={};for(const path of ['settings','posts?limit=100
 let before;
 try{
  const login=await call('/api/auth/login',{method:'POST',body:{username:'admin',password},headers:{Origin:base}});assert.equal(login.status,200);cookie=login.headers.get('set-cookie').split(';')[0];csrf=login.data.csrf;before=await state();
- await test('目录需管理员/CSRF，拒绝非白名单首页',async()=>{
+ await test('目录需管理员/CSRF，拒绝私网首页',async()=>{
   assert.equal((await call('/api/admin/imports/discover',{method:'POST',body:{url:'https://rinfinity.net/'}})).status,401);
   assert.equal((await call('/api/admin/imports/discover',{method:'POST',headers:{Cookie:cookie,Origin:base},body:{url:'https://rinfinity.net/'}})).status,403);
   assert.equal((await call('/api/admin/imports/discover',{method:'POST',admin:true,body:{url:'https://127.0.0.1/'}})).status,400);

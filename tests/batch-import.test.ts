@@ -1,3 +1,4 @@
+import {mockImportFetch} from './import-fetch-fixture';
 import {afterEach,describe,expect,it,vi} from 'vitest';
 import {discoverArticles,sourceHome,parseArticle} from '../src/lib/article-import';
 import {runImportQueue,type ImportRow} from '../src/components/studio/import-queue';
@@ -12,21 +13,21 @@ describe('批量目录来源与契约',()=>{
   const result=parseArticle('<h1>视频教程</h1><article class="post-content"><div data-youtube-id="8JEkhlZEIE8"><div class="rinfinity-video-player">原站播放器</div><section><h2>视频简介</h2><p>申请流程与需要准备的资料，都保存在视频容器的简介里。</p></section></div></article>',home+'video-example/');
   expect(result.article.videoId).toBe('8JEkhlZEIE8');expect(result.article.body).toContain('申请流程');expect(result.article.body).not.toContain('原站播放器');
  });
- it.each(['https://127.0.0.1/','https://rinfinity.net.evil.test/','https://user@rinfinity.net/','https://rinfinity.net/?url=http://localhost','https://rinfinity.net/post/','http://rinfinity.net/'])('拒绝非允许站点首页 %s',url=>expect(()=>sourceHome(url)).toThrow());
+ it.each(['https://127.0.0.1/','https://rinfinity.net.evil.test/','https://user@rinfinity.net/','https://rinfinity.net/?url=http://localhost','file:///etc/passwd','https://localhost/'])('拒绝非允许站点首页 %s',url=>expect(()=>sourceHome(url)).toThrow());
  it('只有生成的公共目录被请求，标题安全解码，链接去重且过滤跨域/管理地址',async()=>{
   const fetcher=vi.fn().mockResolvedValue(new Response(JSON.stringify([{link:home+'one/',title:{rendered:'<b>测试 &amp; 教程</b>'}},{link:home+'one/',title:{rendered:'重复'}},{link:'https://evil.test/a',title:{rendered:'危险'}},{link:home+'wp-admin/',title:{rendered:'管理'}}]),{headers:{'Content-Type':'application/json; charset=UTF-8','X-WP-TotalPages':'3'}}));
-  vi.stubGlobal('fetch',fetcher);
+  mockImportFetch(fetcher);
   const result=await discoverArticles(home,1);expect(result).toEqual({items:[{url:home+'one/',title:'测试 & 教程'}],nextPage:2});
   expect(String(fetcher.mock.calls[0][0])).toBe(home+'wp-json/wp/v2/posts?per_page=20&page=1&_fields=link,title');
   expect(fetcher.mock.calls[0][1].headers).not.toHaveProperty('Cookie');
  });
  it('不能通过目录重定向访问其它路径或主机',async()=>{
-  const fetcher=vi.fn().mockResolvedValue(new Response(null,{status:302,headers:{Location:'http://127.0.0.1/'}}));vi.stubGlobal('fetch',fetcher);
+  const fetcher=vi.fn().mockResolvedValue(new Response(null,{status:302,headers:{Location:'http://127.0.0.1/'}}));mockImportFetch(fetcher);
   await expect(discoverArticles(home)).rejects.toMatchObject({code:'IMPORT_URL'});expect(fetcher).toHaveBeenCalledTimes(1);
  });
  it.each(['{}','invalid',JSON.stringify([{link:home+'one/',title:{}}])])('拒绝无效目录：%s',async text=>{
-  vi.stubGlobal('fetch',vi.fn().mockResolvedValue(new Response(text,{headers:{'Content-Type':'application/json'}})));
-  await expect(discoverArticles(home)).rejects.toMatchObject({code:'IMPORT_DIRECTORY'});
+  mockImportFetch(vi.fn().mockResolvedValue(new Response(text,{headers:{'Content-Type':'application/json'}})));
+  await expect(discoverArticles(home)).rejects.toMatchObject({code:'IMPORT_TYPE'});
  });
 });
 describe('批量队列保存与重试',()=>{
