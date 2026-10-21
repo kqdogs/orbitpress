@@ -8,6 +8,8 @@ import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import ContentInteractions from '../components/ContentInteractions.astro';
 import type { Settings } from '../lib/schema';
+import { adsAllowed } from '../lib/advertising';
+import '../styles/advertising.css';
 import '../styles/site.css';
 import '../styles/brand-motion.css';
 import '../styles/scrollbars.css';
@@ -16,8 +18,13 @@ interface Props { title?:string; description?:string; preview?:boolean; settings
 const settings=Astro.props.settingsOverride||(await siteSettings(env.DB)).value;
 const {title=settings.title,description=settings.description,preview=false}=Astro.props;
 const pathname=Astro.url.pathname;
+const advertising=adsAllowed(settings.advertising,Astro.request,Astro.response.status,preview);
+const publisherId=!preview&&settings.advertising.clientId;
 ---
-<!doctype html><html lang={Astro.locals.locale}><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>{title===settings.title?title:`${title} - ${settings.title}`}</title><meta name="description" content={description}/><link rel="icon" href="/favicon.svg"/><slot name="head"/>{preview&&<><meta name="robots" content="noindex,nofollow"/><style is:inline>body[data-preview] a,body[data-preview] button{pointer-events:none}</style></>}</head><body data-preview={preview||undefined}>
+<!doctype html><html lang={Astro.locals.locale}><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>{title===settings.title?title:`${title} - ${settings.title}`}</title><meta name="description" content={description}/><link rel="icon" href="/favicon.svg"/>
+ {publisherId&&<meta name="google-adsense-account" content={publisherId}/>}
+ {advertising&&<script is:inline async data-adsense-loader src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${settings.advertising.clientId}`} crossorigin="anonymous" onload="document.documentElement.dataset.adsenseLoaded='1';document.dispatchEvent(new Event('orbitpress:adsense-ready'))"></script>}
+ <slot name="head"/>{preview&&<><meta name="robots" content="noindex,nofollow"/><style is:inline>body[data-preview] a,body[data-preview] button{pointer-events:none}</style></>}</head><body data-preview={preview||undefined}>
  <a class="skip-link" href="#main-content"> {t("跳至内容")} </a>
  <SiteHeader settings={settings} pathname={pathname}/>
  <main id="main-content"><slot/></main>

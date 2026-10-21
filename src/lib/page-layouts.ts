@@ -19,6 +19,7 @@ export const layoutBlockCatalog: {type:LayoutBlock['type'];name:string;descripti
  {type:'search',name:'站内搜索',description:'搜索本站文章'},
  {type:'links',name:'快捷链接',description:'一组可编辑的常用链接'},
  {type:'divider',name:'分隔线',description:'区分内容区域'},
+ {type:'ad',name:'Google 广告',description:'使用广告设置中的组件广告位，预览不请求广告'},
 ];
 export const regionNames:Record<LayoutRegion,string>={main:'正文区域',left:'左侧栏',right:'右侧栏'};
 export function blockName(block:LayoutBlock){return block.title||(block.type==='content'?'页面正文':layoutBlockCatalog.find(item=>item.type===block.type)?.name)||'组件';}

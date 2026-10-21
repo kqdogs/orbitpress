@@ -27,6 +27,7 @@ A blog and content management project built with Astro, Vue and Cloudflare Worke
 | Content API | Draft writes, publishing scopes, optimistic version checks, idempotency and revocable encrypted keys |
 | Languages | Simplified Chinese and English interfaces on the public site and in the admin, including editor controls and previews |
 | Hosting | Cloudflare Workers, D1 and R2 with migrations and deployment checks |
+| Google AdSense | Publisher verification, dynamic ads.txt, homepage/article placements and draggable ad widgets; disabled by default |
 
 The default site name is **YaChin科技生活** with the project's Y logo. Social and community URLs start empty. A fresh installation has no custom navigation, categories, posts or pages; a built-in Home link remains available independently of categories.
 
@@ -221,7 +222,13 @@ Original project code is available under [MIT](LICENSE). That license does not c
 
 The repository does not contain the reference site's administrative backend. Visual references and assets do not imply affiliation with that site.
 
+## Google AdSense
+
+Open **System settings → Google ads**. Advertising is disabled and publisher IDs are empty by default. Configure your own account ID for the verification meta tag and dynamic `/ads.txt`; enable ads after Google site approval and applicable CMP setup. Manual homepage/article placements and a draggable Google ads widget are supported. Admin previews never load live ads. The `/privacy/` page supports editable additions and a contact email. See the bilingual [AdSense guide](docs/ADSENSE.md).
+
 ## Contributing
+
+See [CONTRIBUTING.en.md](CONTRIBUTING.en.md), [SECURITY.md](SECURITY.md), [CHANGELOG.en.md](CHANGELOG.en.md) and the [maintenance/release guide](docs/MAINTENANCE.md). A CI workflow is included; its actual status is determined by GitHub Actions runs, not local results.
 
 Issues and improvements are welcome. Include reproduction steps, expected behavior, environment and redacted errors. Never upload credentials, tokens, cookies, password files or databases.
 

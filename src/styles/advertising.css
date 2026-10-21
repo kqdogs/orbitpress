@@ -1,0 +1,8 @@
+.site-ad{width:100%;min-width:0;min-height:140px;margin:24px 0;padding:10px 0;overflow:hidden}
+.site-ad[hidden]{display:none}
+.site-ad-label{display:block;margin-bottom:8px;text-align:center;font-size:11px;letter-spacing:.08em;color:var(--muted,#6b7280)}
+.site-ad .adsbygoogle{min-height:120px;width:100%}
+.site-ad:has(ins[data-ad-status="unfilled"]){display:none}
+.site-ad-placeholder{padding:32px 16px;border:1px dashed #9ca3af;border-radius:12px;text-align:center;color:#6b7280;font-size:13px}
+.layout-widget-ad{padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important}
+@media(min-width:768px){.site-ad,.site-ad .adsbygoogle{min-height:250px}}

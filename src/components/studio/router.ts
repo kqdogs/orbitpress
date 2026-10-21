@@ -16,6 +16,7 @@ import {
   Menu,
   Postcard,
   ChatDotRound,
+  Monitor,
 } from "@element-plus/icons-vue";
 export const menuItems = [
   { path: "/dashboard", meta: { title: t("概览"), icon: House, closable: false } },
@@ -48,6 +49,7 @@ export const menuItems = [
       { path: "/access", meta: { title: t("后台路径"), icon: Lock } },
       { path: "/password", meta: { title: t("修改密码"), icon: Lock } },
       { path: "/integrations", meta: { title: t("API 连接"), icon: Key } },
+      { path: "/advertising", meta: { title: t("Google 广告"), icon: Monitor } },
       { path: "/audit", meta: { title: t("操作记录"), icon: List } },
     ],
   },
@@ -125,6 +127,11 @@ export function createStudioRouter() {
         path: "/audit",
         component: () => import("./pages/Audit.vue"),
         meta: { title: t("操作记录") },
+      },
+      {
+        path: "/advertising",
+        component: () => import("./pages/Advertising.vue"),
+        meta: { title: t("Google 广告") },
       },
       {
         path: "/password",

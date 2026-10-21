@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import {categoryIconValues} from './category-icons';
-const reserved = new Set(['admin','api','media','images','videos','tutorials','category','about','search','tags','sitemap','robots']);
+import { advertisingInput } from './advertising';
+const reserved = new Set(['admin','api','media','images','videos','tutorials','category','about','search','tags','sitemap','robots','privacy']);
 export const slugSchema = z.string().min(1).max(120).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).refine(v => !reserved.has(v),'该路径被系统保留');
 export const coverSchema = z.string().max(240).refine(v=>v==='' || /^\/(?:media|images)\/[a-zA-Z0-9._-]+$/.test(v),'封面必须使用本站媒体路径');
 export const articleHighlightsInput = z.array(z.string().trim().min(1).max(40)).max(6);
@@ -41,7 +42,7 @@ export const communityCardInput = z.object({
  enabled:z.boolean(),title:z.string().trim().min(1).max(120),description:z.string().max(180),
  icon:z.enum(['telegram',...categoryIconValues]),buttonLabel:z.string().trim().min(1).max(20),href:navigationHref
 }).strict();
-export const layoutBlockType = z.enum(['content','heading','markdown','image','button','notice','author','toc','categories','latest','search','links','divider','home-hero','home-promo','home-categories','home-videos','home-tutorials','home-notice']);
+export const layoutBlockType = z.enum(['content','heading','markdown','image','button','notice','author','toc','categories','latest','search','links','divider','ad','home-hero','home-promo','home-categories','home-videos','home-tutorials','home-notice']);
 export const layoutBlockInput = z.object({
  id:z.string().regex(/^[a-z][a-z0-9-]{0,59}$/),type:layoutBlockType,
  title:z.string().trim().max(80).default(''),text:z.string().max(6000).default(''),
@@ -77,7 +78,7 @@ export function navigationCategorySlug(href:string):string|null {
  try{return decodeURIComponent(new URL(href,'https://site.invalid').pathname).match(/^\/category\/([^/]+)\/?$/)?.[1]||null;}catch{return null;}
 }
 export const permalinkFormat = z.enum(['postname','post','category','day','month','numeric','plain','custom']);
-const reservedPrefixes = new Set(['admin','api','media','images','videos','tutorials','category','about','sitemap.xml','robots.txt']);
+const reservedPrefixes = new Set(['admin','api','media','images','videos','tutorials','category','about','privacy','sitemap.xml','robots.txt','ads.txt']);
 export const permalinkCustomInput = z.string().trim().max(180).refine(value => {
  if(value==='/?p=%post_id%')return true;
  if (!value.startsWith('/') || value.startsWith('//') || /[\\?#\s]/.test(value)) return false;
@@ -108,13 +109,14 @@ const aboutDesign = z.object({
 }).strict();
 export const adminPathInput = z.string().regex(/^\/[a-z0-9]+(?:-[a-z0-9]+)*$/).max(80).refine(value=>value==='/admin'||!reserved.has(value.slice(1)), '该路径被系统保留');
 export const settingsInput = z.object({
+ advertising:advertisingInput.prefault({}),
  adminPath:adminPathInput.default('/admin'),
  communityCard:communityCardInput.nullable().default(null),
  title:z.string().trim().min(1).max(80),tagline:z.string().max(120),description:z.string().max(300),logo:siteAssetSchema,socialFollowText:z.string().trim().min(1).max(80),headerNav:z.array(headerNavItem).max(12),footerCopyright:z.string().trim().max(300).default(''),footerNav:z.array(footerNavItem).max(12).nullable().default(null),youtube:externalUrl,telegram:externalUrl,bilibili:externalUrl,twitter:externalUrl,notice:z.string().max(180),
  permalinkFormats:z.array(permalinkFormat).min(1).max(8).refine(values=>new Set(values).size===values.length,'格式不能重复').default(['postname']),permalinkCustom:permalinkCustomInput.default('/%postname%/'),homeHero:homeHero.default(defaultHomeHero),homeSections:z.array(homeSection).length(6).refine(values=>new Set(values.map(value=>value.id)).size===6&&new Set(values.map(value=>value.order)).size===6,'六个区块及排序不能重复').default(defaultHomeSections),homeOptions:homeOptions.prefault({}),articleDesign:articleDesign.prefault({}),aboutDesign:aboutDesign.prefault({}),pageLayouts:pageLayoutsInput.default({})
 }).strict();
 // New optional settings stay absent on old clients instead of overwriting saved designs.
-export const settingsUpdateInput = settingsInput.extend({communityCard:settingsInput.shape.communityCard.unwrap().optional(),adminPath:settingsInput.shape.adminPath.unwrap().optional(),version:z.number().int().positive(),footerCopyright:settingsInput.shape.footerCopyright.unwrap().optional(),footerNav:settingsInput.shape.footerNav.unwrap().optional(),permalinkFormats:settingsInput.shape.permalinkFormats.unwrap().optional(),permalinkCustom:settingsInput.shape.permalinkCustom.unwrap().optional(),homeHero:settingsInput.shape.homeHero.unwrap().optional(),homeSections:settingsInput.shape.homeSections.unwrap().optional(),homeOptions:settingsInput.shape.homeOptions.unwrap().optional(),articleDesign:settingsInput.shape.articleDesign.unwrap().optional(),aboutDesign:settingsInput.shape.aboutDesign.unwrap().optional(),pageLayouts:settingsInput.shape.pageLayouts.unwrap().optional()});
+export const settingsUpdateInput = settingsInput.extend({advertising:advertisingInput.optional(),communityCard:settingsInput.shape.communityCard.unwrap().optional(),adminPath:settingsInput.shape.adminPath.unwrap().optional(),version:z.number().int().positive(),footerCopyright:settingsInput.shape.footerCopyright.unwrap().optional(),footerNav:settingsInput.shape.footerNav.unwrap().optional(),permalinkFormats:settingsInput.shape.permalinkFormats.unwrap().optional(),permalinkCustom:settingsInput.shape.permalinkCustom.unwrap().optional(),homeHero:settingsInput.shape.homeHero.unwrap().optional(),homeSections:settingsInput.shape.homeSections.unwrap().optional(),homeOptions:settingsInput.shape.homeOptions.unwrap().optional(),articleDesign:settingsInput.shape.articleDesign.unwrap().optional(),aboutDesign:settingsInput.shape.aboutDesign.unwrap().optional(),pageLayouts:settingsInput.shape.pageLayouts.unwrap().optional()});
 export const pagePreviewInput = z.object({page:z.enum(['home','article','about','page']),settings:settingsInput,postId:z.string().min(1).max(80).optional(),pageId:z.string().min(1).max(80).optional(),builder:z.boolean().default(false)}).strict();
 export type PostInput = z.infer<typeof postInput>;
 export type Post = PostInput & {id:string;status:'draft'|'published'|'trash';publishedAt:string|null;createdAt:string;updatedAt:string;version:number;categoryName?:string;categorySlug?:string};

@@ -1,0 +1,36 @@
+name: Bug report / 问题反馈
+description: Report a reproducible problem / 反馈可复现的问题
+title: "[Bug]: "
+body:
+  - type: markdown
+    attributes:
+      value: "Do not include passwords, tokens, cookies or database dumps. Security issues: see SECURITY.md. 请勿提交凭据或数据库，安全漏洞请看 SECURITY.md。"
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit / 版本或提交
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment / 环境
+      description: "Node version, browser, local or Cloudflare, relevant configuration (redacted). / Node、浏览器、部署方式及脱敏配置。"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce / 复现步骤
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and actual behavior / 预期与实际结果
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Redacted logs or screenshots / 脱敏日志或截图

@@ -27,6 +27,11 @@
 | 内容 API | 草稿写入、发布权限、版本校验、幂等写入、密钥创建/查看/撤销 |
 | Cloudflare | Workers 服务、D1 数据库、R2 媒体存储、自动迁移与部署预检 |
 | 中英文界面 | 前台及后台切换简体中文 / English，记住语言选择；组件库、编辑器与预览同步切换 |
+| Google AdSense | 发布商验证、动态 ads.txt、首页/文章广告位和拖拽广告组件；默认关闭 |
+
+广告配置见 **系统设置 → Google 广告**。没有账号时保持关闭，获取自己的发布商 ID 后按 [AdSense 接入指南](docs/ADSENSE.md) 验证站点；审核与 CMP 配置需在 Google 完成。内置 `/privacy/` 支持后台补充政策与联系邮箱。
+
+维护资料：[贡献指南](CONTRIBUTING.md) · [安全政策](SECURITY.md) · [更新日志](CHANGELOG.md) · [维护与发布流程](docs/MAINTENANCE.md)。仓库包含 CI 工作流，实际是否通过以 GitHub Actions 运行结果为准。
 
 AI 通过内容 API 接入：由外部工具完成内容生成，再按授权写入或发布。本项目目前不内置模型供应商，也不会主动调用付费模型。
 

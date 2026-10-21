@@ -1,0 +1,28 @@
+---
+import { env } from 'cloudflare:workers';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { siteSettings } from '../lib/repository';
+import { translator } from '../lib/i18n';
+import { renderMarkdown } from '../lib/markdown';
+const { value: settings } = await siteSettings(env.DB);
+const t = translator(Astro.locals.locale);
+const ads = settings.advertising;
+---
+<SiteLayout title={t('隐私政策')} settingsOverride={settings}>
+  <article class="container privacy-page prose">
+    <h1>{t('隐私政策')}</h1>
+    <p>{settings.title} · {t('本页说明本站的基本数据处理与第三方服务。')}</p>
+    <h2>{t('本站数据与 Cookie')}</h2>
+    <p>{t('本站使用 Cookie 记住界面语言；管理员登录使用必要的会话 Cookie。文章与媒体由本站托管，服务提供商可能处理请求日志与基础访问数据。')}</p>
+    <h2>{t('Google 广告与个性化')}</h2>
+    <p>{ads.enabled?t('本站已启用 Google AdSense。Google 及第三方供应商可能根据您访问本站或其他网站的记录，通过 Cookie 展示广告。Google 及其合作伙伴可能使用广告 Cookie 提供个性化广告。'):t('本站当前未启用 Google AdSense 广告脚本。如以后开启，将适用以下广告说明与同意设置。')}</p>
+    <p>{t('您可以通过 Google 广告设置管理个性化广告偏好，或通过第三方广告选择页面了解退出选项。')}</p>
+    <p><a href="https://myadcenter.google.com/" target="_blank" rel="noopener noreferrer">Google My Ad Center ↗</a> · <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer">{t('Google 如何使用合作网站数据')} ↗</a> · <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener noreferrer">AdChoices ↗</a></p>
+    <p>{t('适用地区的广告同意由站长配置的同意管理平台处理。您可使用该平台提供的入口更新或撤回选择，也可通过浏览器设置管理 Cookie。')}</p>
+    <h2>{t('嵌入视频与外部链接')}</h2>
+    <p>{t('播放 YouTube 或哔哩哔哩嵌入视频、访问外部链接时，相关第三方可能处理您的 IP、设备信息或 Cookie，并适用其隐私政策。')}</p>
+    {ads.privacyPolicy&&<div set:html={renderMarkdown(ads.privacyPolicy,{locale:Astro.locals.locale}).html}/>}
+    {ads.privacyContact&&<><h2>{t('隐私联系')}</h2><p><a href={`mailto:${ads.privacyContact}`}>{ads.privacyContact}</a></p></>}
+  </article>
+</SiteLayout>
+<style>.privacy-page{max-width:860px;padding-block:48px 80px}.privacy-page h1{margin-top:0}.privacy-page a{overflow-wrap:anywhere}</style>

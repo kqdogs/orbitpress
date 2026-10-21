@@ -3,11 +3,11 @@ import {t} from '../../../lib/i18n/client';
 import { ref } from 'vue';
 import { layoutBlockCatalog } from '../../../lib/page-layouts';
 import type { LayoutBlock, LayoutRegion } from '../../../lib/schema';
-import { Plus, Document, Picture, Link, Bell, User, List, Folder, Clock, Search, Minus, Reading, VideoCamera, Grid, Promotion, House } from '@element-plus/icons-vue';
+import { Plus, Document, Picture, Link, Bell, User, List, Folder, Clock, Search, Minus, Reading, VideoCamera, Grid, Promotion, House, Monitor } from '@element-plus/icons-vue';
 const props=defineProps<{disabled?:boolean;home?:boolean}>();
 const emit=defineEmits<{add:[type:LayoutBlock['type'],region:LayoutRegion]}>();
 const region=ref<LayoutRegion>(props.home?'main':'right');
-const icons={'home-hero':House,'home-promo':Promotion,'home-categories':Grid,'home-videos':VideoCamera,'home-tutorials':Reading,'home-notice':Bell,heading:Reading,markdown:Document,image:Picture,button:Link,notice:Bell,author:User,toc:List,categories:Folder,latest:Clock,search:Search,links:Link,divider:Minus};
+const icons={'home-hero':House,'home-promo':Promotion,'home-categories':Grid,'home-videos':VideoCamera,'home-tutorials':Reading,'home-notice':Bell,heading:Reading,markdown:Document,image:Picture,button:Link,notice:Bell,author:User,toc:List,categories:Folder,latest:Clock,search:Search,links:Link,divider:Minus,ad:Monitor};
 </script>
 <template>
  <div class="block-library">

@@ -6,6 +6,7 @@ import { renderMarkdown } from '../../lib/markdown';
 import { brandLogo } from '../../lib/branding';
 import { postPath } from '../../lib/permalinks';
 import Icon from '../Icon.astro';
+import AdSlot from '../AdSlot.astro';
 interface Props {
  block:LayoutBlock; settings:Settings; categories:Category[]; posts:Post[];
  toc:{id:string;text:string;level:number}[];
@@ -13,7 +14,8 @@ interface Props {
 const {block,settings,categories,posts,toc}=Astro.props;
 ---
 <section class:list={['layout-widget',`layout-widget-${block.type}`]}>
- {block.type==='heading' ? (block.level===3?<h3>{block.title}</h3>:<h2>{block.title}</h2>) : block.type!=='divider'&&block.title&&<h2 class="layout-widget-title">{block.title}</h2>}
+ {block.type==='heading' ? (block.level===3?<h3>{block.title}</h3>:<h2>{block.title}</h2>) : !['divider','ad'].includes(block.type)&&block.title&&<h2 class="layout-widget-title">{block.title}</h2>}
+ {block.type==='ad'&&<AdSlot settings={settings} placement="sidebar" placeholder={Astro.request.method==='POST'}/>}
  {block.type==='markdown'&&<div class="prose" set:html={renderMarkdown(block.text,{locale:Astro.locals.locale}).html.replace(/id="section-/g,`id="widget-${block.id}-section-`)}/>}
  {block.type==='notice'&&<p class="layout-notice-copy">{block.text}</p>}
  {block.type==='image'&&(block.image?<figure><img src={block.image} alt={block.alt} loading="lazy"/>{block.text&&<figcaption>{block.text}</figcaption>}</figure>:<p class="layout-widget-empty"> {t("请在装修面板中选择图片。")} </p>)}

@@ -17,6 +17,7 @@
     "deploy": "node scripts/deploy-button.mjs",
     "deploy:cli": "node scripts/deploy.mjs",
     "test": "vitest run",
+    "test:ads": "node scripts/advertising-integration.mjs",
     "test:integration": "node scripts/integration.mjs",
     "test:studio": "node scripts/studio-integration.mjs"
   },

@@ -13,6 +13,7 @@ export const GET: APIRoute = async ({ url }) => {
     "/videos/",
     "/tutorials/",
     "/about/",
+    "/privacy/",
     ...posts.results.map((row) => postPath(toPost(row), settings)),
     ...pages.map((page) => `/${page.slug}/`),
   ];

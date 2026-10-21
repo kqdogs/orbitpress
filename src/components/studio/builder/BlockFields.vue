@@ -16,7 +16,8 @@ function setLink(index:number,field:'label'|'href',value:string){block.value={..
    <el-form-item :label="t('放置位置')">
     <el-select :model-value="region" :aria-label="t('组件放置位置')" @change="emit('move',$event)"><el-option v-for="(name,key) in regionNames" :key="key" :label="t(name)" :value="key"/></el-select>
    </el-form-item>
-   <el-form-item v-if="block.type!=='divider'" :label="t('组件标题')"><el-input v-model="block.title" maxlength="80"/></el-form-item>
+   <el-form-item v-if="!['divider','ad'].includes(block.type)" :label="t('组件标题')"><el-input v-model="block.title" maxlength="80"/></el-form-item>
+   <el-alert v-if="block.type==='ad'" :title="t('此组件使用广告设置中的组件广告位；后台预览不会加载真实广告。')" type="info" :closable="false"/>
    <el-form-item v-if="block.type.startsWith('home-')" :label="t('组件副标题')"><el-input v-model="block.text" type="textarea" :rows="3" maxlength="180"/></el-form-item>
    <el-form-item v-if="block.type==='heading'" :label="t('标题级别')"><el-radio-group v-model="block.level"><el-radio :value="2">H2</el-radio><el-radio :value="3">H3</el-radio></el-radio-group></el-form-item>
    <el-form-item v-if="['markdown','notice','author','image','button','search'].includes(block.type)" :label="block.type==='button'?t('按钮文字'):block.type==='image'?t('图片说明'):block.type==='search'?t('搜索占位文字'):t('组件内容')">

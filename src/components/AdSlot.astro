@@ -1,0 +1,19 @@
+---
+import type { Settings } from '../lib/schema';
+import { adsAllowed, type AdPlacement } from '../lib/advertising';
+import { translator } from '../lib/i18n';
+interface Props { settings: Settings; placement: AdPlacement; preview?: boolean; placeholder?: boolean }
+const { settings, placement, preview = false, placeholder = false } = Astro.props;
+const t = translator(Astro.locals.locale);
+const slotId = settings.advertising.slots[placement];
+const active = adsAllowed(settings.advertising, Astro.request, Astro.response.status, preview) && /^\d{10}$/.test(slotId);
+---
+{active ? <aside class="site-ad" data-ad-placement={placement} aria-label={t('广告')} hidden>
+  <small class="site-ad-label">{t('广告')}</small>
+  <ins class="adsbygoogle" style="display:block" data-ad-client={settings.advertising.clientId} data-ad-slot={slotId} data-ad-format="auto" data-full-width-responsive="true"></ins>
+</aside> : placeholder && <div class="site-ad-placeholder">{t('广告位预览：不会请求真实广告')}</div>}
+
+<script>
+  import { initializeAdSlots } from '../lib/advertising-client';
+  initializeAdSlots();
+</script>

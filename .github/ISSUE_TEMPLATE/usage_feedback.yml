@@ -1,0 +1,19 @@
+name: Usage feedback / 使用反馈
+description: Share a real deployment or experience / 分享真实部署体验
+title: "[Usage]: "
+body:
+  - type: markdown
+    attributes:
+      value: "Only share what you want to make public. URLs are optional. Never include admin access or private data. 仅分享愿意公开的信息，无须提供网址，请勿提供后台访问权限或隐私数据。"
+  - type: textarea
+    id: usage
+    attributes:
+      label: How you use OrbitPress / 使用方式
+    validations:
+      required: true
+  - type: textarea
+    id: feedback
+    attributes:
+      label: What worked and what needs improvement / 体验与改进建议
+    validations:
+      required: true
