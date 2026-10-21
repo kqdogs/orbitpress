@@ -1,0 +1,16 @@
+---
+import {translator} from '../lib/i18n';
+import Icon from './Icon.astro';
+import LanguageSwitch from './LanguageSwitch.astro';
+const t=translator(Astro.locals.locale);
+---
+<div class="header-actions">
+ <button type="button" class="icon-button header-search open-search" aria-label={t('搜索')}><Icon name="search" size={19}/></button>
+ <LanguageSwitch/>
+</div>
+<style>
+ .header-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+ .header-search{width:36px;height:36px;border-radius:10px;color:#dce9fb;transition:background .15s,color .15s}
+ .header-search:hover{background:#ffffff14;color:#fff}
+ @media(max-width:760px){.header-actions{gap:4px}}
+</style>

@@ -107,3 +107,21 @@ html.search-open{overflow:hidden}
 
 /* Navigation scrolls horizontally without expanding the page or creating a vertical track. */
 .nav-row{min-width:0;overflow-x:auto;overflow-y:hidden}@media(max-width:760px){.nav-row{overflow:visible}}
+
+/* Header actions stay in a dedicated, right-aligned lane. */
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:20px;min-width:0;overflow:visible}
+.nav-links{display:flex;align-items:center;gap:4px;flex:1;min-width:0;overflow-x:auto;overflow-y:hidden}
+.nav-links>a{font-weight:700;padding:13px 9px;white-space:nowrap;color:#d0d6e2}
+.nav-links>a:hover,.nav-links>a.active{color:white;background:#ffffff1b;border-radius:9px}
+.nav-links .wiki-link{background:linear-gradient(100deg,#ffe675,#ffb947);color:#142033;border-radius:28px;padding:7px 15px;display:flex;align-items:center;gap:5px;position:relative;margin-left:9px;box-shadow:0 0 18px #ffc74028;animation:cta-glow 2.8s ease-in-out infinite}
+@media(max-width:1150px){.nav-links{gap:5px}.nav-links .wiki-link{display:flex;flex-shrink:0}}
+@media(max-width:760px){
+ .nav-row{display:block;height:auto;padding-block:15px;overflow:visible}
+ .nav-links{display:grid;grid-template-columns:1fr 1fr;gap:4px;overflow:visible}
+ .nav-links>a{font-size:13px;padding:10px 14px}
+ .nav-band{display:none;position:absolute;top:107px;z-index:20;left:0;right:0;background:#09172a;box-shadow:0 15px 24px #0005}
+ .nav-band.is-open{display:block}
+ .nav-links .wiki-link{margin-left:0;justify-content:center;padding:9px 10px;font-size:12px}
+ .nav-links .wiki-link small{top:-7px;right:0}
+}
+@media(prefers-reduced-motion:reduce){.nav-links .wiki-link{animation:none}}

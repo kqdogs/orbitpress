@@ -111,4 +111,12 @@ describe('translation coverage and documentation',()=>{
   for(const command of ['npm ci','npm run setup:local','npm run db:migrate','npm run dev','npm run deploy:cli']){expect(zh).toContain(command);expect(en).toContain(command);}
   expect(en).toContain('deploy.workers.cloudflare.com/?url=');expect(en).toContain('THIRD_PARTY_NOTICES.md');
  });
+ it('keeps public header actions in a dedicated right-side lane',()=>{
+  const header=readFileSync('src/components/SiteHeader.astro','utf8');
+  const css=readFileSync('src/styles/site.css','utf8');
+  expect(header).toContain('class="nav-links"');expect(header).toContain('class="desktop-actions"');expect(header).toContain('<HeaderActions/>');
+  expect(css).toContain('.nav-row{display:flex;align-items:center;justify-content:space-between');
+  expect(css).toContain('.nav-links{display:flex;align-items:center');
+  expect(readFileSync('src/components/LanguageSwitch.astro','utf8')).toContain('<details class="site-language"');
+ });
 });
